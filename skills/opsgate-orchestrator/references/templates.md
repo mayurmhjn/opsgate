@@ -57,7 +57,7 @@ One or two lines each: operational excellence, security, reliability, performanc
 ```markdown
 # Cost estimate
 
-Price source: <AWS Price List API | AWS pricing pages | usage model only>, retrieved <date>
+Price source: <AWS Price List API | AWS Pricing Calculator | Infracost | AWS pricing pages | usage model only>, retrieved <date>
 Region:
 
 ## Assumptions

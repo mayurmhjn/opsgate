@@ -16,7 +16,8 @@ Use prices from a live source and name it with the date: the AWS Price List API 
 1. List every cost driver per component with its quantity and the assumption behind it. Use `references/cost-drivers.md`, because the drivers people forget are often the large ones: NAT gateway processing per GB, data transfer, log ingestion, interface endpoints, public IPv4 addresses and minimum capacity.
 2. Give low, expected and high cases, and name the two or three drivers that move the total most.
 3. Separate the always-on floor from the usage-driven part.
-4. Write the result to `cost.md` with the source and date if the repo keeps a `docs/opsgate/` trail.
+4. Estimate each environment separately, and recommend cost allocation tags and a budget alert for each.
+5. Write the result to `docs/opsgate/cost.md` with the source and date if the repo keeps that trail.
 
 ## Cost of an IaC change
 

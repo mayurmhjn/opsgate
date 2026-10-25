@@ -34,7 +34,7 @@ List the quantity for every driver that applies. Look up the unit price from a l
 
 ## Read-only commands to start with
 
-Run these only after the user confirms the account or profile.
+Run these only after the user confirms the account or profile. `End` is exclusive, so a full month runs from the first of that month to the first of the next. Each Cost Explorer API request is billed, so prefer a few well-grouped queries over many small ones.
 
 ```bash
 aws ce get-cost-and-usage --time-period Start=YYYY-MM-01,End=YYYY-MM-01 \
@@ -59,7 +59,7 @@ Compare periods of the same length.
 | Saving | Risk | Notes |
 |--------|------|-------|
 | Set log retention on log groups that never expire | Low | Check compliance retention needs first |
-| Stop or schedule non-production outside working hours | Low | Agree on the hours with the team |
+| Stop or schedule non-production outside working hours | Low | Agree on the hours with the team. A stopped RDS instance starts again on its own after a fixed period, so schedule the stop, don't do it once |
 | Remove unattached volumes, idle Elastic IPs, old snapshots | Low | Confirm nothing depends on them |
 | Gateway endpoints for S3 and DynamoDB | Low | Takes that traffic off NAT gateways |
 | gp2 to gp3 volumes | Low to medium | Online change, but AWS limits how often a volume can be modified, so check before planning a rollback |
