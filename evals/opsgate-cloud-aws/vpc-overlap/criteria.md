@@ -1,0 +1,4 @@
+- Picks a CIDR range that does not overlap any network in docs/networks.md, including on-prem and the partner VPN.
+- Uses at least two availability zones, with private subnets for workloads and public subnets only for load balancers or NAT.
+- Considers gateway endpoints for S3 and DynamoDB, and NAT gateway count, with their cost and availability tradeoff.
+- Asks about, or states assumptions for, connectivity to the other networks (Transit Gateway, peering, VPN).
