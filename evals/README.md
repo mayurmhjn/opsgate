@@ -31,9 +31,11 @@ ln -sf ~/.claude/.credentials.json ~/.opsgate-eval-config/.credentials.json
 CLAUDE_CONFIG_DIR=~/.opsgate-eval-config .venv/bin/python evals/run.py opsgate-orchestrator
 ```
 
+The symlink works where the CLI stores its login in `~/.claude/.credentials.json`, as it does on Linux. On macOS the login lives in the Keychain, so set `ANTHROPIC_API_KEY` for the run instead.
+
 Options: `--scenario NAME` runs one scenario, `--arm baseline` or `--arm skill` runs one side, and `--dry-run` prints the commands without running them.
 
-The agent can read and write files in a temporary copy of `repo/`, but it can't run shell commands, so nothing touches a real cloud account. Results land in `evals/results/<skill>/<scenario>/<arm>.md`, which git ignores: the prompt, the reply, and every file the agent created or changed.
+The agent can read and write files in a temporary copy of `repo/`, but it can't run shell commands. With the clean configuration above, that means nothing touches a real cloud account. Results land in `evals/results/<skill>/<scenario>/<arm>.md`, which git ignores. Each one records the model, the exit code, which skills the agent invoked, the prompt, the reply, and every file the agent created, changed or deleted.
 
 ## Grading
 
