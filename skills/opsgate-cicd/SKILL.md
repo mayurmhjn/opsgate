@@ -1,6 +1,6 @@
 ---
 name: opsgate-cicd
-description: Use when creating, changing, speeding up or debugging CI/CD pipelines (GitHub Actions, GitLab CI, Jenkins, AWS CodePipeline and similar), setting up deploys or infrastructure-as-code pipelines, choosing a release strategy, or rolling back a bad release.
+description: Use when creating, changing, speeding up or debugging CI/CD pipelines (GitHub Actions, GitLab CI, Jenkins, AWS CodePipeline and similar), including a failed workflow run or a permission error in a job, setting up deploys or infrastructure-as-code pipelines, choosing a release strategy, or rolling back a bad release.
 ---
 
 # opsgate CI/CD
@@ -9,7 +9,7 @@ Use the CI system the repo already uses. Pipeline changes ship to everyone who t
 
 ## Production deploys are gated
 
-- Deploy to production through a protected environment with required reviewers and a branch rule that allows only the release branch. Concurrency for production deploys must queue rather than cancel. Treat these as required, not optional.
+- Deploy to production through a protected environment with required reviewers and a branch rule that allows only the release branch. Concurrency for production deploys must never cancel a running deploy. Treat these as required, not optional.
 - If the user wants deploys or applies to happen "automatically", explain what is lost, offer a middle ground (automatic for non-production, one approval for production), and ask before removing the approval.
 
 ## Infrastructure pipelines
@@ -18,7 +18,8 @@ Follow `references/iac-pipelines.md`: plan on every pull request with the plan v
 
 ## Supply chain and permissions
 
-- Pin third-party actions and images to a full commit SHA or digest, with the version in a comment, and set up automated update PRs. This is the default, not an extra.
+- Pin third-party actions and images to a full commit SHA or digest, with the version in a comment. This is the default, not an extra. Never guess a SHA: look it up, or leave a clearly marked placeholder. Recommend automated update PRs and offer to add the config.
+- Keep workflow and job names stable. Renaming them can break required status checks.
 - Keep `permissions` minimal and grant write access per job.
 - Turn on tag immutability in the image registry so an image tag can't be overwritten.
 - Store role ARNs and other non-secret settings as variables, not secrets.
@@ -27,7 +28,7 @@ See `references/github-actions-hardening.md` for the full list.
 
 ## Security holes you find
 
-If a workflow you touch has a live hole, such as `pull_request_target` running untrusted PR code with secrets, or untrusted input used directly in `run`, close it in the change you deliver. Do this even if the user asked for something else. Don't ship the file with the hole still open while you wait for an answer. Then do what they asked.
+If a workflow you touch has a live hole, such as `pull_request_target` running untrusted PR code with secrets, untrusted input used directly in `run`, or a privileged job that executes files from an untrusted artifact, close it in the change you deliver. Check your own fix for the same holes. Do this even if the user asked for something else. Don't ship the file with the hole still open while you wait for an answer. Then do what they asked.
 
 ## Debugging a failed run
 
