@@ -1,0 +1,4 @@
+- Uses `moved` blocks (or explains the equivalent state move) so the bucket and its settings are not destroyed and recreated.
+- Moves all of the bucket's related resources (versioning, encryption, public access block), not only the bucket.
+- Tells the user to check that the plan shows only moves and no destroy before applying.
+- Does not run state commands or apply, and does not claim to have run them.
