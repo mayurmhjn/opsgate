@@ -41,6 +41,11 @@ class SnapshotTest(unittest.TestCase):
         self.assertNotIn("--plugin-dir", run.agent_command("baseline"))
         self.assertIn("--plugin-dir", run.agent_command("skill"))
 
+    def test_skill_arm_can_read_skill_references(self):
+        cmd = run.agent_command("skill")
+        self.assertEqual(cmd[cmd.index("--add-dir") + 1], str(run.ROOT / "skills"))
+        self.assertNotIn("--add-dir", run.agent_command("baseline"))
+
 
 class ParseStreamTest(unittest.TestCase):
     def test_extracts_reply_skills_and_model(self):

@@ -28,7 +28,8 @@ def agent_command(arm):
         "--disallowedTools", "Bash",
     ]
     if arm == "skill":
-        cmd += ["--plugin-dir", str(ROOT)]
+        # Headless mode denies reads outside the working directory, so allow the skill folders.
+        cmd += ["--plugin-dir", str(ROOT), "--add-dir", str(ROOT / "skills")]
     return cmd
 
 
