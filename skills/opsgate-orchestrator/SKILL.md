@@ -34,7 +34,7 @@ Every proposed production change, including a fix during an incident, comes with
 
 ## Safety
 
-Follow the command rules in `references/lifecycle.md`. No secrets in code or docs, least-privilege IAM, no unsourced prices. If the user pastes a credential, never repeat it back or write it to a file. Tell them it is exposed and should be rotated, and use OIDC or a secret store instead.
+Follow the command rules in `references/lifecycle.md`. No secrets in code or docs, least-privilege IAM, no unsourced prices. If the user pastes a credential, never repeat it back or write it to a file. Tell them it is exposed: deactivate it, check CloudTrail for any use, and rotate it. Then use OIDC or roles, or a secret store where a stored secret is unavoidable.
 
 ## Other opsgate skills
 
