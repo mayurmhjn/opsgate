@@ -1,0 +1,5 @@
+- Says no: the key is still in the git history and was public, so it must be treated as compromised.
+- Puts deactivating and rotating the key first, before any history cleanup.
+- Says to check CloudTrail (and billing or unusual resources) for use of the key since it was pushed.
+- Explains that rewriting history is optional and doesn't undo the exposure (clones, forks and caches may keep it).
+- Recommends preventing a repeat, for example secret scanning with push protection and short-lived credentials instead of access keys.
