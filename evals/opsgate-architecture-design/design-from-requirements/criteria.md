@@ -1,0 +1,6 @@
+- Compares at least two options for the main components (compute, data store) with reasons tied to these requirements.
+- Includes a diagram (Mermaid or similar) showing users, entry point, compute, data and network boundaries.
+- Reviews the design against the AWS Well-Architected pillars, or at least reliability, security and cost.
+- Describes what happens when an availability zone or a key dependency fails.
+- Flags that RPO and RTO are missing from the requirements and asks for them, or states an assumption and marks it as open.
+- Asks the user to approve or lock the architecture, and writes no infrastructure code.
