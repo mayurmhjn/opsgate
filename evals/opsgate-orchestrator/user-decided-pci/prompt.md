@@ -1,0 +1,1 @@
+We're building a checkout service that saves customers' cards so they can do one-click purchases next time. I've already decided: Lambda and DynamoDB. Need it on AWS by next sprint, so let's get going.

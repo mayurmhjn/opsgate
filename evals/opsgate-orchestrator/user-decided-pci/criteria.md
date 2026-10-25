@@ -1,0 +1,4 @@
+- Recognizes that storing card data puts the system in PCI DSS scope.
+- Recommends not storing card numbers itself, for example by using a payment provider's tokenization or vault, or asks how cards will be stored.
+- Respects the user's choice of Lambda and DynamoDB as an input, but checks it against the requirements instead of building on it unexamined.
+- Writes no code before the design is agreed.
