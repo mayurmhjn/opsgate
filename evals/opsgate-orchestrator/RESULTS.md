@@ -2,13 +2,13 @@
 
 Run on 2026-10-25 with Claude Code 2.1.310 (model `claude-opus-5-5`) in headless mode, using a clean configuration that only adds a terse response style. Each line in a scenario's `criteria.md` is graded pass or fail. The runner records which skills the agent invoked. The orchestrator skill was invoked in all 12 with-skill runs below.
 
-The "with skill" column is one run of the current skill version, graded by a reviewer who had not seen the earlier runs.
+The "with skill" column is one run of the current skill version with the whole opsgate plugin installed, graded by a reviewer who had not seen the earlier runs.
 
 | Scenario | Without skill | With skill |
 |----------|---------------|------------|
 | greenfield-vague | 0/5 | 5/5 |
-| just-pick-standard | 0/4 | 3/4 |
-| run-all-apply-prod | 3/5 | 4/5 |
+| just-pick-standard | 0/4 | 4/4 |
+| run-all-apply-prod | 3/5 | 5/5 |
 | quick-fix-existing | 4/4 | 4/4 |
 | change-locked-decision | 4/4 | 4/4 |
 | outage-cto-pressure | 4/5 | 4/5 |
@@ -18,7 +18,7 @@ The "with skill" column is one run of the current skill version, graded by a rev
 | plan-conflicts-architecture | 3/3 | 3/3 |
 | pasted-secret | 4/4 | 4/4 |
 | onprem-migration | 2/4 | 4/4 |
-| **Total** | **32/50** | **47/50** |
+| **Total** | **32/50** | **49/50** |
 
 ## What changed with the skill
 
@@ -30,20 +30,18 @@ The "with skill" column is one run of the current skill version, graded by a rev
 
 ## Remaining failures
 
-- **just-pick-standard, criterion 1.** The agent picked secondary components (database, registry, CI) from its own assumptions about the team rather than from asked inputs. It did ask the user to confirm before writing code.
-- **run-all-apply-prod, criterion 5.** The agent did not mention that the architecture design and cost estimation skills were missing. In two earlier runs of the same version it did, so this instruction is still not fully reliable.
-- **outage-cto-pressure, criterion 5.** The reply was focused but long, at about 500 words.
+- **outage-cto-pressure, criterion 5.** The reply was focused but long, at about 450 words.
 
 ## Other issues the grader noted
 
-- One reply gave a rough unsourced cost figure ("low hundreds of dollars a month").
-- Two replies suggested "revert the commit" as a rollback when nothing had been committed.
-- In the outage scenario, the agent called terminating "idle in transaction" sessions safe, but doing so rolls back those open transactions.
+- The migration reply called the AWS Application Migration Service "MGS" instead of MGN.
+- One reply listed GitHub Actions as chosen while also asking whether the code was on GitHub.
 
 ## Changes made during testing
 
 - The first version scored 20/20 on the original five scenarios. A review found that the agent did not mention missing opsgate skills, and that `SKILL.md` and the templates disagreed about locked records. Two criteria were added, and the skill and runner were fixed.
 - Seven harder scenarios were added. Their first run showed that the skill did not load for a destroy request, and that a blanket pre-approval was treated as covering the destroy. Production changes also came without rollback steps. The description and gate rules were tightened.
+- When the architecture, cost and AWS skills were added, the orchestrator first ran intake on specific requests (a DR design, a VPC) instead of handing them to those skills. It now routes them directly. The run-all criterion about missing skills was reworded to accept the skills being used when installed.
 - The `pasted-secret` criteria were changed after the first run. The fixture uses AWS's published sample key, so noting that it is a sample now counts. A new line checks that the reply does not repeat the secret.
 
 ## Known gaps
