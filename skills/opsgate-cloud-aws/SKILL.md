@@ -23,7 +23,7 @@ This skill holds the cross-cutting AWS rules that apply to every task. For depth
 
 ## Networking
 
-- Use private subnets for workloads and data, and public subnets only for load balancers and NAT gateways. Use at least two availability zones.
+- Follow the network section of `references/baseline.md`, across at least two availability zones.
 - Pick CIDR ranges that don't overlap anything the VPC may ever connect to, including on-prem, partners and other VPCs. Leave room to grow.
 - Consider gateway endpoints for S3 and DynamoDB in every VPC. They carry no charge and keep that traffic off NAT. Weigh the NAT gateway count as cost against availability-zone independence, and say which one you chose and why.
 

@@ -31,7 +31,7 @@ For each finding, give the file and line, why it matters, and the smallest fix. 
 
 ## Disaster recovery
 
-Map RTO and RPO to a strategy with `references/dr-strategies.md`, and show why the targets rule out the cheaper tiers. State what each tier costs to run, then ask for the budget, or whether the targets can move. Design failover so the steps agree with each other. If DNS fails over automatically, the data store must already be promoted, or traffic will reach a read-only replica. Pick automatic or manual failover and use it everywhere. Include how failover is tested and how traffic comes back.
+Map RTO and RPO to a strategy with `references/dr-strategies.md`, and show why the targets rule out the cheaper tiers. State what each tier costs to run, then ask for the budget, or whether the targets can move. Follow the reference's failover checklist, so that traffic never reaches a recovery region whose data store isn't promoted yet. Include how failover is tested and how traffic comes back.
 
 ## When related skills are missing
 
