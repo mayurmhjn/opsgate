@@ -18,6 +18,7 @@ This skill holds the cross-cutting AWS rules that apply to every task. For depth
 
 ## IAM
 
+- A role must still work. Include what its service needs to run (for a Lambda function, writing to its own log group), scoped to its own resources, even if the user only named the business permissions.
 - Name exact actions and exact resource ARNs. Build ARNs from the partition, region and account (data sources or variables), not `*`.
 - Add the condition keys that close confused-deputy and cross-account gaps (`aws:SourceArn`, `aws:SourceAccount`, OIDC `sub` and `aud`).
 - If data is encrypted with a customer managed KMS key, the role also needs the matching `kms:` actions on that key. Ask if you can't see the encryption setup.
