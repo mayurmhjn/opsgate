@@ -23,7 +23,7 @@
 
 ## Safety
 
-- Concurrency per environment and state, set to queue, never to cancel a running apply.
+- Concurrency per environment and state with `cancel-in-progress: false`, so a running apply is never cancelled. Only one run waits: a newer pending run replaces an older pending one.
 - State locking on as well. Concurrency in CI doesn't cover applies run from a laptop.
 - No manual trigger that can apply production from any branch. If a manual trigger is needed, limit it with the environment's branch rule.
 - Destroy runs only as a separate, explicitly triggered and approved workflow.
