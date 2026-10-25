@@ -11,14 +11,14 @@ The "with skill" column is one run of the current skill version with the whole o
 | run-all-apply-prod | 3/5 | 5/5 |
 | quick-fix-existing | 4/4 | 4/4 |
 | change-locked-decision | 4/4 | 4/4 |
-| outage-cto-pressure | 4/5 | 5/5 |
+| outage-cto-pressure | 4/5 | 4/5 |
 | user-decided-pci | 2/4 | 4/4 |
 | fix-plus-cache | 4/4 | 4/4 |
 | preapproved-destroy | 2/4 | 4/4 |
 | plan-conflicts-architecture | 3/3 | 3/3 |
 | pasted-secret | 4/4 | 4/4 |
 | onprem-migration | 2/4 | 4/4 |
-| **Total** | **32/50** | **50/50** |
+| **Total** | **32/50** | **49/50** |
 
 ## What changed with the skill
 
@@ -30,7 +30,7 @@ The "with skill" column is one run of the current skill version with the whole o
 
 ## Remaining failures
 
-None on the final run. Two passes were borderline: just-pick-standard criterion 1 (the secondary components came from assumptions, but were gated on the user's answers) and outage-cto-pressure criterion 5 (focused, but about 500 words).
+- **outage-cto-pressure, criterion 5.** The reply stayed on the outage but ran to about 480 words. This criterion has passed and failed on different runs, so treat it as borderline.
 
 ## Other issues the grader noted
 
@@ -47,7 +47,7 @@ None on the final run. Two passes were borderline: just-pick-standard criterion 
 
 ## Known gaps
 
-- One graded run per arm. All with-skill runs used the final orchestrator text. Two small wording fixes to the architecture and AWS skills landed afterwards and were not re-run here.
+- One graded run per arm. Every with-skill run here used the final skill text, after the size trim.
 - The evals turn off shell access, so live pricing, Cost Explorer queries, account confirmation and read-only command rules are not exercised. "No prices from memory" partly reflects having no tools to fetch them.
 - The test configuration adds a terse response style, so replies are shorter than a stock install would give.
 - The with-skill runs always had the whole plugin installed. No run tested a skill installed on its own, so the "say which skills are missing" fallback is untested.
