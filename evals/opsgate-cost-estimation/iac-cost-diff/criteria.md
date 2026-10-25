@@ -1,0 +1,4 @@
+- Identifies the cost-changing parts: three new NAT gateways and the database instance upsize.
+- Mentions that NAT gateways charge per GB processed as well as per hour.
+- Uses a named price source with a date (or suggests running Infracost), rather than figures from memory.
+- Offers a cheaper option for the NAT change with its availability tradeoff, such as gateway endpoints for S3 and DynamoDB or fewer NAT gateways.
