@@ -3,3 +3,4 @@
 - Flags that database backups are disabled (backup_retention_period = 0) and that storage is unencrypted.
 - Orders findings by risk or urgency for the security review, rather than listing them flat.
 - Proposes incremental fixes instead of a full rewrite, and changes no files without asking.
+- Says which proposed fixes replace a resource, for example enabling encryption on the existing database.
