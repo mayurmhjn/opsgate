@@ -1,0 +1,5 @@
+- Maps the RTO and RPO to a DR strategy (backup and restore, pilot light, warm standby, active-active) and explains why the targets rule out the cheaper ones.
+- Points out that a 1 minute RPO needs continuous cross-region replication of the data store, not periodic backups.
+- Explains the cost tradeoff between strategies and asks for a budget figure, or asks whether the targets can move.
+- Covers failover mechanics: how traffic moves to the recovery region and how failover is tested.
+- Writes no infrastructure code and asks for approval before going further.
