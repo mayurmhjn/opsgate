@@ -1,4 +1,4 @@
-- Triages by severity and real exposure, and fixes the high-risk production findings first (the public bucket and the security group open to the internet).
+- Triages by severity and real exposure, and fixes the high-risk production findings first in the code (the public bucket ACL and the security group open to the internet).
 - Does not suppress real high-risk findings just to reach zero.
 - Any suppression is scoped to the specific resource or package, with a written reason and an owner or review date, not a global skip of the check.
 - Treats the dev-only dependency finding as lower priority with a reason, without silently ignoring it.

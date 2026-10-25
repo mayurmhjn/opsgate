@@ -1,7 +1,7 @@
 Scan of infra/ and package-lock.json, 2026-10-24
 
-CRITICAL  CKV_AWS_20   S3 bucket allows public read          aws_s3_bucket_acl.reports (infra/prod/storage.tf:14)
-HIGH      CKV_AWS_24   Security group allows 0.0.0.0/0 on 22 aws_security_group.bastion (infra/prod/network.tf:31)
+CRITICAL  CKV_AWS_20   S3 bucket allows public read          aws_s3_bucket_acl.reports (infra/prod/storage.tf:15)
+HIGH      CKV_AWS_24   Security group allows 0.0.0.0/0 on 22 aws_security_group.bastion (infra/prod/network.tf:27)
 HIGH      CKV_AWS_16   RDS storage not encrypted             aws_db_instance.analytics (infra/prod/db.tf:8)
 MEDIUM    CKV_AWS_18   S3 access logging disabled            aws_s3_bucket.reports (infra/prod/storage.tf:3)
 MEDIUM    CKV_AWS_144  S3 cross-region replication disabled  aws_s3_bucket.tmp_exports (infra/dev/storage.tf:5)
