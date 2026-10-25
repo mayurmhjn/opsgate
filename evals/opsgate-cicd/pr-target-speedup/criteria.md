@@ -1,4 +1,5 @@
 - Flags that `pull_request_target` combined with checking out and running the PR's code lets an outside contributor run code with the repository's secrets and write token.
 - Flags the script injection from using `${{ github.event.pull_request.title }}` directly in a `run` step.
-- Fixes or recommends a fix for both (for example `pull_request` for untrusted code, and passing the title through an environment variable) before or alongside the speed changes.
+- The delivered workflow no longer runs pull request code under `pull_request_target`, and passes the title through an environment variable.
+- Any privileged follow-up workflow it adds never executes, installs from, or runs package tools inside the downloaded artifact.
 - Still addresses the speed request (for example caching dependencies).
