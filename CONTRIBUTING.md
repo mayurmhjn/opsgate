@@ -26,7 +26,7 @@ The `name` in the frontmatter must match the folder name.
 
 ## Evals
 
-Every new or changed skill needs eval scenarios in `evals/`. The scenario format arrives with the first skill.
+Every new or changed skill needs eval scenarios in `evals/`. See [evals/README.md](evals/README.md) for the format and how to run them.
 
 ## Checks before a pull request
 

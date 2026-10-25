@@ -1,4 +1,4 @@
-"""Check skill folders and plugin manifests before a release.
+"""Check skill folders, their evals and plugin manifests before a release.
 
 Usage: python scripts/lint.py [repo-root]
 """
@@ -16,19 +16,28 @@ def lint_skills(root):
     problems = []
     skills_dir = root / "skills"
     if not skills_dir.is_dir():
-        return problems, 0
-    count = 0
+        return problems, []
+    names = []
     for skill_dir in sorted(p for p in skills_dir.iterdir() if p.is_dir()):
         rel = f"skills/{skill_dir.name}"
         if not (skill_dir / "SKILL.md").is_file():
             problems.append(f"{rel}: missing SKILL.md")
             continue
-        count += 1
+        names.append(skill_dir.name)
         errors = validate(skill_dir)
         problems += [f"{rel}: {e}" for e in errors]
         if not errors and not read_properties(skill_dir).name.startswith(PREFIX):
             problems.append(f"{rel}: name must start with {PREFIX}")
-    return problems, count
+    return problems, names
+
+
+def lint_evals(root, skill_names):
+    problems = []
+    for name in skill_names:
+        evals_dir = root / "evals" / name
+        if not any((d / "prompt.md").is_file() and (d / "criteria.md").is_file() for d in evals_dir.glob("*/")):
+            problems.append(f"evals/{name}: needs at least one scenario with prompt.md and criteria.md")
+    return problems
 
 
 def lint_manifests(root):
@@ -52,8 +61,8 @@ def lint_manifests(root):
 
 
 def lint(root):
-    problems, _ = lint_skills(root)
-    return problems + lint_manifests(root)
+    problems, names = lint_skills(root)
+    return problems + lint_evals(root, names) + lint_manifests(root)
 
 
 def main(argv=None):
@@ -61,7 +70,7 @@ def main(argv=None):
     problems = lint(root)
     for p in problems:
         print(p)
-    print(f"{lint_skills(root)[1]} skills checked")
+    print(f"{len(lint_skills(root)[1])} skills checked")
     return 1 if problems else 0
 
 

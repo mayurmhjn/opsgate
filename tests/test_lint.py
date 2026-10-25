@@ -10,12 +10,21 @@ sys.path.insert(0, str(Path(__file__).parent.parent / "scripts"))
 import lint  # noqa: E402
 
 
-def make_skill(root, folder, name, description="Use when testing."):
+def make_skill(root, folder, name, description="Use when testing.", evals=True):
     skill_dir = root / "skills" / folder
     skill_dir.mkdir(parents=True)
     (skill_dir / "SKILL.md").write_text(
         f"---\nname: {name}\ndescription: {description}\n---\n\n# {name}\n"
     )
+    if evals:
+        make_scenario(root, folder, "basic")
+
+
+def make_scenario(root, skill, scenario, files=("prompt.md", "criteria.md")):
+    d = root / "evals" / skill / scenario
+    d.mkdir(parents=True)
+    for f in files:
+        (d / f).write_text("x\n")
 
 
 def write_manifests(root, marketplace, plugin):
@@ -70,6 +79,26 @@ class LintTest(unittest.TestCase):
         self.assertEqual(
             lint.lint(self.root),
             [".claude-plugin: marketplace and plugin.json disagree on version"],
+        )
+
+    def test_skill_without_evals_reported(self):
+        make_skill(self.root, "opsgate-iac", "opsgate-iac", evals=False)
+        self.assertEqual(
+            lint.lint(self.root),
+            ["evals/opsgate-iac: needs at least one scenario with prompt.md and criteria.md"],
+        )
+
+    def test_skill_with_scenario_passes(self):
+        make_skill(self.root, "opsgate-iac", "opsgate-iac", evals=False)
+        make_scenario(self.root, "opsgate-iac", "basic")
+        self.assertEqual(lint.lint(self.root), [])
+
+    def test_scenario_missing_criteria_reported(self):
+        make_skill(self.root, "opsgate-iac", "opsgate-iac", evals=False)
+        make_scenario(self.root, "opsgate-iac", "basic", files=("prompt.md",))
+        self.assertEqual(
+            lint.lint(self.root),
+            ["evals/opsgate-iac: needs at least one scenario with prompt.md and criteria.md"],
         )
 
     def test_main_exit_codes(self):
