@@ -10,7 +10,7 @@ Terraform will perform the following actions:
       ~ address                  = "orders-prod.c9xyz.eu-west-1.rds.amazonaws.com" -> (known after apply)
       ~ arn                      = "arn:aws:rds:eu-west-1:111122223333:db:orders-prod" -> (known after apply)
       ~ id                       = "db-ABCDEFGHIJKL" -> (known after apply)
-      ~ identifier               = "orders-prod" -> "orders-production" # forces replacement
+      ~ storage_encrypted        = false -> true # forces replacement
       ~ tags                     = {
           + "CostCenter" = "commerce"
           - "owner"      = "team-a" -> null

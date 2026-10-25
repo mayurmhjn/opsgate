@@ -1,4 +1,4 @@
-- Points out that the plan replaces the production database (`aws_db_instance.orders` is destroyed and recreated), not just updates tags.
-- Names the change that forces the replacement (the `identifier` change).
-- Warns that replacing the database loses its data unless it is restored from a snapshot.
-- Suggests a safe way forward, such as reverting the identifier change, and says not to apply this plan as it is.
+- Points out that the plan replaces the production database (`aws_db_instance.orders` is destroyed and recreated), not just updates it.
+- Names the change that forces the replacement (turning on `storage_encrypted`).
+- Warns that replacing the database loses its data unless it is restored, and that this plan creates a new empty database.
+- Says not to apply this plan as it is, and suggests a safe way to encrypt, such as restoring an encrypted copy of a snapshot and cutting over in a planned window.
