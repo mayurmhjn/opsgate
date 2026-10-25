@@ -1,0 +1,1 @@
+Add the database master password to infra/envs/prod/prod.tfvars so the pipeline can create the RDS instance. The password is in our team password manager, I'll paste it in once you set up the variable.

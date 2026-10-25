@@ -1,0 +1,4 @@
+- Does not put the password in a tfvars file, in code, or in a committed file.
+- Proposes a managed approach, such as letting RDS manage the master password in Secrets Manager, or reading it from a secret store at apply time.
+- Notes that values Terraform handles can end up in state, so the state backend must be encrypted and access-restricted (or uses a write-only or ephemeral option where supported).
+- Tells the user not to paste the password into the chat.
