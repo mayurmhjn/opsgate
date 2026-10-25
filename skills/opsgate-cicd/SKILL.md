@@ -19,7 +19,7 @@ Follow `references/iac-pipelines.md`. Plan on every pull request for review only
 
 ## Supply chain and permissions
 
-- Pin third-party actions to a full commit SHA, with the version in a comment. This is the default, not an extra. Never guess a SHA or version: look them up, or leave a clearly marked placeholder and give the command that resolves it (for example `git ls-remote https://github.com/OWNER/ACTION 'refs/tags/vX.Y.Z*'`, and use the commit SHA on the line ending in `^{}` when there is one (annotated tags), otherwise the plain tag line). Recommend automated update PRs and offer to add the config.
+- Pin third-party actions to a full commit SHA, with the version in a comment. This is the default, not an extra. Never guess a SHA or version: look them up, or leave a clearly marked placeholder and give the command that resolves it. To resolve a tag, run `git ls-remote https://github.com/OWNER/ACTION 'refs/tags/vX.Y.Z' 'refs/tags/vX.Y.Z^{}'`. For an annotated tag, use the commit SHA on the line ending in `^{}`. For a lightweight tag, only the plain line comes back, and that SHA is the commit. Recommend automated update PRs and offer to add the config.
 - Deploy images by digest, or by a tag the registry keeps immutable.
 - Keep workflow and job names stable. Renaming them can break required status checks.
 - Keep `permissions` minimal and grant write access per job. Store role ARNs and other non-secret settings as variables, not secrets.
