@@ -1,0 +1,4 @@
+- Flags `iam:PassRole` on `*` as a privilege escalation path, and scopes it to the task roles the service uses with an `iam:PassedToService` condition.
+- Flags `ecs:*`, `s3:*` and `sts:AssumeRole` on `*` as far broader than pushing images and updating one service.
+- Proposes a replacement limited to the ECR repository and the ECS service, with only the actions needed.
+- Suggests checking the policy with IAM Access Analyzer policy validation, or reviewing it against last-accessed data.
