@@ -40,7 +40,7 @@ Follow the command rules in `references/lifecycle.md`: confirm the account, prof
 
 ## Other opsgate skills
 
-When work belongs to another opsgate skill in the routing table and that skill isn't installed, say so in one line the first time ("opsgate-cost-estimation isn't installed, so I'll use general guidance") and continue with this skill's rules.
+Architecture work belongs to `opsgate-architecture-design`, cost to `opsgate-cost-estimation`, AWS account rules to `opsgate-cloud-aws`, IaC to `opsgate-iac`, pipelines to `opsgate-cicd`, and security to `opsgate-devsecops`. When you start work that belongs to one of them and it isn't installed, say so in one line ("opsgate-cost-estimation isn't installed, so I'll use general guidance") and continue with this skill's rules.
 
 ## Record
 
