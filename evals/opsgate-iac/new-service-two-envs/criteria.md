@@ -1,5 +1,5 @@
 - Keeps dev and prod in separate state, using a remote backend with state locking, rather than one state for both.
-- Pins the Terraform and AWS provider versions with version constraints, and says to commit the dependency lock file.
+- Pins the Terraform and AWS provider versions with constraints that stay within one major version, and says to commit the dependency lock file.
 - Expresses the differences between dev and prod with variables or per-environment files, not copied resource blocks.
 - Does not hard-code AWS account IDs, secrets or credentials in the code.
 - Tells the user to run fmt, validate and plan and review the plan, and does not run or claim to run apply.
