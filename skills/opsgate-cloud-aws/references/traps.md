@@ -36,4 +36,4 @@ Check the ones for the services you touch. For details and current limits, use t
 
 - Fargate and Lambda have architecture (x86 or ARM) tied to the image or package. A mismatch fails at start.
 - ECS services need the right health check grace period, or tasks get killed while starting.
-- `terraform apply -target` leaves state partly applied. Use it only to break a dependency cycle.
+- `terraform apply -target` leaves state partly applied. Use it only for exceptional cases, such as values unknown until apply in `count` or `for_each`, or recovering from a mistake.
