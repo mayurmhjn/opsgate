@@ -1,6 +1,6 @@
 {
   "name": "opsgate",
-  "version": "0.0.5",
+  "version": "0.0.6",
   "description": "DevOps, platform engineering and SRE skills for AI agents: requirements-driven design, cost estimates, IaC, CI/CD and security with approval gates.",
   "author": {
     "name": "mayurmhjn",
