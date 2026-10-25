@@ -1,5 +1,5 @@
 - Runs `terraform plan` on pull requests so changes are reviewed before merge.
-- Applies only a reviewed, saved plan, or requires an approval (for example a protected environment) before apply in production, rather than a blind apply on push.
+- Applies in production only the plan that reviewers approved, behind a protected environment with required reviewers: either a saved plan file from a trusted run, or a fresh plan checked against the approved one. Never a plan nobody saw, and never a plan from a pull request run.
 - Prevents two applies from running at once (concurrency or state locking called out).
 - Uses separate, least-privilege credentials for plan and apply, or explains why the apply role needs more.
 - Explains the tradeoff with the user's "automatically" request and asks before removing the approval step.
