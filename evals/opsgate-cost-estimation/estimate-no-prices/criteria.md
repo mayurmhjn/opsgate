@@ -1,0 +1,4 @@
+- Names the price source and its date, or says no live prices were checked and gives a usage model instead of exact figures.
+- Includes the NAT gateway hourly and per-GB processing charges, data transfer, and CloudWatch logs, not only compute and database.
+- States the assumptions behind the numbers (traffic, storage, data volume, hours).
+- Gives a range (low, expected, high) or explains which drivers move the cost most.
