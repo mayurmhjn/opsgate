@@ -15,6 +15,12 @@
 - Apply role: the permissions the managed resources need, scoped per environment and per account.
 - Both through OIDC, with the trust policy limited to the repository and, for apply, the protected environment.
 
+## Plan files and pull request code
+
+- Plan files can contain sensitive values in plain text. Keep plan artifacts short-lived and readable only by the apply job, or plan again at apply time instead of uploading the file.
+- The plan job on a pull request runs that pull request's code with the plan role. Don't give credentials to plans from forks, and keep the plan role read-only.
+- Commit the dependency lock file, so plan and apply use the same provider versions.
+
 ## Safety
 
 - Concurrency per environment and state, set to queue, never to cancel a running apply.
