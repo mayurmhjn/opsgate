@@ -2,32 +2,34 @@
 
 ## Flow
 
-1. **Pull request:** format check, validate, lint and security scan, then `plan` for every affected environment. Post the plan, or a summary with a link to the full plan, where reviewers will see it. Fail the check if the plan can't be produced.
-2. **Review:** a person reads the plan, especially every replace and delete.
-3. **Merge:** for each environment in order (for example dev, then prod):
-   - Produce the plan again from the merged commit and save it, or reuse the plan artifact from the pull request if the base hasn't moved.
-   - For production, pause on a protected environment with required reviewers, who see the saved plan.
-   - Apply exactly that saved plan file. If the plan has gone stale (state changed since), stop and plan again.
+1. **Pull request:** format check, validate, lint and security scan, then `plan` for every affected environment. Show the plan to reviewers. This plan is for review only and is never applied, because the pull request's code produced it.
+2. **Merge:** a trusted run on the protected branch produces the plan again for each environment, in order (for example dev, then prod).
+3. **Approval:** for production, the job pauses on a protected environment with required reviewers. The reviewers read that trusted plan, especially every replace and delete.
+4. **Apply exactly what was approved**, using one of these two patterns:
+   - **Saved plan file.** The trusted plan job stores the plan file where only the apply role can read it, for example an encrypted bucket. Workflow artifacts don't qualify, because anyone with read access to the repository can download them. The apply job applies that file. Terraform refuses a stale plan.
+   - **Plan again and compare.** If the file can't be stored safely, the apply job plans again after approval and compares the resource changes (`terraform show -json`, `resource_changes`) with the plan that was approved. It stops if they differ, and applies only if they match.
+
+Never apply a plan produced by a pull request run, and never apply a plan nobody saw.
 
 ## Credentials
 
-- Plan role: read-only on the resources, plus read and lock access to state.
+- Plan role: limited to reading resource metadata, plus read and lock access to state. Broad read-only policies can still read data and secrets, and plan runs arbitrary code from the configuration (external data sources, providers).
 - Apply role: the permissions the managed resources need, scoped per environment and per account.
-- Both through OIDC, with the trust policy limited to the repository and, for apply, the protected environment.
+- Both through OIDC. The apply role trusts only the protected environment's subject, not a branch subject. Workflows triggered by `workflow_run`, `issue_comment` or `schedule` also run with the default-branch ref.
+- Don't give credentials to plans of pull requests from forks.
 
-## Plan files and pull request code
+## What reviewers and readers can see
 
-- Plan files can contain sensitive values in plain text. On GitHub, anyone with read access to the repository can download workflow artifacts, and the same goes for job summaries. Prefer planning again in the apply job, after approval, from the same commit. If you must pass the plan file, encrypt it or keep it very short-lived, and don't print sensitive plan output to the summary.
-- The plan job on a pull request runs that pull request's code with the plan role. Don't give credentials to plans from forks, and keep the plan role read-only.
-- Commit the dependency lock file, so plan and apply use the same provider versions.
+Job logs, job summaries and workflow artifacts are readable by anyone with read access to the repository, and by anyone at all on a public repository. Terraform's text output hides only values marked sensitive. The plan file and `terraform show -json` contain every value in plain text. Keep those out of logs, summaries and artifacts.
 
 ## Safety
 
 - Concurrency per environment and state with `cancel-in-progress: false`, so a running apply is never cancelled. Only one run waits: a newer pending run replaces an older pending one.
 - State locking on as well. Concurrency in CI doesn't cover applies run from a laptop.
-- No manual trigger that can apply production from any branch. If a manual trigger is needed, limit it with the environment's branch rule.
+- Commit the dependency lock file, so plan and apply use the same provider versions.
+- No manual trigger that can apply production without the protected environment's approval.
 - Destroy runs only as a separate, explicitly triggered and approved workflow.
 
 ## When the user wants "fully automatic"
 
-Say what is lost: nobody reads the plan before production changes, so a forced replacement or deletion goes out unnoticed. Offer automatic applies for non-production and one approval click for production. Build the version without approval only if the user confirms after hearing that. Removing the protected environment from a job also changes its OIDC subject claim, so the role's trust policy has to change with it.
+Say what is lost: nobody reads the plan before production changes, so a forced replacement or deletion goes out unnoticed. Offer automatic applies for non-production and one approval click for production. Build the version without approval only if the user confirms after hearing that. Even then, make the pull request plan a required status check with a required review. Removing the protected environment from a job also changes its OIDC subject claim, so the role's trust policy has to change with it.
