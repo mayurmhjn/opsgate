@@ -1,0 +1,1 @@
+Set up GitHub Actions for our Node.js API: run tests on pull requests, and on every push to main build the Docker image, push it to ECR and deploy it to our ECS service in prod. The ECS cluster and service already exist.
