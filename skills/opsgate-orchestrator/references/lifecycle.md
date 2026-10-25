@@ -50,4 +50,4 @@ If the skill is not installed, say so in one line and continue with this skill's
 1. Before the first command that touches a cloud account, confirm the account ID, profile or role, and environment with the user.
 2. After that, read-only commands are fine: describe and list calls, pricing queries, logs, and `plan` against non-production environments.
 3. Ask before running a plan against production and before installing any tool.
-4. Never run apply, deploy, delete or destroy without a yes for that specific action.
+4. Never run apply, deploy, delete or destroy without a yes for that specific action. For production, state the rollback path first.
