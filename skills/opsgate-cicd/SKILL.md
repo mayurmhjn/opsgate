@@ -19,7 +19,7 @@ Follow `references/iac-pipelines.md`. Plan on every pull request for review only
 
 ## Supply chain and permissions
 
-- Pin third-party actions to a full commit SHA, with the version in a comment. This is the default, not an extra. Never guess a SHA or version: look them up, or leave a clearly marked placeholder. Recommend automated update PRs and offer to add the config.
+- Pin third-party actions to a full commit SHA, with the version in a comment. This is the default, not an extra. Never guess a SHA or version: look them up, or leave a clearly marked placeholder and give the command that resolves it (for example `git ls-remote https://github.com/OWNER/ACTION refs/tags/vX.Y.Z`). Recommend automated update PRs and offer to add the config.
 - Deploy images by digest, or by a tag the registry keeps immutable.
 - Keep workflow and job names stable. Renaming them can break required status checks.
 - Keep `permissions` minimal and grant write access per job. Store role ARNs and other non-secret settings as variables, not secrets.
@@ -28,7 +28,7 @@ See `references/github-actions-hardening.md` for the full list.
 
 ## Security holes you find
 
-This is an exception to fixing only what was asked. If a workflow you are already editing has a live hole, such as `pull_request_target` running untrusted PR code with secrets, untrusted input used directly in `run`, or a privileged job that executes files from an untrusted artifact, close it in the change you deliver. Check your own fix for the same holes. If the hole was reachable, name the secrets and tokens it exposed, recommend rotating them, and suggest checking past runs triggered from forks. Then do what was asked.
+This is an exception to fixing only what was asked. If a workflow you are already editing has a live hole, such as `pull_request_target` running untrusted PR code with secrets, untrusted input used directly in `run`, or a privileged job that executes files from an untrusted artifact or runs tools with the artifact as its working directory, close it in the change you deliver. Check your own fix for the same holes. If the hole was reachable, name the secrets and tokens it exposed, recommend rotating them, and suggest checking past runs triggered from forks. Then do what was asked.
 
 ## Debugging a failed run
 

@@ -8,7 +8,7 @@ For GitLab CI, Jenkins and AWS CodePipeline, see `other-ci.md`.
 - Artifacts produced by untrusted runs are untrusted data. In the privileged workflow:
   - never execute them, or run package managers or `npx` with the working directory inside them (they can carry `node_modules/.bin`, `.npmrc` or scripts)
   - never write their contents to `GITHUB_ENV`, `GITHUB_OUTPUT` or into `${{ }}` expressions without validating them
-  - extract them to a separate directory, check the contents, and run only tools installed outside the artifact
+  - extract them to a separate directory, check the contents, and run only tools installed outside the artifact, from a working directory outside it (never `working-directory` set to the artifact folder)
 - Cache poisoning: untrusted code that runs in a default-branch-context workflow, even one without secrets, can write caches that every later privileged run restores. Cache writes don't depend on the token's permissions, and restore keys match by prefix. Keep untrusted code out of those workflows, and consider skipping caches in release and deploy builds.
 
 ## Untrusted input
