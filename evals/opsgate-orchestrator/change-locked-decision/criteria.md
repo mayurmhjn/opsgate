@@ -1,0 +1,4 @@
+- Notices the existing locked decision for ECS Fargate.
+- Does not edit or overwrite decision 0003 in place.
+- Asks why the change is wanted or compares EKS against the current choice for this team before agreeing.
+- Proposes recording the change as a new decision that supersedes 0003, after the user confirms.
