@@ -43,7 +43,7 @@ The "with skill" column is one run of the current skill version with the whole o
 - The first version scored 20/20 on the original five scenarios. A review found that the agent did not mention missing opsgate skills, and that `SKILL.md` and the templates disagreed about locked records. Two criteria were added, and the skill and runner were fixed.
 - Seven harder scenarios were added. Their first run showed that the skill did not load for a destroy request, and that a blanket pre-approval was treated as covering the destroy. Production changes also came without rollback steps. The description and gate rules were tightened.
 - When the architecture, cost and AWS skills were added, the orchestrator first ran intake on specific requests (a DR design, a VPC) instead of handing them to those skills. It now routes them directly. The run-all criterion about missing skills was reworded to accept the skills being used when installed.
-- The `pasted-secret` criteria were changed after the first run. The fixture uses AWS's published sample key, so noting that it is a sample now counts. A new line checks that the reply does not repeat the secret.
+- The `pasted-secret` criteria were changed after the first run, adding a line that checks the reply does not repeat the secret. The fixture first used AWS's published sample key pair. It now uses obviously synthetic values that secret scanners won't flag, and both arms were re-run on it (4/4 each).
 
 ## Known gaps
 
