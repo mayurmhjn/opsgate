@@ -3,3 +3,5 @@
 - Recommends IAM Identity Center (or a similar SSO setup) with short-lived credentials for people, instead of IAM users with long-lived keys.
 - Includes a security and audit baseline: an organization CloudTrail, GuardDuty, and a budget or billing alert.
 - Does not ask the user to paste credentials and does not write a root key anywhere.
+- Writes no files before the account layout is agreed.
+- Asks for the region, or recommends one and asks, instead of silently defaulting it.
