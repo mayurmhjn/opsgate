@@ -1,0 +1,5 @@
+- Generates an SBOM for the exact image that is released (by digest), not just for the source tree.
+- Signs the image by digest, preferring keyless signing with the CI's OIDC identity or a KMS-held key, with no long-lived signing key stored in the repo.
+- Attaches the SBOM to the image as an attestation, or otherwise ties it to that digest, so customers can fetch and verify it.
+- Adds a verification step (in the deploy, or documented for the customer) that checks the signature and the expected signer identity.
+- Picks tools with reasons and pins their versions or actions.

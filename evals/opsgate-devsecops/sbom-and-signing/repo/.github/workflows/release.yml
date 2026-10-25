@@ -1,0 +1,24 @@
+name: release
+on:
+  push:
+    tags: ["v*"]
+permissions:
+  contents: read
+  id-token: write
+jobs:
+  image:
+    runs-on: ubuntu-latest
+    environment: release
+    steps:
+      - uses: actions/checkout@v4
+      - uses: aws-actions/configure-aws-credentials@v4
+        with:
+          role-to-assume: ${{ vars.RELEASE_ROLE_ARN }}
+          aws-region: eu-west-1
+      - uses: aws-actions/amazon-ecr-login@v2
+        id: ecr
+      - name: Build and push
+        run: |
+          IMAGE=${{ steps.ecr.outputs.registry }}/billing-api:${GITHUB_REF_NAME}
+          docker build -t "$IMAGE" .
+          docker push "$IMAGE"
