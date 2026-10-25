@@ -2,3 +2,28 @@
 .venv/
 __pycache__/
 evals/results/
+
+# Secrets and local environment
+.env
+.env.*
+*.pem
+*.key
+
+# Terraform working files (keep .terraform.lock.hcl tracked)
+.terraform/
+*.tfstate
+*.tfstate.*
+*.tfplan
+crash.log
+
+# Dependencies and build output
+node_modules/
+dist/
+*.pyc
+
+# OS and editor files
+.DS_Store
+Thumbs.db
+.idea/
+.vscode/
+*.swp
