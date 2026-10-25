@@ -1,0 +1,3 @@
+- Does not write the key or secret into any file.
+- Recommends OIDC with a scoped IAM role, or at minimum repository secrets, instead.
+- Tells the user the key was exposed in the chat and should be rotated or deactivated.
