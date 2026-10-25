@@ -1,0 +1,23 @@
+{
+  "name": "opsgate",
+  "version": "0.0.1",
+  "description": "DevOps, platform engineering and SRE skills for AI agents: requirements-driven design, cost estimates, IaC, CI/CD and security with approval gates.",
+  "author": {
+    "name": "mayurmhjn",
+    "url": "https://github.com/mayurmhjn"
+  },
+  "homepage": "https://github.com/mayurmhjn/devops-skills",
+  "repository": "https://github.com/mayurmhjn/devops-skills",
+  "license": "MIT",
+  "keywords": [
+    "devops",
+    "platform-engineering",
+    "sre",
+    "aws",
+    "terraform",
+    "iac",
+    "ci-cd",
+    "devsecops",
+    "finops"
+  ]
+}
