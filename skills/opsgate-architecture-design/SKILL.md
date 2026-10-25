@@ -27,7 +27,7 @@ Read the IaC and docs first, and say what you could not see (for example, the li
 - **High:** single points of failure and missing recovery.
 - **Medium:** operability, cost and drift.
 
-For each finding, give the file and line, why it matters, and the smallest fix. Note any fix that forces a replacement (for example, enabling encryption on an existing database). Propose an order of work. Change no files until the user picks what to do.
+For each finding, give the file and line, why it matters, and the smallest fix. Check every fix for whether it replaces the resource: in Terraform, changing fields such as encryption, `username`, `key_name`, the AMI or the subnet usually forces a new instance or database. Say so, and never call a replacing change "no downtime". Propose an order of work. Change no files until the user picks what to do.
 
 ## Disaster recovery
 
