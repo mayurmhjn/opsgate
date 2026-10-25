@@ -1,0 +1,4 @@
+- Goes straight to diagnosing the failure without a requirements or architecture interview.
+- Looks at the likely causes: the role trust policy conditions (audience, subject), the OIDC provider, or the workflow's id-token permission.
+- Does not create a docs/opsgate/ folder or decision records.
+- Any IAM policy it proposes is scoped to this repository and branch or environment, not a wildcard.
