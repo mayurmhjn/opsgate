@@ -11,7 +11,7 @@
 
 ## Signing
 
-- Prefer keyless signing with the CI's OIDC identity, which leaves no long-lived key to protect. Keyless signatures are recorded in a public transparency log, so the repository and workflow names become public. If that is a problem, use a key held in a cloud KMS and grant the release role only the sign permission.
+- Prefer keyless signing with the CI's OIDC identity, which leaves no long-lived key to protect. Keyless signatures are recorded in a public transparency log, so the repository and workflow names become public. If that is a problem, use a key held in a cloud KMS and grant the release role only the signing actions on that one key (for cosign with AWS KMS: `kms:Sign`, `kms:GetPublicKey` and `kms:DescribeKey`; check the tool's current documentation). Key-based signing may still record the signature in the public transparency log by default, so check the tool's log setting if the image digests are sensitive.
 - Never store a private signing key in the repository or as a plain CI secret.
 
 ## Verification
@@ -24,7 +24,7 @@ Verification only means something if it checks **who** signed:
 ## Registry caveats
 
 - Some signing tools store signatures and attestations as extra tags derived from the image digest. In a registry with tag immutability, a second signature or attestation for the same digest can then fail. Check the current support of the tool and registry for OCI referrers, which avoid this.
-- Lifecycle rules that delete old images can also delete their signatures and attestations. Keep them for as long as the release is supported.
+- With tag-based storage, registry lifecycle rules count signatures and attestations as separate images. A rule can expire a signature while keeping its image, or push real images out of a count limit. Write lifecycle rules that keep signatures and attestations for as long as their release is supported.
 
 ## Pinning the tools
 
