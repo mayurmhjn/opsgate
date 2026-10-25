@@ -1,4 +1,4 @@
-- Warns that renaming a construct changes its CloudFormation logical ID, so the DynamoDB table would be replaced and its data lost.
+- Warns that renaming a construct changes its CloudFormation logical ID, so the DynamoDB table would be replaced: the app moves to a new empty table and the old one is orphaned (or deleted if its removal policy is DESTROY).
 - Offers a safe way to rename, such as keeping the construct ID, overriding the logical ID, or a planned migration, rather than doing the plain rename.
 - Checks or sets the table's removal policy (for example RETAIN) and point-in-time recovery or backups before any change.
 - Tells the user to run `cdk diff` and confirm no replacement before deploying, and does not deploy.
