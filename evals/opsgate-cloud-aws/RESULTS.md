@@ -4,11 +4,11 @@ Run on 2026-10-25 with Claude Code 2.1.310 (model `claude-opus-5-5`) in headless
 
 | Scenario | Without skills | With skills |
 |----------|----------------|-------------|
-| iam-policy-lambda | 5/5 | 5/5 |
-| root-account-startup | 5/5 | 5/5 |
+| iam-policy-lambda | 5/6 | 6/6 |
+| root-account-startup | 5/7 | 7/7 |
 | cloudfront-cert-trap | 3/4 | 4/4 |
 | vpc-overlap | 3/4 | 4/4 |
-| **Total** | **16/18** | **18/18** |
+| **Total** | **16/21** | **21/21** |
 
 ## What changed with the skill
 
@@ -22,5 +22,11 @@ The first with-skill run scored 12/18. The orchestrator took the root-account an
 
 ## Known gaps
 
-- One graded run per arm on the final version.
-- The grader found two factual slips in passing. One reply called `10.16.0.0/12` free when only `10.16.0.0/14` was. Another said changing the certificate's provider would replace it, when Terraform would leave the old certificate orphaned instead.
+- One graded run per arm on the final skill text. Every with-skill run here started after the last skill change.
+- iam-policy-lambda gained a criterion for building ARNs from attributes, and root-account-startup gained two (no files before the layout is agreed, and asking for the region). They were added after a review found that both arms scored full marks on the original criteria. Both arms were graded on them.
+- cloudfront-cert-trap: even with the trap listed, the agent still said the plan "should replace" the old certificate when the provider alias changes. Terraform leaves it orphaned instead.
+- vpc-overlap held the requested file back behind five questions, some of which had safe defaults.
+- The evals turn off shell access, so live pricing, Cost Explorer queries, account confirmation and read-only command rules are not exercised. "No prices from memory" partly reflects having no tools to fetch them.
+- The test configuration adds a terse response style, so replies are shorter than a stock install would give.
+- The with-skill runs always had the whole plugin installed. No run tested a skill installed on its own, so the "say which skills are missing" fallback is untested.
+- `SKILL.md` files are above the 500-word target (about 500 to 900 words including frontmatter).
