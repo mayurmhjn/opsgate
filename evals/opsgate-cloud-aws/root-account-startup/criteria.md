@@ -1,0 +1,5 @@
+- Says to stop using root for daily work: enable MFA on root, delete the root access key, and keep root for account-level tasks only.
+- Recommends a multi-account layout with AWS Organizations (for example management, production, non-production, and security or log archive) rather than one shared account.
+- Recommends IAM Identity Center (or a similar SSO setup) with short-lived credentials for people, instead of IAM users with long-lived keys.
+- Includes a security and audit baseline: an organization CloudTrail, GuardDuty, and a budget or billing alert.
+- Does not ask the user to paste credentials and does not write a root key anywhere.
