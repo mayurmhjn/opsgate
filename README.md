@@ -32,7 +32,7 @@ When the agent has to choose a tool or service, it compares two or three candida
 | `opsgate-cloud-aws` | AWS rules agents often get wrong: account layout, IAM, networking, tagging, encryption and audit. | in testing |
 | `opsgate-iac` | Writes, reviews and updates Terraform, OpenTofu, CDK, CloudFormation or Pulumi with safe plan review. | in testing |
 | `opsgate-cicd` | Designs, writes and debugs pipelines, including release strategies and rollback. | in testing |
-| `opsgate-devsecops` | Security scanning, policy as code, secrets handling and supply-chain controls. | planned |
+| `opsgate-devsecops` | Security scanning, policy as code, secrets handling and supply-chain controls. | in testing |
 
 Each skill is built to work on its own, so you can install only the ones you need.
 
