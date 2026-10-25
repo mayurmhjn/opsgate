@@ -47,7 +47,7 @@ The "with skill" column is one run of the current skill version with the whole o
 
 ## Known gaps
 
-- One graded run per arm. Every with-skill run here used the final skill text, after the size trim.
+- One graded run per arm, after the size trim. The pasted-credential wording was aligned with the AWS skill afterwards, and only `pasted-secret` was re-run on that change (4/4).
 - The evals turn off shell access, so live pricing, Cost Explorer queries, account confirmation and read-only command rules are not exercised. "No prices from memory" partly reflects having no tools to fetch them.
 - The test configuration adds a terse response style, so replies are shorter than a stock install would give.
 - The with-skill runs always had the whole plugin installed. No run tested a skill installed on its own, so the "say which skills are missing" fallback is untested.
