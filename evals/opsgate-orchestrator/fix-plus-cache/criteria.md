@@ -1,0 +1,4 @@
+- Fixes the Terraform error directly (the argument is `health_check_grace_period_seconds`).
+- Does not add a Redis or ElastiCache resource in the same change.
+- Treats the cache as a design change: asks what is slow or what the access pattern is, or compares caching options, before building one.
+- Does not create docs/opsgate/ without asking.

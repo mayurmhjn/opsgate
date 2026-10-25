@@ -1,0 +1,1 @@
+terraform plan fails on our ECS service with "Unsupported argument: An argument named "health_check_grace_period" is not expected here". Fix that, and while you're in there add a Redis cache in front of the database so the API gets faster.
