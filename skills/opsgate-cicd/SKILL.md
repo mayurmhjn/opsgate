@@ -5,44 +5,44 @@ description: Use when creating, changing, speeding up or debugging CI/CD pipelin
 
 # opsgate CI/CD
 
-Use the CI system the repo already uses. Pipeline changes ship to everyone who touches the repo, so they follow the same review rules as production code.
+Use the CI system the repo already uses. For a new project, compare options against the team's setup before choosing (with `opsgate-orchestrator`'s selection procedure if installed). Pipeline changes ship to everyone who touches the repo, so they follow the same review rules as production code. For systems other than GitHub Actions, see `references/other-ci.md`.
 
 ## Production deploys are gated
 
-- Deploy to production through a protected environment with required reviewers and a branch rule that allows only the release branch. Concurrency for production deploys must never cancel a running deploy. Treat these as required, not optional.
+- Deploy to production through a protected environment with required reviewers. Roles that deploy to production trust only that environment. Concurrency must never cancel a running deploy. Treat these as required, not optional.
+- Build once and promote the same artifact through each environment, ending every deploy with a verify step (`references/release-rollback.md`).
 - If the user wants deploys or applies to happen "automatically", explain what is lost, offer a middle ground (automatic for non-production, one approval for production), and ask before removing the approval.
 
 ## Infrastructure pipelines
 
-Follow `references/iac-pipelines.md`: plan on every pull request with the plan visible to reviewers, then apply only that reviewed plan after approval. Use a read-only role for plan and a separate scoped role for apply. Don't add manual triggers that can apply production from any branch.
+Follow `references/iac-pipelines.md`. Plan on every pull request for review only. After merge, a trusted run plans again, reviewers approve that plan, and the apply job applies exactly the approved plan. Use a read-only role for plan and a separate scoped role for apply.
 
 ## Supply chain and permissions
 
-- Pin third-party actions and images to a full commit SHA or digest, with the version in a comment. This is the default, not an extra. Never guess a SHA: look it up, or leave a clearly marked placeholder. Recommend automated update PRs and offer to add the config.
+- Pin third-party actions to a full commit SHA, with the version in a comment. This is the default, not an extra. Never guess a SHA or version: look them up, or leave a clearly marked placeholder. Recommend automated update PRs and offer to add the config.
+- Deploy images by digest, or by a tag the registry keeps immutable.
 - Keep workflow and job names stable. Renaming them can break required status checks.
-- Keep `permissions` minimal and grant write access per job.
-- Turn on tag immutability in the image registry so an image tag can't be overwritten.
-- Store role ARNs and other non-secret settings as variables, not secrets.
+- Keep `permissions` minimal and grant write access per job. Store role ARNs and other non-secret settings as variables, not secrets.
 
 See `references/github-actions-hardening.md` for the full list.
 
 ## Security holes you find
 
-If a workflow you touch has a live hole, such as `pull_request_target` running untrusted PR code with secrets, untrusted input used directly in `run`, or a privileged job that executes files from an untrusted artifact, close it in the change you deliver. Check your own fix for the same holes. Do this even if the user asked for something else. Don't ship the file with the hole still open while you wait for an answer. Then do what they asked.
+This is an exception to fixing only what was asked. If a workflow you are already editing has a live hole, such as `pull_request_target` running untrusted PR code with secrets, untrusted input used directly in `run`, or a privileged job that executes files from an untrusted artifact, close it in the change you deliver. Check your own fix for the same holes. If the hole was reachable, name the secrets and tokens it exposed, recommend rotating them, and suggest checking past runs triggered from forks. Then do what was asked.
 
 ## Debugging a failed run
 
-Read the log and find the step and the error before changing anything. Fix the root cause with the smallest scoped change, and say what you changed and why.
+1. Read the first error in the log, not the last one.
+2. Compare with the last successful run: workflow changes, action and dependency versions, runner image, expired secrets.
+3. Decide whether it is flaky or deterministic. Re-run once with debug logging if unsure.
+4. For permission errors, compare the job's `permissions` and the token's subject with the cloud role's trust policy.
+5. Fix the root cause with the smallest scoped change, and say what you changed and why.
+
+Re-running a failed production deploy is a deploy, and needs a yes.
 
 ## Rollback
 
-Follow `references/release-rollback.md`:
-
-1. Redeploy the last known-good artifact. Don't rebuild old source.
-2. Check what the bad release changed outside the artifact, such as database migrations, config and feature flags.
-3. Take a backup before any database change.
-4. Give the exact command, and wait for an explicit yes before running anything in production.
-5. Verify afterwards: service health, error rates, and the broken user flow.
+Follow `references/release-rollback.md`: redeploy the last known-good artifact rather than rebuilding, pause automatic deploys, check migrations and other changes, back up before any database change, wait for an explicit yes, and verify afterwards.
 
 ## When related skills are missing
 
