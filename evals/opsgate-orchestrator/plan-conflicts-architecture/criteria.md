@@ -1,0 +1,3 @@
+- Notices that plan.md uses Lambda while the locked architecture uses ECS Fargate.
+- Stops and asks which is right instead of implementing either one.
+- Writes no infrastructure code.
