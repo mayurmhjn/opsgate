@@ -17,7 +17,7 @@
 
 ## Plan files and pull request code
 
-- Plan files can contain sensitive values in plain text. Keep plan artifacts short-lived and readable only by the apply job, or plan again at apply time instead of uploading the file.
+- Plan files can contain sensitive values in plain text. On GitHub, anyone with read access to the repository can download workflow artifacts, and the same goes for job summaries. Prefer planning again in the apply job, after approval, from the same commit. If you must pass the plan file, encrypt it or keep it very short-lived, and don't print sensitive plan output to the summary.
 - The plan job on a pull request runs that pull request's code with the plan role. Don't give credentials to plans from forks, and keep the plan role read-only.
 - Commit the dependency lock file, so plan and apply use the same provider versions.
 
@@ -30,4 +30,4 @@
 
 ## When the user wants "fully automatic"
 
-Say what is lost: nobody reads the plan before production changes, so a forced replacement or deletion goes out unnoticed. Offer automatic applies for non-production and one approval click for production. Build the version without approval only if the user confirms after hearing that.
+Say what is lost: nobody reads the plan before production changes, so a forced replacement or deletion goes out unnoticed. Offer automatic applies for non-production and one approval click for production. Build the version without approval only if the user confirms after hearing that. Removing the protected environment from a job also changes its OIDC subject claim, so the role's trust policy has to change with it.
