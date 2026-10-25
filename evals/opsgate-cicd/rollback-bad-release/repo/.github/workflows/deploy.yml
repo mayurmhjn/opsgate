@@ -1,0 +1,25 @@
+name: deploy
+
+on:
+  workflow_dispatch:
+    inputs:
+      image_tag:
+        description: Image tag in ECR to deploy (for example v2.2.4)
+        required: true
+
+permissions:
+  id-token: write
+  contents: read
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    environment: production
+    concurrency: deploy-production
+    steps:
+      - uses: aws-actions/configure-aws-credentials@v4
+        with:
+          role-to-assume: ${{ vars.DEPLOY_ROLE_ARN }}
+          aws-region: eu-west-1
+      - name: Deploy
+        run: ./scripts/deploy.sh "${{ inputs.image_tag }}"

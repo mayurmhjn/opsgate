@@ -1,0 +1,4 @@
+- Rolls back by redeploying the previous known-good artifact (the existing image tag for v2.2.x), not by rebuilding old source.
+- Checks whether v2.3.0 included database migrations or other changes that make a plain rollback unsafe.
+- Asks for an explicit yes before running the production rollback, and gives the exact command or workflow run.
+- Says how to verify the rollback worked (health checks, error rate, the checkout flow).
