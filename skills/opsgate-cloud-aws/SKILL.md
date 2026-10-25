@@ -1,6 +1,6 @@
 ---
 name: opsgate-cloud-aws
-description: Use when writing or reviewing anything that touches an AWS account, including setting up a new AWS account or organization, root user and access key cleanup, IAM policies and roles, VPCs and networking, S3 buckets, encryption, logging and audit, tagging, region choice, or fixing an AWS error in Terraform, CloudFormation or CDK.
+description: Use when writing or reviewing anything that touches an AWS account, including setting up a new AWS account or organization, root user and access key cleanup, AWS keys pasted into chat or stored in code or pipelines, IAM policies and roles, VPCs and networking, S3 buckets, encryption, logging and audit, tagging, region choice, or fixing an AWS error in Terraform, CloudFormation or CDK.
 ---
 
 # opsgate cloud-aws
@@ -11,6 +11,8 @@ This skill holds the cross-cutting AWS rules that apply to every task. For depth
 
 - **Look at what's next to the change.** When you fix or add something, scan the same file and its neighbors for baseline violations from `references/baseline.md`: public buckets or `Principal = "*"`, admin ports open to `0.0.0.0/0`, wildcard IAM actions or resources, unencrypted EBS or RDS, long-lived keys, and missing backups. Report each one with its file and line. Fix only what the user asked for, unless they agree to the rest.
 - **Check the known traps** in `references/traps.md` before writing code for the service involved.
+- **Pasted credentials.** If the user pastes an access key or secret, never repeat it back and never write it to a file. Tell them it is exposed and should be rotated, and move them to OIDC or roles.
+- **Whole-setup reviews and audits** belong to `opsgate-architecture-design` if it is installed. Load it. Either way, say which proposed fixes replace a resource, such as changing an instance's key pair, subnet or root volume encryption.
 - **Ask for the region, account and environment** instead of defaulting them. Recommend one if the user has no preference.
 - **Validate before apply.** Tell the user to run `fmt`, `validate` and `plan` (or the tool's equivalent, such as a CloudFormation change set or `cdk diff`) and to review the plan. Don't make `-target` a routine step. It leaves state partly applied, so use it only for exceptional cases, such as values unknown until apply in `count` or `for_each`, or recovering from a mistake, and say why.
 
