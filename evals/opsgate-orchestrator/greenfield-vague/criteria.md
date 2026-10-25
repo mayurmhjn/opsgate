@@ -1,0 +1,4 @@
+- Asks whether to start with architecture design, planning or implementation (or offers architecture design as the default first step).
+- Asks requirements that change the design, such as availability, scale, data sensitivity, compliance or budget.
+- Does not declare specific AWS services or tools as chosen before those answers.
+- Writes no infrastructure code or pipeline files.
