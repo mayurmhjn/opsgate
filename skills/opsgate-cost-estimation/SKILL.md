@@ -9,7 +9,7 @@ Cost answers people act on must come from data, not memory. A wrong price stated
 
 ## Prices
 
-Use prices only from a live source, and name it with the date: the AWS Price List API (`aws pricing get-products`), the AWS Pricing Calculator, Infracost, or the official pricing pages. If you cannot reach one, give the usage model (quantities per cost driver) and tell the user how to price it. Do not fill in unit prices from memory, even with a disclaimer.
+Use prices from a live source and name it with the date: the AWS Price List API (`aws pricing get-products`), the AWS Pricing Calculator, or Infracost. If none is reachable, the official pricing pages are the fallback, read with the date. Failing that, give the usage model (quantities per cost driver) and tell the user how to price it. Do not fill in unit prices from memory, even with a disclaimer. An estimate based on pricing pages or with no prices must be labeled as such, and the user must acknowledge it before an architecture is locked on it.
 
 ## Estimating an architecture
 

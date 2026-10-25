@@ -14,8 +14,8 @@ A design is a proposal until the user locks it. Present it, show its weak points
 3. **Draw it.** Use one Mermaid diagram showing users, entry point, compute, data stores, external dependencies and network boundaries (VPC, public and private subnets, accounts).
 4. **Walk the failure modes.** Fill in the table from `references/failure-modes.md`: one availability zone lost, a dependency down, a bad deploy, data corruption or deletion, a region lost, credentials leaked. Every tier needs an answer, including compute. One instance behind a load balancer is still a single point of failure.
 5. **Review against the six Well-Architected pillars** using `references/well-architected.md`. Write one or two specific lines per pillar, not slogans.
-6. **Cost.** Use `opsgate-cost-estimation` if it is installed. Otherwise give a usage model and say where prices come from. Never quote prices from memory.
-7. **Ask for the lock.** List the open questions and the assumptions, then ask the user to approve or change the design. Write `docs/opsgate/architecture.md` marked `Status: proposed` if the repo uses that trail. Nothing gets built until the user locks it.
+6. **Cost.** Use `opsgate-cost-estimation` if it is installed. Otherwise give a usage model and say where prices come from. Never quote prices from memory. Check the always-on cost floor against the budget.
+7. **Ask for the lock.** List the open questions and the assumptions, then ask the user to approve or change the design. If the cost estimate has no prices or comes from pricing pages, ask the user to acknowledge that as part of the lock. Write `docs/opsgate/architecture.md` marked `Status: draft` if the repo uses that trail, and a decision record for each locked choice. Nothing gets built until the user locks it.
 
 Don't choose regions, accounts or recovery regions for the user. Recommend one and ask.
 
