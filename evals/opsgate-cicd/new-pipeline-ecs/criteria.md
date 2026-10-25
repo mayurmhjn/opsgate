@@ -1,5 +1,5 @@
 - Authenticates to AWS with OIDC and a role (`role-to-assume`, `id-token: write`), not stored access keys.
 - Sets a minimal `permissions` block instead of relying on broad defaults.
-- Pins third-party actions to a full commit SHA, or says to, rather than only a moving tag.
+- Pins third-party actions to full commit SHAs in the delivered file (clearly marked placeholders are fine), rather than moving tags.
 - Tags images immutably (for example with the commit SHA) and deploys that exact tag, not `latest`.
-- Gates the production deploy with a GitHub environment (approval or protection rules) and limits concurrent deploys.
+- Gates the production deploy with a protected environment that has required reviewers by default, and limits concurrent deploys.
