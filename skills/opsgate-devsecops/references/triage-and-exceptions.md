@@ -15,33 +15,42 @@ Some fixes replace resources (for example turning on encryption for an existing 
 
 ## Exceptions
 
-An exception covers one resource or one package, never a whole check. It records:
+An exception covers one resource or one package, never a whole check, and only for findings that can't reasonably be fixed now. A shipped package with an available upgrade gets upgraded, not suppressed. Each exception records:
 
 - the finding and where it is
 - why it is accepted or not fixed yet
 - who owns it
 - when it will be reviewed or expires
 
-Use the tool's own mechanism so the scan stays clean only for that resource. Put the owner and date in the reason text if the tool has no fields for them.
+Use the tool's own mechanism, scoped as narrowly as it allows. Use its expiry field where it has one, and put the owner and date in the reason text where it doesn't.
+
+Checkov, inline on the one resource:
 
 ```hcl
-resource "aws_instance" "ci_runner" {
-  # checkov:skip=CKV_AWS_126:Dev CI runner, basic monitoring is enough. Owner: platform-team. Review: 2027-01-31
-  ...
+resource "aws_s3_bucket" "build_cache" {
+  # checkov:skip=CKV_AWS_144:Rebuildable build cache, no need for cross-region replication. Owner: platform-team. Review: 2027-03-31
+  bucket = "example-build-cache"
 }
 ```
 
+Trivy, in `.trivyignore.yaml`, scoped to one package and with an expiry:
+
+```yaml
+vulnerabilities:
+  - id: CVE-0000-00000
+    purls:
+      - "pkg:npm/example-image-lib@2.4.1"
+    statement: "No upstream fix released yet. Input is never user-controlled in this service. Owner: media-team. Tracked in MEDIA-88."
+    expired_at: 2026-12-31
 ```
-# .trivyignore
-# axios CSRF token leak in the reporting service. Upgrade planned in REPORT-142. Owner: reporting-team.
-CVE-2023-45857 exp:2026-11-30
-```
+
+A bare ID in a plain `.trivyignore` file ignores that finding for every package and target in the scan. Avoid it.
 
 ## Reporting
 
 Report three lists, never a single "clean" number:
 
-1. **Fixed**: what changed, and how it was verified.
+1. **Fixed**: what changed, and how it was verified. If the change isn't applied yet, list it as "fix proposed".
 2. **Accepted with an exception**: each one with reason, owner and date.
 3. **Still open**: what is left and the plan for it.
 
