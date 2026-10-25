@@ -5,7 +5,7 @@ description: Use when creating, changing, speeding up or debugging CI/CD pipelin
 
 # opsgate CI/CD
 
-Use the CI system the repo already uses. For a new project, compare options against the team's setup before choosing (with `opsgate-orchestrator`'s selection procedure if installed). Pipeline changes ship to everyone who touches the repo, so they follow the same review rules as production code. For systems other than GitHub Actions, see `references/other-ci.md`.
+Use the CI system the repo already uses. For a new project, compare options against the team's setup before choosing (with `opsgate-orchestrator`'s selection procedure if installed). Pipeline changes ship to everyone who touches the repo, so they follow the same review rules as production code. List every behavior change you make, including steps you removed or replaced. For systems other than GitHub Actions, see `references/other-ci.md`.
 
 ## Production deploys are gated
 
@@ -35,7 +35,7 @@ This is an exception to fixing only what was asked. If a workflow you are alread
 1. Read the first error in the log, not the last one.
 2. Compare with the last successful run: workflow changes, action and dependency versions, runner image, expired secrets.
 3. Decide whether it is flaky or deterministic. Re-run once with debug logging if unsure.
-4. For permission errors, compare the job's `permissions` and the token's subject with the cloud role's trust policy.
+4. For permission errors, compare the job's `permissions` and the token's subject with the cloud role's trust policy. The repository or organization token setting is only a default, and a job's `permissions` key can raise it (fork pull requests excepted).
 5. Fix the root cause with the smallest scoped change, and say what you changed and why.
 
 Re-running a failed production deploy is a deploy, and needs a yes.
