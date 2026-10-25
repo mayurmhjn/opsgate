@@ -1,0 +1,1 @@
+Write the Terraform for our new order-events service: an SQS queue with a dead-letter queue and a Lambda function that consumes it. We need dev and prod. The Lambda code is already built to build/order_events.zip.
