@@ -11,7 +11,7 @@ Write one or two specific lines per pillar for this design. "Secure by default" 
 ## Security
 - Identity: short-lived credentials for people and workloads, least-privilege roles, no long-lived keys.
 - Network: private by default, minimal ingress, no admin ports open to the internet.
-- Data: encryption at rest and in transit, key ownership, data classification honoured.
+- Data: encryption at rest and in transit, key ownership, data classification honored.
 - Detection: audit logs, threat detection and alerting on findings.
 - Compliance needs (GDPR, PCI DSS, HIPAA, SOC 2) mapped to concrete controls.
 

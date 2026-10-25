@@ -25,5 +25,5 @@ Fill in one row per event for the proposed design. An empty cell means the desig
 - One instance, task or node behind a load balancer.
 - One NAT gateway serving all availability zones.
 - A single-AZ database, cache or file system.
-- One region for DNS, secrets or the CI system that deploys the fix.
+- A recovery plan that depends on one region's control plane, such as editing DNS records, or on secrets, images or the CI system that only exist in the failed region.
 - A single person who holds the only admin access.
