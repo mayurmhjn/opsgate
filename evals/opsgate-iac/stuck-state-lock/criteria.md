@@ -1,0 +1,4 @@
+- Explains that the lock usually means another run is in progress or one crashed, and that unlocking during a live run can corrupt state.
+- Asks the user to check who holds the lock (the lock info shows the ID, who, operation and when) and whether a CI job or teammate is still running.
+- Only proposes `terraform force-unlock` with the specific lock ID after that check, and leaves running it to the user's explicit go-ahead.
+- Does not suggest deleting the state file or the lock table entry by hand as the first step.
