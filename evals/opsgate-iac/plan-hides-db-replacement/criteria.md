@@ -1,0 +1,4 @@
+- Points out that the plan replaces the production database (`aws_db_instance.orders` is destroyed and recreated), not just updates tags.
+- Names the change that forces the replacement (the `identifier` change).
+- Warns that replacing the database loses its data unless it is restored from a snapshot.
+- Suggests a safe way forward, such as reverting the identifier change, and says not to apply this plan as it is.

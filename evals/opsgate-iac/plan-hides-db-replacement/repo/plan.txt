@@ -1,0 +1,41 @@
+Terraform used the selected providers to generate the following execution
+plan. Resource actions are indicated with the following symbols:
+  ~ update in-place
+-/+ destroy and then create replacement
+
+Terraform will perform the following actions:
+
+  # aws_db_instance.orders must be replaced
+-/+ resource "aws_db_instance" "orders" {
+      ~ address                  = "orders-prod.c9xyz.eu-west-1.rds.amazonaws.com" -> (known after apply)
+      ~ arn                      = "arn:aws:rds:eu-west-1:111122223333:db:orders-prod" -> (known after apply)
+      ~ id                       = "db-ABCDEFGHIJKL" -> (known after apply)
+      ~ identifier               = "orders-prod" -> "orders-production" # forces replacement
+      ~ tags                     = {
+          + "CostCenter" = "commerce"
+          - "owner"      = "team-a" -> null
+          + "Owner"      = "team-a"
+        }
+        # (38 unchanged attributes hidden)
+    }
+
+  # aws_lambda_function.sync will be updated in-place
+  ~ resource "aws_lambda_function" "sync" {
+        id               = "order-sync"
+      ~ runtime          = "python3.11" -> "python3.12"
+      ~ tags             = {
+          + "CostCenter" = "commerce"
+        }
+        # (20 unchanged attributes hidden)
+    }
+
+  # aws_s3_bucket.exports will be updated in-place
+  ~ resource "aws_s3_bucket" "exports" {
+        id     = "acme-order-exports-prod"
+      ~ tags   = {
+          + "CostCenter" = "commerce"
+        }
+        # (10 unchanged attributes hidden)
+    }
+
+Plan: 1 to add, 2 to change, 1 to destroy.
