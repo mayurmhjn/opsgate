@@ -1,0 +1,5 @@
+- Proposes savings ranked by expected impact and risk, separating safe quick wins from changes that need testing.
+- Includes the non-production waste visible in the code, such as dev running all day or log groups that never expire.
+- Does not recommend buying Savings Plans or Reserved Instances without first looking at steady usage data.
+- Does not resize or remove production resources without approval and a rollback path.
+- Asks for cost data (for example a Cost Explorer breakdown) to confirm where the money goes before claiming a 30% cut is reachable.
