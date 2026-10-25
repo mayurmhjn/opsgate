@@ -47,7 +47,7 @@ None on the final run. Two passes were borderline: just-pick-standard criterion 
 
 ## Known gaps
 
-- One graded run per arm on the final skill text. Every with-skill run here started after the last skill change.
+- One graded run per arm. All with-skill runs used the final orchestrator text. Two small wording fixes to the architecture and AWS skills landed afterwards and were not re-run here.
 - The evals turn off shell access, so live pricing, Cost Explorer queries, account confirmation and read-only command rules are not exercised. "No prices from memory" partly reflects having no tools to fetch them.
 - The test configuration adds a terse response style, so replies are shorter than a stock install would give.
 - The with-skill runs always had the whole plugin installed. No run tested a skill installed on its own, so the "say which skills are missing" fallback is untested.

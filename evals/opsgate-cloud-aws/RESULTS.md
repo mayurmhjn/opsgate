@@ -22,7 +22,7 @@ The first with-skill run scored 12/18. The orchestrator took the root-account an
 
 ## Known gaps
 
-- One graded run per arm on the final skill text. Every with-skill run here started after the last skill change.
+- One graded run per arm. Two small wording fixes landed after most with-skill runs: the replacement check in the architecture skill and a provider-alias note in the AWS traps. Only brownfield-review and cloudfront-cert-trap were re-run after them.
 - iam-policy-lambda gained a criterion for building ARNs from attributes, and root-account-startup gained two (no files before the layout is agreed, and asking for the region). They were added after a review found that both arms scored full marks on the original criteria. Both arms were graded on them.
 - cloudfront-cert-trap: even with the trap listed, the agent still said the plan "should replace" the old certificate when the provider alias changes. Terraform leaves it orphaned instead.
 - vpc-overlap held the requested file back behind five questions, some of which had safe defaults.
