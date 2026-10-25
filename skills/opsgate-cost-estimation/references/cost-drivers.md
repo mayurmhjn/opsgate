@@ -62,7 +62,8 @@ Compare periods of the same length.
 | Stop or schedule non-production outside working hours | Low | Agree on the hours with the team |
 | Remove unattached volumes, idle Elastic IPs, old snapshots | Low | Confirm nothing depends on them |
 | Gateway endpoints for S3 and DynamoDB | Low | Takes that traffic off NAT gateways |
-| gp2 to gp3 volumes | Low to medium | Online change, but there is a cooldown before the next modification |
+| gp2 to gp3 volumes | Low to medium | Online change, but AWS limits how often a volume can be modified, so check before planning a rollback |
+
 | Turn off Multi-AZ in non-production | Medium | Only where non-production does not need to survive an AZ loss |
 | Rightsize instances and databases | Medium | Use utilization data, and test before changing production |
 | Move to Graviton | Medium | Needs ARM builds and testing |

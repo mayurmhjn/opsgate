@@ -33,7 +33,8 @@ Confirm the account or profile first. Then compare equal periods. A month-to-dat
 1. Ask for the actual breakdown (top services and usage types) before promising a percentage.
 2. List savings ranked by expected impact and risk, in two groups: quick wins that are safe to do now, and changes that need testing or a maintenance window. Without prices, rank by relative size of the usage each saving removes.
 3. Commitments (Savings Plans, Reserved Instances) come last. They need at least a few weeks of steady usage data and Cost Explorer's recommendations, and should follow rightsizing.
-4. Production changes need approval, a plan, and a rollback path. Note limits that slow a rollback, such as the cooldown between EBS volume modifications.
+4. Production changes need approval, a plan, and a rollback path. Check limits that can slow a rollback, such as how often a volume can be modified.
+
 
 Edit files only after the user picks which savings to make.
 

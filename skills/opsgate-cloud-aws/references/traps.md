@@ -30,7 +30,8 @@ Check the ones for the services you touch. For details and current limits, use t
 - RDS `max_connections` depends on instance memory. Connection storms need pooling (RDS Proxy or app-side pooling), not just a bigger instance.
 - Enabling encryption on an existing RDS instance or EBS volume needs a new instance or volume from an encrypted snapshot, which means a replacement.
 - `skip_final_snapshot = true` and S3 `force_destroy = true` make a destroy delete data permanently.
-- EBS volume modifications have a cooldown before the next modification to the same volume.
+- AWS limits how often one EBS volume can be modified in a given period. Check the current limit before counting on a quick rollback of a volume change.
+
 
 ## Compute and deploy
 
