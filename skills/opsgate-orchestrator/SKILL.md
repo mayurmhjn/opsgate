@@ -1,56 +1,48 @@
 ---
 name: opsgate-orchestrator
-description: Use when a user asks to design, build, set up, migrate or change cloud infrastructure, CI/CD pipelines, deploy credentials, infrastructure as code or platform tooling, or to run, approve or skip an apply, deploy, destroy or production change. Includes vague requests, pressure to skip steps ("just pick the standard stack", "don't stop", "I pre-approve everything"), incidents that tempt a big fix, and changes that touch a recorded architecture decision.
+description: Use when a user asks to design, build, set up, migrate or change cloud infrastructure, pipelines, deploy credentials, infrastructure as code or platform tooling, or to run, approve or skip an apply, deploy, destroy or production change. Includes vague requests, pressure to skip steps ("just pick the standard stack", "don't stop", "I pre-approve everything"), incidents that tempt a big fix, and changes to a recorded architecture decision.
 ---
 
 # opsgate orchestrator
 
-Work like a senior platform engineer: understand the need, choose with reasons, get sign-off, then build. Writing infrastructure code before the user has approved what to build is the most expensive mistake.
+Understand the need, choose with reasons, get sign-off, then build. Writing infrastructure code before the user has approved what to build is the most expensive mistake.
 
 ## Pick the path
 
-- **Open scope** (a whole new system or product, a migration, "design and build it"): run intake. Write no files during intake.
-- **One specific piece of work** (a DR design, a VPC, an IAM policy, a cost estimate, a review, setting up a new AWS account or organization) or **a bounded task on an existing system** (failing pipeline, Terraform bug, permissions error): go straight to that work with the matching opsgate skill. Ask only the questions that work needs. If a fix changes the architecture, treat that part as new work.
-- **Conflict with a locked decision** in `docs/opsgate/decisions/` or the repo's ADR folder: don't rewrite that record. Ask what changed and rerun the selection procedure. Once the user confirms, write a new record that supersedes it, and change only the old record's status line to `superseded by NNNN`.
+- **Open scope** (a whole new system, a migration, "design and build it"): run intake. Write no files during intake.
+- **Specific work** (a DR design, a VPC, an IAM policy, a cost estimate, a review, a new AWS account) or **a bounded task on an existing system** (failing pipeline, Terraform bug, permissions error): do that work with the matching opsgate skill. Ask only what it needs. If a fix changes the architecture, treat that part as new work.
+- **Conflict with a locked decision** in `docs/opsgate/decisions/` or the repo's ADR folder: never rewrite it. Ask what changed and rerun the selection. After the user confirms, write a superseding record as described in `references/templates.md`.
 
 ## Intake
 
-The first reply is one short message with:
+The first reply is one short message. It asks where to start (architecture design by default, planning, implementation, or all stages in order), and asks the three or four requirements that would most change the design: availability, scale, data sensitivity and compliance, budget, team skills, existing tools. If more questions remain, ask whether they want them one at a time or all at once. Under time pressure, offer stated assumptions for the minor ones.
 
-1. Where to start: architecture design (default), planning, implementation, or all stages in order.
-2. Whether they want questions one at a time or all at once.
-3. The three or four requirements that would most change the design and aren't given yet: availability, scale, data sensitivity and compliance, budget, team skills, existing tools.
-
-Ask the remaining questions in the style they choose. Under time pressure, offer to go ahead on stated assumptions for the minor ones.
-
-If the request shows an active risk (root used with access keys, public data, a leaked credential, no backups), say what to do about it now in this first reply. Don't hold it back for later stages.
+If the request shows an active risk (root access keys, public data, a leaked credential, no backups), say what to do about it in this first reply.
 
 ## Choosing tools and services
 
-Never present a stack as already chosen, and never pick something because it is popular. When the user has already chosen a tool or service, treat it as the leading candidate: check it against the requirements in a line or two, say when it would be a poor fit, and ask before building on it. Use `references/selection-procedure.md`: compare two or three options against this team's requirements, recommend one with reasons, then get confirmation. Under time pressure, compress it to a short table and one question. Don't skip it.
+Never present a stack as already chosen, and never pick by popularity. Follow `references/selection-procedure.md`: compare two or three options against this team's requirements, recommend one with reasons, then get confirmation. Under time pressure, use a short table and one question. A tool the user already chose is the leading candidate: check its fit in a line or two before building on it.
 
 ## Gates
 
-Stages and routing are in `references/lifecycle.md`. Each stage ends with the user's approval. The user may pre-approve stages, but two approvals are never waived:
+Each stage ends with the user's approval (`references/lifecycle.md`). The user may pre-approve stages, but two approvals are never waived:
 
-- **Architecture lock.** Present the architecture, the cost estimate and open questions, then wait for an explicit yes. If the estimate has no prices or uses pricing pages instead of live prices, ask the user to acknowledge that as part of the lock.
-- **Each apply, deploy, delete or destroy.** Show the reviewed plan, name every replacement and deletion in plain words, and wait for a yes for that action. A yes given before the user has seen that plan does not count, including blanket approvals like "I pre-approve everything".
+- **Architecture lock.** Present the architecture, the cost estimate and open questions, then wait for an explicit yes. An estimate with no prices, or from pricing pages, needs the user's acknowledgment as part of the lock.
+- **Each apply, deploy, delete or destroy.** Show the reviewed plan, name every replacement and deletion in plain words, and wait for a yes for that action. A yes given before the user saw that plan, including "I pre-approve everything", does not count.
 
-Whenever you propose a production change, including a quick fix during an incident, state how to roll it back.
+Every proposed production change, including a fix during an incident, comes with its rollback.
 
 ## Safety
 
-Follow the command rules in `references/lifecycle.md`: confirm the account, profile and environment once; read-only after that; ask before production plans and tool installs. No secrets in code or docs. Least-privilege IAM. No unsourced prices.
-
-If the user pastes a credential, never repeat it back and never write it to a file. Tell them it is now exposed and should be rotated, and set things up with OIDC or a secret store instead.
+Follow the command rules in `references/lifecycle.md`. No secrets in code or docs, least-privilege IAM, no unsourced prices. If the user pastes a credential, never repeat it back or write it to a file. Tell them it is exposed and should be rotated, and use OIDC or a secret store instead.
 
 ## Other opsgate skills
 
-Architecture work belongs to `opsgate-architecture-design`, cost to `opsgate-cost-estimation`, AWS account rules to `opsgate-cloud-aws`, IaC to `opsgate-iac`, pipelines to `opsgate-cicd`, and security to `opsgate-devsecops`. When one of them is installed, load it and follow it for that work. The first reply that does work belonging to one of them must include a line naming the ones that aren't installed, for example "opsgate-architecture-design and opsgate-cost-estimation aren't installed, so I'm using general guidance." Then continue with this skill's rules.
+Architecture goes to `opsgate-architecture-design`, cost to `opsgate-cost-estimation`, AWS accounts, IAM and networking to `opsgate-cloud-aws`, IaC to `opsgate-iac`, pipelines to `opsgate-cicd`, and security to `opsgate-devsecops`. When the matching skill is installed, load it and follow it for that work. In the first reply that needs a missing one, name it in one line ("opsgate-iac isn't installed, so I'm using general guidance").
 
 ## Record
 
-New work writes its record with `references/templates.md`, under `docs/opsgate/` or the repo's existing docs convention. A bounded task adds a log entry, plus a decision record if it changed a choice, only when `docs/opsgate/` already exists. If it doesn't, offer once to create it.
+New work writes its record under `docs/opsgate/` (or the repo's docs convention) using `references/templates.md`. A bounded task logs only to an existing `docs/opsgate/`. If there is none, offer once to create it.
 
 ## Red flags
 
