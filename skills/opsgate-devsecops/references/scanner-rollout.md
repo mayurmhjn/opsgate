@@ -34,4 +34,4 @@ Every category gates on new high and critical findings from the first day. Lower
 
 - Run scans in `pull_request` workflows, never by checking out fork code in a privileged trigger.
 - Grant `security-events: write` only to a job that uploads results and doesn't build or run pull request code. Put the upload in its own job that downloads the results, or don't grant the permission on pull request runs.
-- Pin every scanner action and image to a full SHA or digest. Popular actions have been compromised through mutable tags. To resolve a tag to a SHA, query the repository, for example `git ls-remote https://github.com/OWNER/ACTION refs/tags/vX.Y.Z`.
+- Pin every scanner action and image to a full SHA or digest. Popular actions have been compromised through mutable tags. To resolve a tag to a SHA, query the repository, for example `git ls-remote https://github.com/OWNER/ACTION 'refs/tags/vX.Y.Z*'`, and use the commit SHA on the line ending in `^{}` when there is one (annotated tags), otherwise the plain tag line.

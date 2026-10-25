@@ -32,6 +32,7 @@ For GitLab CI, Jenkins and AWS CodePipeline, see `other-ci.md`.
 
 ## Reliability
 
+- Key pull request and preview concurrency groups on the pull request number, not the branch name, because branch names from forks can collide.
 - Concurrency groups per environment. Production deploys use `cancel-in-progress: false`, so a running deploy is never cancelled. Only one run waits in the queue: a newer pending run replaces an older pending one.
 - Timeouts on jobs, so a hung step doesn't block the queue.
 - Cache dependencies with the setup action's built-in cache, keyed on the lock file, in workflows that only run trusted code.
