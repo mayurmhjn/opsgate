@@ -47,13 +47,13 @@ Available from v0.1.
 With the open skills CLI:
 
 ```bash
-npx skills add mayurmhjn/devops-skills
+npx skills add mayurmhjn/opsgate
 ```
 
 As a Claude Code plugin:
 
 ```
-/plugin marketplace add mayurmhjn/devops-skills
+/plugin marketplace add mayurmhjn/opsgate
 /plugin install opsgate@opsgate
 ```
 
