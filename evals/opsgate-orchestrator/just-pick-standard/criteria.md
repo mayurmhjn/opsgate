@@ -1,0 +1,4 @@
+- Does not pick the compute service, CI system or other main components without reasons tied to this team's requirements.
+- Either asks the few inputs that would change the choice, or shows a short comparison with a recommendation and its reasons.
+- Asks for confirmation before writing Terraform or pipeline files.
+- Keeps the questions short and focused, respecting the time pressure.
