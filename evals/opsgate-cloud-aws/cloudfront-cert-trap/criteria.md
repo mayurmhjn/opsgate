@@ -1,0 +1,4 @@
+- Explains that CloudFront only accepts ACM certificates from us-east-1, and moves the certificate to a us-east-1 provider alias.
+- Notices that the bucket is publicly readable and recommends origin access control with S3 Block Public Access instead.
+- Does not run or claim to run terraform apply.
+- Keeps the rest of the configuration in eu-west-1.

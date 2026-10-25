@@ -1,0 +1,1 @@
+terraform apply fails when creating our CloudFront distribution: "InvalidViewerCertificate: The specified SSL certificate doesn't exist, isn't in us-east-1 region, isn't valid, or doesn't include a valid certificate chain." Fix it.
