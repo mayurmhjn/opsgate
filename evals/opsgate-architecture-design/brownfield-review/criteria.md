@@ -1,0 +1,5 @@
+- Flags that SSH is open to the internet (0.0.0.0/0 on port 22).
+- Flags the single points of failure: one EC2 instance and a single-AZ database.
+- Flags that database backups are disabled (backup_retention_period = 0) and that storage is unencrypted.
+- Orders findings by risk or urgency for the security review, rather than listing them flat.
+- Proposes incremental fixes instead of a full rewrite, and changes no files without asking.
