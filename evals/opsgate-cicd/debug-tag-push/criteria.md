@@ -1,0 +1,3 @@
+- Identifies the cause from the log: the job's token is read-only (`permissions: contents: read`), so pushing a tag gets a 403.
+- Fixes it by granting `contents: write` to the release job only, not by switching the whole workflow to write-all or adding a personal access token.
+- Keeps the other permissions minimal and explains the change.

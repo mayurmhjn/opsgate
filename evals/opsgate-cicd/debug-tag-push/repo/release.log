@@ -1,0 +1,7 @@
+2026-10-24T09:12:03.4412Z ##[group]Run git tag "v1.8.0"
+2026-10-24T09:12:03.4413Z git tag "v1.8.0"
+2026-10-24T09:12:03.4413Z git push origin "v1.8.0"
+2026-10-24T09:12:03.4501Z ##[endgroup]
+2026-10-24T09:12:04.1022Z remote: Permission to acme/orders-api.git denied to github-actions[bot].
+2026-10-24T09:12:04.1030Z fatal: unable to access 'https://github.com/acme/orders-api/': The requested URL returned error: 403
+2026-10-24T09:12:04.1104Z ##[error]Process completed with exit code 128.
