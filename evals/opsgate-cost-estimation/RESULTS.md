@@ -23,5 +23,9 @@ One criterion in `iac-cost-diff` was corrected after the baseline run. The pull 
 
 ## Known gaps
 
-- One graded run per arm on the final version.
-- The grader noted that stopping a database outside working hours was suggested without mentioning that a stopped RDS instance restarts on its own after seven days.
+- One graded run per arm on the final skill text. Every with-skill run here started after the last skill change.
+- estimate-no-prices wrote `docs/opsgate/cost.md` although the user only asked a question.
+- The evals turn off shell access, so live pricing, Cost Explorer queries, account confirmation and read-only command rules are not exercised. "No prices from memory" partly reflects having no tools to fetch them.
+- The test configuration adds a terse response style, so replies are shorter than a stock install would give.
+- The with-skill runs always had the whole plugin installed. No run tested a skill installed on its own, so the "say which skills are missing" fallback is untested.
+- `SKILL.md` files are above the 500-word target (about 500 to 900 words including frontmatter).
