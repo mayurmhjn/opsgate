@@ -9,18 +9,19 @@ Security work fails in two ways: findings nobody acts on, and a clean-looking re
 
 ## Adding scanning
 
-- Pick scanners for what the repo actually contains: code, dependencies, container images, IaC, secrets. Prefer fewer tools that cover more, and say why each one is there (`references/scanner-rollout.md`).
+- Pick scanners for what the repo actually contains: code, dependencies, container images, IaC, secrets. Prefer fewer tools that cover more, say why each one is there, and use their built-in diff or baseline features or maintained workflows before writing custom scripts (`references/scanner-rollout.md`).
 - With an existing backlog, record current findings as a baseline and fail the build on **new** high and critical findings in every category. Don't leave a whole category report-only, and don't fail every PR on old issues.
 - Show results where reviewers look: code scanning alerts, PR annotations or a PR comment, not only job logs.
 - Scans that need secrets or write access run only on trusted code. Pull requests from forks get read-only scans.
-- Pin scanner actions and images to a full SHA or digest. Look up the current release instead of using a remembered version, or leave a marked placeholder.
+- Pin scanner actions and images to a full SHA or digest. Look up the current release instead of using a remembered version. If you can't, leave a marked placeholder and give the command that resolves each one, so the workflow can be made runnable quickly.
+- Add only the files asked for. Offer extras such as update-bot config instead of adding them.
 
 ## Triaging findings
 
-1. Rank by severity and real exposure: production before non-production, internet-facing before internal, shipped code before dev-only tooling.
+1. Rank by severity and real exposure: production before non-production, internet-facing before internal, shipped code before dev-only tooling. Say why each finding sits where it does.
 2. Fix the highest-risk findings first, and say what each fix changes (some force a resource replacement).
 3. A suppression covers one resource or package, with a reason, an owner and a review or expiry date (`references/triage-and-exceptions.md`). Never skip a check globally to clear a report.
-4. Report three lists: fixed, accepted with an exception, and still open. A report with exceptions isn't "zero findings". Say so.
+4. Report three lists: fixed, accepted with an exception, and still open. "Fixed" means the change is applied and verified. Otherwise call it "fix proposed". A report with exceptions isn't "zero findings". Say so, and check that the counts match the lists.
 
 ## Leaked secrets
 

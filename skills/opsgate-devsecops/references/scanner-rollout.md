@@ -19,7 +19,7 @@ One tool that covers several categories (for example Trivy for images, dependenc
 The goal is that the backlog doesn't grow while it is being worked down.
 
 - **Diff or baseline mode** where the tool has one: scan only what changed against the base branch (for example Semgrep's baseline commit, scanning a commit range for secrets, or a dependency scanner's pull request diff).
-- **Ignore file of current findings** where it doesn't: list today's findings in the tool's ignore file, each with a reason and an expiry date, and fail on anything not in the file at high or critical severity.
+- **Ignore file of current findings** where it doesn't: list today's findings in the tool's ignore file, each with a reason and an expiry date (use the tool's expiry field where it has one, such as `exp:` in `.trivyignore`), and fail on anything not in the file at high or critical severity.
 - Track the backlog itself in code scanning or an issue tracker, with owners.
 
 Every category gates on new high and critical findings from the first day. Lower severities can start as warnings.
@@ -33,5 +33,5 @@ Every category gates on new high and critical findings from the first day. Lower
 ## Safety of the scan jobs
 
 - Run scans in `pull_request` workflows, never by checking out fork code in a privileged trigger.
-- Grant `security-events: write` only to the job that uploads, and only where the upload actually runs.
-- Pin every scanner action and image to a full SHA or digest. Some scanner actions have been targeted by supply-chain attacks through mutable tags.
+- Grant `security-events: write` only to a job that uploads results and doesn't build or run pull request code. Put the upload in its own job that downloads the results, or don't grant the permission on pull request runs.
+- Pin every scanner action and image to a full SHA or digest. Popular actions have been compromised through mutable tags. To resolve a tag to a SHA, query the repository, for example `git ls-remote https://github.com/OWNER/ACTION refs/tags/vX.Y.Z`.
