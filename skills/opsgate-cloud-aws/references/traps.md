@@ -6,7 +6,8 @@ Check the ones for the services you touch. For details and current limits, use t
 
 - CloudFront only uses ACM certificates from us-east-1. Create the certificate with a us-east-1 provider alias. The same applies to WAF web ACLs attached to CloudFront.
 - IAM, CloudFront, Route 53 and Organizations are global. Their API calls and some of their logs live in us-east-1.
-- S3 bucket names are global across all accounts. Recreating a deleted bucket name can fail or be taken by someone else.
+- General purpose bucket names in the global namespace are unique across all accounts in a partition. A deleted name can be taken by someone else. S3 also offers account regional namespaces, which avoid this. Check the current S3 documentation before choosing.
+- S3 and DynamoDB always encrypt data at rest. For them, the real question is who owns the key (AWS owned, AWS managed or customer managed). Don't report them as unencrypted.
 - Not every service, instance type or feature exists in every region. Check before designing.
 - Service quotas are per account and per region. Check them for the planned peak, and for the recovery region too.
 
@@ -20,7 +21,7 @@ Check the ones for the services you touch. For details and current limits, use t
 ## Network
 
 - NAT gateways charge per GB processed as well as per hour. S3 and DynamoDB traffic can use gateway endpoints instead.
-- Lambda functions in a VPC have no internet access without a NAT gateway or VPC endpoints.
+- Lambda functions in a VPC have no internet access without a NAT gateway. VPC endpoints reach AWS services only, not the internet.
 - Public IPv4 addresses are charged per hour, including those on load balancers and instances.
 - Security group rules that reference a CIDR break when IP ranges change. Reference security groups instead.
 - Overlapping CIDRs block peering and Transit Gateway routing later.

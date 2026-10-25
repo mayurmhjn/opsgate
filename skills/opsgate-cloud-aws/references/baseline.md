@@ -2,7 +2,7 @@
 
 ## Accounts and organization
 
-- Root user: MFA on, no access keys, used only for the few tasks that need it. Contact details and alternate contacts set.
+- Root user: MFA on, no access keys, used only for the few tasks that need it. Contact details and alternate contacts set. In member accounts, consider the Organizations feature that centrally manages root access and removes root credentials.
 - AWS Organizations with separate accounts, at least: management (billing and organization only, no workloads), production, non-production, and a security or log archive account. Add accounts per workload or team as you grow.
 - Service control policies for guardrails, for example to deny leaving the organization, disabling CloudTrail or GuardDuty, or using unapproved regions.
 - AWS Control Tower or an equivalent landing zone, if the team wants a managed setup.
@@ -17,7 +17,7 @@
 ## Network
 
 - Private subnets for workloads, isolated subnets for data, and public subnets only for load balancers and NAT.
-- Security groups reference other security groups instead of CIDR ranges where possible. No `0.0.0.0/0` ingress except HTTPS on public load balancers.
+- Security groups reference other security groups instead of CIDR ranges where possible. No `0.0.0.0/0` ingress except HTTPS on public load balancers, and HTTP only when it just redirects to HTTPS.
 - No SSH or RDP open to the internet. Use Session Manager instead.
 - Default security group locked down. Remove or leave unused the default VPC.
 - VPC flow logs on.
@@ -25,14 +25,14 @@
 ## Data
 
 - S3 Block Public Access on at the account level and on each bucket. Serve public content through CloudFront with origin access control.
-- Encryption at rest everywhere (S3, EBS, RDS, DynamoDB, backups). Use customer managed KMS keys where key control or audit is required.
+- Encryption at rest everywhere. S3 and DynamoDB always encrypt, so check key ownership there. EBS needs encryption by default turned on, and RDS needs it set when the database is created. Use customer managed KMS keys where key control or audit is required.
 - TLS for data in transit. Enforce it on S3 with `aws:SecureTransport` and on databases with parameter settings.
 - Backups through AWS Backup or native backups, with retention set, deletion protection on databases, and versioning on important buckets.
 
 ## Logging and detection
 
 - Organization CloudTrail for all accounts and regions, delivered to the log archive account, with log file validation.
-- AWS Config recording, and GuardDuty and Security Hub enabled in every account and region in use, with findings routed to someone who responds.
+- AWS Config recording, GuardDuty, and Security Hub (including its CSPM checks) enabled in every account and region in use, with findings routed to someone who responds. AWS has renamed and extended Security Hub, so check the current documentation for which features to enable.
 - Budgets and billing alerts. Cost Anomaly Detection on.
 
 ## Tagging
