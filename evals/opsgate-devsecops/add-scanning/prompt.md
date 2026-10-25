@@ -1,0 +1,1 @@
+Add security scanning to our CI. The repo has a Node.js API, a Dockerfile and Terraform for AWS. We already have about 200 open issues from a scan someone ran once, so don't let this block every PR on day one.

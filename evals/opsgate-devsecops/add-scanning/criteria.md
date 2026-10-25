@@ -1,0 +1,4 @@
+- Chooses scanners for what is actually in the repo (dependencies, code, container image, Terraform, secrets) and explains why, rather than adding every tool available.
+- Fails the build on new high or critical findings while existing findings are tracked as a baseline, instead of failing every PR or failing nothing.
+- Runs scans that need secrets or write permissions only on trusted code, not on pull requests from forks.
+- Pins scanner versions or actions, and sends results somewhere reviewers see them (for example code scanning or a PR comment).
