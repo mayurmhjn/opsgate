@@ -7,6 +7,7 @@ Results go to evals/results/<skill>/<scenario>/<arm>.md. See evals/README.md.
 
 import argparse
 import hashlib
+import json
 import os
 import shutil
 import subprocess
@@ -15,12 +16,14 @@ import tempfile
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parent.parent
+RESULTS_DIR = ROOT / "evals" / "results"
 TIMEOUT_SECONDS = 900
 
 
 def agent_command(arm):
     cmd = [
         "claude", "-p", "--no-session-persistence",
+        "--output-format", "stream-json", "--verbose",
         "--permission-mode", "acceptEdits",
         "--disallowedTools", "Bash",
     ]
@@ -37,7 +40,48 @@ def snapshot(directory):
     }
 
 
-def run_scenario(skill, scenario_dir, arm):
+def diff_snapshots(before, after):
+    changed = sorted(p for p, h in after.items() if before.get(p) != h)
+    deleted = sorted(p for p in before if p not in after)
+    return changed, deleted
+
+
+def parse_stream(output):
+    """Pull the final reply, invoked skills and model out of stream-json output."""
+    parsed = {"reply": None, "skills": [], "model": None}
+    for line in output.splitlines():
+        try:
+            event = json.loads(line)
+        except json.JSONDecodeError:
+            continue
+        if event.get("type") == "system" and event.get("subtype") == "init":
+            parsed["model"] = event.get("model")
+        elif event.get("type") == "assistant":
+            for block in event.get("message", {}).get("content", []):
+                if block.get("type") == "tool_use" and block.get("name") == "Skill":
+                    parsed["skills"].append(block.get("input", {}).get("skill"))
+        elif event.get("type") == "result":
+            parsed["reply"] = event.get("result")
+    if parsed["reply"] is None:
+        parsed["reply"] = output.strip()
+    return parsed
+
+
+def run_agent(arm, prompt, cwd):
+    """Return (exit code or None, combined output)."""
+    try:
+        result = subprocess.run(
+            agent_command(arm), input=prompt, cwd=cwd,
+            capture_output=True, text=True, timeout=TIMEOUT_SECONDS,
+        )
+        return result.returncode, result.stdout if result.returncode == 0 else result.stdout + result.stderr
+    except subprocess.TimeoutExpired as e:
+        partial = e.stdout.decode(errors="replace") if isinstance(e.stdout, bytes) else (e.stdout or "")
+        return None, partial + f"\n(timed out after {TIMEOUT_SECONDS}s)"
+
+
+def run_scenario(skill, scenario_dir, arm, results_dir=RESULTS_DIR):
+    """Run one scenario arm. Return (result path, True if the agent exited cleanly)."""
     prompt = (scenario_dir / "prompt.md").read_text()
     with tempfile.TemporaryDirectory() as tmp:
         work = Path(tmp)
@@ -45,25 +89,26 @@ def run_scenario(skill, scenario_dir, arm):
             shutil.copytree(scenario_dir / "repo", work, dirs_exist_ok=True)
         subprocess.run(["git", "init", "-q"], cwd=work, check=True)
         before = snapshot(work)
-        try:
-            result = subprocess.run(
-                agent_command(arm), input=prompt, cwd=work,
-                capture_output=True, text=True, timeout=TIMEOUT_SECONDS,
-            )
-            reply = result.stdout.strip() or result.stderr.strip()
-        except subprocess.TimeoutExpired:
-            reply = f"(timed out after {TIMEOUT_SECONDS}s)"
-        after = snapshot(work)
-        changed = sorted(p for p, h in after.items() if before.get(p) != h)
+        code, output = run_agent(arm, prompt, work)
+        changed, deleted = diff_snapshots(before, snapshot(work))
         files = [(p, (work / p).read_text(errors="replace")) for p in changed]
 
-    out = ROOT / "evals" / "results" / skill / scenario_dir.name / f"{arm}.md"
+    parsed = parse_stream(output)
+    out = results_dir / skill / scenario_dir.name / f"{arm}.md"
     out.parent.mkdir(parents=True, exist_ok=True)
-    parts = [f"# {skill} / {scenario_dir.name} / {arm}", "## Prompt", prompt.strip(), "## Reply", reply]
-    parts.append("## Files written")
+    parts = [
+        f"# {skill} / {scenario_dir.name} / {arm}",
+        f"Model: {parsed['model'] or 'unknown'}\n"
+        f"Exit code: {'timeout' if code is None else code}\n"
+        f"Skills invoked: {', '.join(parsed['skills']) or 'none'}",
+        "## Prompt", prompt.strip(),
+        "## Reply", parsed["reply"],
+        "## Files written",
+    ]
     parts += [f"### {p.as_posix()}\n\n```\n{text}\n```" for p, text in files] or ["(none)"]
+    parts += ["## Files deleted", "\n".join(f"- {p.as_posix()}" for p in deleted) or "(none)"]
     out.write_text("\n\n".join(parts) + "\n")
-    return out
+    return out, code == 0
 
 
 def main(argv=None):
@@ -81,19 +126,25 @@ def main(argv=None):
     if not scenarios:
         print(f"no scenarios found in {evals_dir}", file=sys.stderr)
         return 2
+    if not args.dry_run and shutil.which("claude") is None:
+        print("claude CLI not found on PATH", file=sys.stderr)
+        return 2
     if "CLAUDE_CONFIG_DIR" not in os.environ:
         print("warning: CLAUDE_CONFIG_DIR is not set, so personal instructions may affect results",
               file=sys.stderr)
 
     arms = ["baseline", "skill"] if args.arm == "both" else [args.arm]
+    failures = 0
     for scenario_dir in scenarios:
         for arm in arms:
             if args.dry_run:
                 print(f"{scenario_dir.name} [{arm}]: {' '.join(agent_command(arm))}")
                 continue
             print(f"{scenario_dir.name} [{arm}] ... ", end="", flush=True)
-            print(run_scenario(args.skill, scenario_dir, arm).relative_to(ROOT))
-    return 0
+            out, ok = run_scenario(args.skill, scenario_dir, arm)
+            failures += not ok
+            print(f"{out.relative_to(ROOT)}{'' if ok else '  (agent failed, see exit code)'}")
+    return 1 if failures else 0
 
 
 if __name__ == "__main__":
