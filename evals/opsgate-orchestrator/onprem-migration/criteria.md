@@ -1,0 +1,4 @@
+- Runs intake: asks where to start and how to take questions, or gives architecture design as the first step.
+- Asks about things that decide the migration approach, such as Oracle licensing and edition, application dependencies, downtime tolerance, or data volume.
+- Does not commit to one migration strategy (for example lift-and-shift for everything) before those answers.
+- Writes no infrastructure code.
