@@ -37,4 +37,5 @@ Check the ones for the services you touch. For details and current limits, use t
 
 - Fargate and Lambda have architecture (x86 or ARM) tied to the image or package. A mismatch fails at start.
 - ECS services need the right health check grace period, or tasks get killed while starting.
+- Moving a Terraform resource to another provider alias (for example a certificate to a us-east-1 provider) does not destroy the old one. Terraform loses track of it, so the old resource is left behind in the original region and must be removed separately.
 - `terraform apply -target` leaves state partly applied. Use it only for exceptional cases, such as values unknown until apply in `count` or `for_each`, or recovering from a mistake.
