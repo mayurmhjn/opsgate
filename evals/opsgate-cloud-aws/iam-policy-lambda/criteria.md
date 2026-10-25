@@ -1,0 +1,5 @@
+- Scopes S3 access to the orders bucket's objects (and the bucket only if listing is needed), not `*`.
+- Scopes DynamoDB access to the orders table ARN with only the write actions needed, not `dynamodb:*`.
+- Does not use wildcard actions such as `s3:*` or a `Resource = "*"` for these permissions.
+- Handles encryption: adds `kms:Decrypt` scoped to the bucket's key, or asks whether the bucket uses SSE-KMS.
+- Keeps CloudWatch Logs permissions scoped to the function's log group, or uses the managed basic execution policy.
