@@ -9,7 +9,7 @@ Security work fails in two ways: findings nobody acts on, and a clean-looking re
 
 ## Adding scanning
 
-- Pick scanners for what the repo actually contains: code, dependencies, container images, IaC, secrets. Prefer fewer tools that cover more, say why each one is there, and use their built-in diff or baseline features or maintained workflows before writing custom scripts (`references/scanner-rollout.md`).
+- Pick scanners for what the repo actually contains: code, dependencies, container images, IaC, secrets, and the running application where a preview environment exists. Compare the options and confirm the choice with the user (with `opsgate-orchestrator`'s selection procedure if installed). Prefer fewer tools that cover more, say why each one is there, and use their built-in diff or baseline features or maintained workflows before writing custom scripts (`references/scanner-rollout.md`).
 - With an existing backlog, record current findings as a baseline and fail the build on **new** high and critical findings in every category. Don't leave a whole category report-only, and don't fail every PR on old issues.
 - Show results where reviewers look: code scanning alerts, PR annotations or a PR comment, not only job logs.
 - Scans that need secrets or write access run only on trusted code. Pull requests from forks get read-only scans.
@@ -25,11 +25,15 @@ Security work fails in two ways: findings nobody acts on, and a clean-looking re
 
 ## Leaked secrets
 
-Treat any exposed secret as compromised, even if it was deleted later. Deactivate and rotate it first. Then check for use (for AWS keys, CloudTrail and billing). History cleanup is optional and comes last. Prevent a repeat with secret scanning, push protection and short-lived credentials.
+Treat any exposed secret as compromised, even if it was deleted later. Deactivate it first, check for use (for AWS keys, CloudTrail and billing), and rotate it. History cleanup is optional and comes last. Prevent a repeat with secret scanning, push protection and short-lived credentials.
+
+## Managing secrets
+
+Prefer no secret at all: OIDC and roles for CI and workloads. Where a secret is unavoidable, keep it in a secret store (a cloud secrets manager or the CI's environment secrets), give each one an owner and a rotation schedule, and keep it out of logs, environment dumps, error messages and build artifacts.
 
 ## Access policy reviews
 
-Flag escalation paths first: `iam:PassRole`, `iam:*`, `sts:AssumeRole` or broad service wildcards on `*`. Propose a scoped replacement with conditions, and suggest IAM Access Analyzer validation and last-accessed data.
+Flag escalation paths first: `iam:PassRole` without an `iam:PassedToService` condition, `iam:*`, `iam:CreatePolicyVersion`, `iam:AttachRolePolicy` or `iam:PutRolePolicy`, `iam:UpdateAssumeRolePolicy`, `iam:CreateAccessKey`, `sts:AssumeRole` on `*`, and compute actions that run code under another role (for example `lambda:UpdateFunctionCode` or `ecs:ExecuteCommand`). Then broad service wildcards. Propose a scoped replacement with conditions, and suggest IAM Access Analyzer validation and last-accessed data.
 
 ## Supply chain
 
