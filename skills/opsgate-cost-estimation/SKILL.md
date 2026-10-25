@@ -35,7 +35,6 @@ Confirm the account or profile first. Then compare equal periods. A month-to-dat
 3. Commitments (Savings Plans, Reserved Instances) come last. They need at least a few weeks of steady usage data and Cost Explorer's recommendations, and should follow rightsizing.
 4. Production changes need approval, a plan, and a rollback path. Check limits that can slow a rollback, such as how often a volume can be modified.
 
-
 Edit files only after the user picks which savings to make.
 
 ## When related skills are missing

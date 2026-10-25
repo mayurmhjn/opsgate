@@ -32,7 +32,6 @@ Check the ones for the services you touch. For details and current limits, use t
 - `skip_final_snapshot = true` and S3 `force_destroy = true` make a destroy delete data permanently.
 - AWS limits how often one EBS volume can be modified in a given period. Check the current limit before counting on a quick rollback of a volume change.
 
-
 ## Compute and deploy
 
 - Fargate and Lambda have architecture (x86 or ARM) tied to the image or package. A mismatch fails at start.
