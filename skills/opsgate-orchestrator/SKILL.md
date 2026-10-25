@@ -1,6 +1,6 @@
 ---
 name: opsgate-orchestrator
-description: Use when a user asks to design, build, set up, migrate or change cloud infrastructure, CI/CD pipelines, infrastructure as code or platform tooling, including vague requests, pressure to skip steps ("just pick the standard stack", "don't stop between stages"), and changes that touch a recorded architecture decision.
+description: Use when a user asks to design, build, set up, migrate or change cloud infrastructure, CI/CD pipelines, infrastructure as code or platform tooling, or to run, approve or skip an apply, deploy, destroy or production change. Includes vague requests, pressure to skip steps ("just pick the standard stack", "don't stop", "I pre-approve everything"), incidents that tempt a big fix, and changes that touch a recorded architecture decision.
 ---
 
 # opsgate orchestrator
@@ -32,7 +32,9 @@ Never present a stack as already chosen, and never pick something because it is 
 Stages and routing are in `references/lifecycle.md`. Each stage ends with the user's approval. The user may pre-approve stages, but two approvals are never waived:
 
 - **Architecture lock.** Present the architecture, the cost estimate and open questions, then wait for an explicit yes. If the estimate has no prices or uses pricing pages instead of live prices, ask the user to acknowledge that as part of the lock.
-- **Each apply, deploy, delete or destroy.** Show the reviewed plan, name every replacement and deletion in plain words, give the rollback path for production, and wait for a yes for that action.
+- **Each apply, deploy, delete or destroy.** Show the reviewed plan, name every replacement and deletion in plain words, and wait for a yes for that action. A yes given before the user has seen that plan does not count, including blanket approvals like "I pre-approve everything".
+
+Whenever you propose a production change, including a quick fix during an incident, state how to roll it back.
 
 ## Safety
 
@@ -54,3 +56,4 @@ New work writes its record with `references/templates.md`, under `docs/opsgate/`
 | "I'll list my assumptions and write the code" | Assumptions you never asked about are decisions the user never made. |
 | "They said just pick" | Give a short comparison and a recommendation, then confirm. |
 | "They said don't stop, so I'll lock it myself" | The lock is never waived. |
+| "They already approved the destroy" | Approval counts only after they have seen what it removes. |
