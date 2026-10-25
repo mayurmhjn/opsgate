@@ -24,7 +24,7 @@ When a standard applies (PCI DSS, HIPAA, SOC 2, GDPR, ISO 27001), map each relev
 Use policy checks for rules that must always hold, so reviews can focus on judgment:
 
 - IaC policies in the pipeline (for example Checkov custom policies, or OPA with Conftest) for rules like "no public buckets" or "required tags".
-- Cloud guardrails that hold even outside the pipeline, such as service control policies that deny disabling audit logging.
+- Cloud guardrails that hold even outside the pipeline, such as service control policies that deny disabling audit logging. Service control policies don't apply to the management account or to service-linked roles.
 - Admission policies in Kubernetes clusters for image signatures and pod security.
 
 Each policy names its owner and the exception process, so a blocked team knows how to proceed.
