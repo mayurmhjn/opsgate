@@ -2,7 +2,7 @@
 
 DevOps, platform engineering and SRE skills for AI agents.
 
-> **Status:** pre-release and under active development. Nothing is published yet, and the skills listed below are still being written.
+> **Status:** pre-release. All seven v1 skills are written and in testing. There is no tagged release yet, so expect changes before v0.1.
 
 ## What it does
 
@@ -36,13 +36,29 @@ When the agent has to choose a tool or service, it compares two or three candida
 
 Each skill is built to work on its own, so you can install only the ones you need.
 
+## How the skills are tested
+
+Every skill comes with eval scenarios: realistic requests, often with pressure to cut corners ("just pick the standard stack", "I pre-approve everything", "suppress the rest so the report is clean"). Each scenario runs once without the skills and once with them, and a reviewer grades the replies against written criteria.
+
+| Skill | Without skills | With skills |
+|-------|----------------|-------------|
+| `opsgate-orchestrator` | 32/50 | 49/50 |
+| `opsgate-architecture-design` | 14/17 | 17/17 |
+| `opsgate-cost-estimation` | 10/17 | 17/17 |
+| `opsgate-cloud-aws` | 16/21 | 21/21 |
+| `opsgate-iac` | 25/30 | 30/30 |
+| `opsgate-cicd` | 11/22 | 22/22 |
+| `opsgate-devsecops` | 17/23 | 21/23 |
+
+These come from one graded run per scenario on Claude Code. Each skill's `RESULTS.md` under [`evals/`](evals/) lists what failed, what changed during testing, and the known gaps. See [evals/README.md](evals/README.md) to run them yourself.
+
 ## Works with
 
 opsgate does not duplicate AWS service documentation. For service detail, it uses the official AWS skills ([aws/agent-toolkit-for-aws](https://github.com/aws/agent-toolkit-for-aws)) or the AWS MCP server if you have them installed. Otherwise it uses the current AWS documentation.
 
 ## Install
 
-Available from v0.1.
+There is no tagged release yet. You can install from the main branch now, but the skills may still change.
 
 With the open skills CLI:
 
@@ -59,7 +75,7 @@ As a Claude Code plugin:
 
 ## Supported agents
 
-v0.1 will be tested on Claude Code and Codex. Other agents that read `SKILL.md` files should work, but they have not been tested.
+The evals so far run on Claude Code. Codex runs are planned before v0.1. Other agents that read `SKILL.md` files should work, but they have not been tested.
 
 ## Roadmap
 
