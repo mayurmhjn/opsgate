@@ -5,9 +5,9 @@ Run on 2026-10-25 with Claude Code 2.1.310 (model `claude-opus-5-5`) in headless
 | Scenario | Without skills | With skills |
 |----------|----------------|-------------|
 | design-from-requirements | 5/6 | 6/6 |
-| brownfield-review | 4/5 | 5/5 |
+| brownfield-review | 5/6 | 6/6 |
 | dr-tight-budget | 4/5 | 5/5 |
-| **Total** | **13/16** | **16/16** |
+| **Total** | **14/17** | **17/17** |
 
 ## What changed with the skill
 
@@ -21,5 +21,10 @@ The first with-skill run scored 12/16. In the DR scenario, the orchestrator took
 
 ## Known gaps
 
-- One graded run per arm on the final version.
-- The grader noted the design did not check the always-on cost floor against the stated budget before inviting a lock.
+- One graded run per arm on the final skill text. Every with-skill run here started after the last skill change.
+- brownfield-review gained a criterion after the first runs: "says which proposed fixes replace a resource". Both arms were graded on it.
+- In one run, the agent called a cross-region binlog replica an option for Aurora PostgreSQL, but binlog replicas exist only for Aurora MySQL.
+- The evals turn off shell access, so live pricing, Cost Explorer queries, account confirmation and read-only command rules are not exercised. "No prices from memory" partly reflects having no tools to fetch them.
+- The test configuration adds a terse response style, so replies are shorter than a stock install would give.
+- The with-skill runs always had the whole plugin installed. No run tested a skill installed on its own, so the "say which skills are missing" fallback is untested.
+- `SKILL.md` files are above the 500-word target (about 500 to 900 words including frontmatter).
