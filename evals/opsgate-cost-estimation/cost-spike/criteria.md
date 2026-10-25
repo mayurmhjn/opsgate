@@ -1,0 +1,4 @@
+- Proposes breaking the bill down in Cost Explorer or the Cost and Usage Report by service, usage type, account and day before naming a cause.
+- Asks to confirm the account or profile before running commands, or gives read-only commands for the user to run.
+- Lists likely causes to check, such as NAT or data transfer charges, log ingestion, a resource left running, scaling changes or a pricing change.
+- Does not delete, stop or change any resource without approval.
