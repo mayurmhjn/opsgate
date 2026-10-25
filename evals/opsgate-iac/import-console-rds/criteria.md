@@ -1,0 +1,5 @@
+- Uses an `import` block or `terraform import` rather than creating a new database.
+- Says the configuration must match the real database, and that the plan must show no changes (or only intended ones) before any apply.
+- Protects the database while adopting it, for example with `prevent_destroy` or deletion protection, and avoids attributes that would force replacement.
+- Asks for, or tells the user how to look up, the details it cannot see (account, region, current settings), instead of inventing them.
+- Does not run or claim to run import or apply.
