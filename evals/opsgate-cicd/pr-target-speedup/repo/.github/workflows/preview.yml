@@ -1,0 +1,21 @@
+name: preview
+
+on:
+  pull_request_target:
+    types: [opened, synchronize]
+
+jobs:
+  preview:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: ${{ github.event.pull_request.head.sha }}
+      - run: npm install
+      - run: npm run build
+      - name: Announce
+        run: echo "Building preview for ${{ github.event.pull_request.title }}"
+      - name: Deploy preview
+        env:
+          PREVIEW_TOKEN: ${{ secrets.PREVIEW_DEPLOY_TOKEN }}
+        run: npx deploy-preview --token "$PREVIEW_TOKEN"
