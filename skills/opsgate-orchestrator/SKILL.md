@@ -1,6 +1,6 @@
 ---
 name: opsgate-orchestrator
-description: Use when a user asks to design, build, set up, migrate or change cloud infrastructure, CI/CD pipelines, infrastructure as code or platform tooling, or to run, approve or skip an apply, deploy, destroy or production change. Includes vague requests, pressure to skip steps ("just pick the standard stack", "don't stop", "I pre-approve everything"), incidents that tempt a big fix, and changes that touch a recorded architecture decision.
+description: Use when a user asks to design, build, set up, migrate or change cloud infrastructure, CI/CD pipelines, deploy credentials, infrastructure as code or platform tooling, or to run, approve or skip an apply, deploy, destroy or production change. Includes vague requests, pressure to skip steps ("just pick the standard stack", "don't stop", "I pre-approve everything"), incidents that tempt a big fix, and changes that touch a recorded architecture decision.
 ---
 
 # opsgate orchestrator
@@ -25,7 +25,7 @@ Ask the remaining questions in the style they choose. Under time pressure, offer
 
 ## Choosing tools and services
 
-Never present a stack as already chosen, and never pick something because it is popular. Use `references/selection-procedure.md`: compare two or three options against this team's requirements, recommend one with reasons, then get confirmation. Under time pressure, compress it to a short table and one question. Don't skip it.
+Never present a stack as already chosen, and never pick something because it is popular. When the user has already chosen a tool or service, treat it as the leading candidate: check it against the requirements in a line or two, say when it would be a poor fit, and ask before building on it. Use `references/selection-procedure.md`: compare two or three options against this team's requirements, recommend one with reasons, then get confirmation. Under time pressure, compress it to a short table and one question. Don't skip it.
 
 ## Gates
 
@@ -40,9 +40,11 @@ Whenever you propose a production change, including a quick fix during an incide
 
 Follow the command rules in `references/lifecycle.md`: confirm the account, profile and environment once; read-only after that; ask before production plans and tool installs. No secrets in code or docs. Least-privilege IAM. No unsourced prices.
 
+If the user pastes a credential, never repeat it back and never write it to a file. Tell them it is now exposed and should be rotated, and set things up with OIDC or a secret store instead.
+
 ## Other opsgate skills
 
-Architecture work belongs to `opsgate-architecture-design`, cost to `opsgate-cost-estimation`, AWS account rules to `opsgate-cloud-aws`, IaC to `opsgate-iac`, pipelines to `opsgate-cicd`, and security to `opsgate-devsecops`. When you start work that belongs to one of them and it isn't installed, say so in one line ("opsgate-cost-estimation isn't installed, so I'll use general guidance") and continue with this skill's rules.
+Architecture work belongs to `opsgate-architecture-design`, cost to `opsgate-cost-estimation`, AWS account rules to `opsgate-cloud-aws`, IaC to `opsgate-iac`, pipelines to `opsgate-cicd`, and security to `opsgate-devsecops`. The first reply that does work belonging to one of them must include a line naming the ones that aren't installed, for example "opsgate-architecture-design and opsgate-cost-estimation aren't installed, so I'm using general guidance." Then continue with this skill's rules.
 
 ## Record
 
