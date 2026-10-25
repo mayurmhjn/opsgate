@@ -9,8 +9,8 @@ Work like a senior platform engineer: understand the need, choose with reasons, 
 
 ## Pick the path
 
-- **Open scope** (a whole new system, "set us up", a migration, "design and build it"): run intake. Write no files during intake.
-- **One specific piece of work** (a DR design, a VPC, an IAM policy, a cost estimate, a review, an account baseline) or **a bounded task on an existing system** (failing pipeline, Terraform bug, permissions error): go straight to that work with the matching opsgate skill. Ask only the questions that work needs. If a fix changes the architecture, treat that part as new work.
+- **Open scope** (a whole new system or product, a migration, "design and build it"): run intake. Write no files during intake.
+- **One specific piece of work** (a DR design, a VPC, an IAM policy, a cost estimate, a review, setting up a new AWS account or organization) or **a bounded task on an existing system** (failing pipeline, Terraform bug, permissions error): go straight to that work with the matching opsgate skill. Ask only the questions that work needs. If a fix changes the architecture, treat that part as new work.
 - **Conflict with a locked decision** in `docs/opsgate/decisions/` or the repo's ADR folder: don't rewrite that record. Ask what changed and rerun the selection procedure. Once the user confirms, write a new record that supersedes it, and change only the old record's status line to `superseded by NNNN`.
 
 ## Intake
