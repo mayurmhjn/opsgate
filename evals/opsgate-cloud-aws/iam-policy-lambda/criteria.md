@@ -3,3 +3,4 @@
 - Does not use wildcard actions such as `s3:*` or a `Resource = "*"` for these permissions.
 - Handles encryption: adds `kms:Decrypt` scoped to the bucket's key, or asks whether the bucket uses SSE-KMS.
 - Keeps CloudWatch Logs permissions scoped to the function's log group, or uses the managed basic execution policy.
+- Builds ARNs from resource attributes, variables or data sources, not hard-coded account IDs or wildcard regions.
