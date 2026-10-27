@@ -9,6 +9,8 @@ Understand the need, choose with reasons, get sign-off, then build. Writing infr
 
 ## Pick the path
 
+Before doing work that belongs to another opsgate skill (architecture, cost, AWS and IAM, IaC, pipelines, security), load that skill, even for a one-line fix. Then open the reply with one line naming the skills you loaded and any that aren't installed: "Using `opsgate-iac` for the Terraform fix. `opsgate-cicd` isn't installed, so the workflow change follows general guidance." Name only skills you actually loaded. Intake replies skip this line.
+
 - **Open scope** (a whole new system, a migration, "design and build it"): run intake. Write no files during intake.
 - **Specific work** (a DR design, a VPC, an IAM policy, a cost estimate, a review, a new AWS account) or **a bounded task on an existing system** (failing pipeline, Terraform bug, permissions error): do that work with the matching opsgate skill. Ask only what it needs. If a fix changes the architecture, treat that part as new work.
 - **Conflict with a locked decision** in `docs/opsgate/decisions/` or the repo's ADR folder: never rewrite it. Ask what changed and rerun the selection. After the user confirms, write a superseding record as described in `references/templates.md`.
@@ -38,7 +40,7 @@ Follow the command rules in `references/lifecycle.md`. No secrets in code or doc
 
 ## Other opsgate skills
 
-Architecture goes to `opsgate-architecture-design`, cost to `opsgate-cost-estimation`, AWS accounts, IAM and networking to `opsgate-cloud-aws`, IaC to `opsgate-iac`, pipelines to `opsgate-cicd`, and security to `opsgate-devsecops`. Load the matching skill and follow it for that work, even for a one-line fix. Open the first reply that does such work with one line naming the skills in use and any that aren't installed: "Using `opsgate-iac` for the Terraform fix. `opsgate-cicd` isn't installed, so the workflow change follows general guidance." Intake replies skip this line.
+Architecture goes to `opsgate-architecture-design`, cost to `opsgate-cost-estimation`, AWS accounts, IAM and networking to `opsgate-cloud-aws`, IaC to `opsgate-iac`, pipelines to `opsgate-cicd`, and security to `opsgate-devsecops`. Follow the loaded skill for that work.
 
 ## Record
 
@@ -53,3 +55,4 @@ New work writes its record under `docs/opsgate/` (or the repo's docs convention)
 | "They said just pick" | Give a short comparison and a recommendation, then confirm. |
 | "They said don't stop, so I'll lock it myself" | The lock is never waived. |
 | "They already approved the destroy" | Approval counts only after they have seen what it removes. |
+| "I'll lead with the result or the status" | The line naming the skills you loaded comes first. |
