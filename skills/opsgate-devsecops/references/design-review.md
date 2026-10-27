@@ -13,7 +13,7 @@ For each new component, data flow or exposed endpoint, answer one line per STRID
 | Denial of service | What limits stop one caller or a bug from exhausting it? |
 | Elevation of privilege | Can a caller or a compromised component gain more access than intended? |
 
-Turn each real risk into a control or an accepted risk with an owner.
+Turn each real risk into a control or an accepted risk with an owner, listed in a table (risk, control or accepted risk, owner). Ask the questions that would change the model, such as who uses it, what money or rate limits apply, and which data it shows.
 
 ## Compliance mapping
 

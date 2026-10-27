@@ -41,7 +41,7 @@ Follow `references/supply-chain.md`: produce an SBOM for the released image dige
 
 ## Design reviews
 
-For a new component or exposed endpoint, run the short threat model, compliance mapping and policy-as-code checks in `references/design-review.md`.
+For a new component or exposed endpoint, run the short threat model, compliance mapping and policy-as-code checks in `references/design-review.md`. For policy as code or organization guardrails, follow its policy-as-code section: name each policy's owner and exception process, and say that service control policies don't apply to the management account.
 
 ## When related skills are missing
 
