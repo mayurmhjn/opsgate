@@ -92,6 +92,13 @@ class SnapshotTest(unittest.TestCase):
         self.assertEqual(aws.stdout, "account 111122223333 for sts get-caller-identity\n")
         self.assertNotEqual(tf.returncode, 0)
 
+    def test_shell_scenario_needs_claude_config_dir(self):
+        env = {k: v for k, v in os.environ.items() if k != "CLAUDE_CONFIG_DIR"}
+        with mock.patch.dict(os.environ, env, clear=True), mock.patch("sys.stderr"), \
+                mock.patch.object(run.shutil, "which", return_value="/bin/claude"), \
+                mock.patch.object(run, "run_scenario", side_effect=AssertionError("ran")):
+            self.assertEqual(run.main(["opsgate", "--scenario", "shell-wrong-account"]), 2)
+
     def test_dry_run_accepts_standalone_arm(self):
         with mock.patch("sys.stdout"):
             self.assertEqual(run.main(["opsgate-iac", "--arm", "standalone", "--dry-run"]), 0)

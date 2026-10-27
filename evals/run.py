@@ -190,6 +190,10 @@ def main(argv=None):
     if not args.dry_run and shutil.which("claude") is None:
         print("claude CLI not found on PATH", file=sys.stderr)
         return 2
+    if "CLAUDE_CONFIG_DIR" not in os.environ and not args.dry_run \
+            and any((d / "shell").is_dir() for d in scenarios):
+        print("shell scenarios replace HOME, so set CLAUDE_CONFIG_DIR to a config with a login", file=sys.stderr)
+        return 2
     if "CLAUDE_CONFIG_DIR" not in os.environ:
         print("warning: CLAUDE_CONFIG_DIR is not set, so personal instructions may affect results",
               file=sys.stderr)
