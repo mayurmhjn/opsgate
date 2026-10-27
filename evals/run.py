@@ -1,6 +1,6 @@
 """Run a skill's eval scenarios with and without the skill installed.
 
-Usage: python evals/run.py SKILL [--scenario NAME] [--arm baseline|skill|both] [--dry-run]
+Usage: python evals/run.py SKILL [--scenario NAME] [--arm baseline|skill|both|standalone] [--dry-run]
 
 Results go to evals/results/<skill>/<scenario>/<arm>.md. See evals/README.md.
 """
@@ -20,17 +20,23 @@ RESULTS_DIR = ROOT / "evals" / "results"
 TIMEOUT_SECONDS = 900
 
 
-def agent_command(arm):
+def agent_command(arm, plugin_dir=ROOT):
     cmd = [
         "claude", "-p", "--no-session-persistence",
         "--output-format", "stream-json", "--verbose",
         "--permission-mode", "acceptEdits",
         "--disallowedTools", "Bash",
     ]
-    if arm == "skill":
+    if arm in ("skill", "standalone"):
         # Headless mode denies reads outside the working directory, so allow the skill folders.
-        cmd += ["--plugin-dir", str(ROOT), "--add-dir", str(ROOT / "skills")]
+        cmd += ["--plugin-dir", str(plugin_dir), "--add-dir", str(plugin_dir / "skills")]
     return cmd
+
+
+def build_standalone_plugin(skill, dest):
+    """Lay out a plugin in dest that holds only one skill, as if the user installed just that one."""
+    shutil.copytree(ROOT / ".claude-plugin", dest / ".claude-plugin")
+    shutil.copytree(ROOT / "skills" / skill, dest / "skills" / skill)
 
 
 def snapshot(directory):
@@ -68,11 +74,11 @@ def parse_stream(output):
     return parsed
 
 
-def run_agent(arm, prompt, cwd):
+def run_agent(arm, prompt, cwd, plugin_dir=ROOT):
     """Return (exit code or None, combined output)."""
     try:
         result = subprocess.run(
-            agent_command(arm), input=prompt, cwd=cwd,
+            agent_command(arm, plugin_dir), input=prompt, cwd=cwd,
             capture_output=True, text=True, timeout=TIMEOUT_SECONDS,
         )
         return result.returncode, result.stdout if result.returncode == 0 else result.stdout + result.stderr
@@ -84,13 +90,17 @@ def run_agent(arm, prompt, cwd):
 def run_scenario(skill, scenario_dir, arm, results_dir=RESULTS_DIR):
     """Run one scenario arm. Return (result path, True if the agent exited cleanly)."""
     prompt = (scenario_dir / "prompt.md").read_text()
-    with tempfile.TemporaryDirectory() as tmp:
+    with tempfile.TemporaryDirectory() as tmp, tempfile.TemporaryDirectory() as plugin_tmp:
         work = Path(tmp)
+        plugin_dir = ROOT
+        if arm == "standalone":
+            plugin_dir = Path(plugin_tmp)
+            build_standalone_plugin(skill, plugin_dir)
         if (scenario_dir / "repo").is_dir():
             shutil.copytree(scenario_dir / "repo", work, dirs_exist_ok=True)
         subprocess.run(["git", "init", "-q"], cwd=work, check=True)
         before = snapshot(work)
-        code, output = run_agent(arm, prompt, work)
+        code, output = run_agent(arm, prompt, work, plugin_dir)
         changed, deleted = diff_snapshots(before, snapshot(work))
         files = [(p, (work / p).read_text(errors="replace")) for p in changed]
 
@@ -116,7 +126,7 @@ def main(argv=None):
     parser = argparse.ArgumentParser(description="Run eval scenarios for one skill.")
     parser.add_argument("skill")
     parser.add_argument("--scenario")
-    parser.add_argument("--arm", choices=["baseline", "skill", "both"], default="both")
+    parser.add_argument("--arm", choices=["baseline", "skill", "both", "standalone"], default="both")
     parser.add_argument("--dry-run", action="store_true", help="print what would run")
     args = parser.parse_args(argv)
 
@@ -139,7 +149,8 @@ def main(argv=None):
     for scenario_dir in scenarios:
         for arm in arms:
             if args.dry_run:
-                print(f"{scenario_dir.name} [{arm}]: {' '.join(agent_command(arm))}")
+                plugin_dir = Path(f"<temp plugin with only {args.skill}>") if arm == "standalone" else ROOT
+                print(f"{scenario_dir.name} [{arm}]: {' '.join(agent_command(arm, plugin_dir))}")
                 continue
             print(f"{scenario_dir.name} [{arm}] ... ", end="", flush=True)
             out, ok = run_scenario(args.skill, scenario_dir, arm)

@@ -20,7 +20,7 @@ STREAM = "\n".join([
 
 
 def stub_agent(script):
-    return mock.patch.object(run, "agent_command", lambda arm: ["sh", "-c", script])
+    return mock.patch.object(run, "agent_command", lambda arm, plugin_dir: ["sh", "-c", script])
 
 
 class SnapshotTest(unittest.TestCase):
@@ -45,6 +45,24 @@ class SnapshotTest(unittest.TestCase):
         cmd = run.agent_command("skill")
         self.assertEqual(cmd[cmd.index("--add-dir") + 1], str(run.ROOT / "skills"))
         self.assertNotIn("--add-dir", run.agent_command("baseline"))
+
+    def test_standalone_arm_loads_given_plugin_dir(self):
+        plugin = Path("/tmp/one-skill")
+        cmd = run.agent_command("standalone", plugin)
+        self.assertEqual(cmd[cmd.index("--plugin-dir") + 1], str(plugin))
+        self.assertEqual(cmd[cmd.index("--add-dir") + 1], str(plugin / "skills"))
+
+    def test_standalone_plugin_holds_only_one_skill(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            plugin = Path(tmp)
+            run.build_standalone_plugin("opsgate-iac", plugin)
+            self.assertEqual([p.name for p in (plugin / "skills").iterdir()], ["opsgate-iac"])
+            self.assertTrue((plugin / "skills" / "opsgate-iac" / "SKILL.md").is_file())
+            self.assertTrue((plugin / ".claude-plugin" / "plugin.json").is_file())
+
+    def test_dry_run_accepts_standalone_arm(self):
+        with mock.patch("sys.stdout"):
+            self.assertEqual(run.main(["opsgate-iac", "--arm", "standalone", "--dry-run"]), 0)
 
 
 class ParseStreamTest(unittest.TestCase):
