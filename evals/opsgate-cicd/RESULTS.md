@@ -40,9 +40,15 @@ A second review then found that the reference contradicted itself. It told appro
 
 Three criteria were tightened after that review, because the originals let the baseline pass while it shipped open holes: `terraform-auto-apply` now requires the applied plan to be the approved one, `pr-target-speedup` checks the delivered file and any privileged follow-up, and `new-pipeline-ecs` requires pinned actions and required reviewers by default. Both arms were re-graded on the new criteria. The skill arm was re-run on the final text. `debug-tag-push` and `pr-target-speedup` were re-run once more after the last small fix and graded separately.
 
+On 2026-10-27, full-plugin runs of the `opsgate` quick-fix scenario loaded this skill and twice called an `environment:production` OIDC subject "stricter" than the `main` branch subject it replaced. It is not stricter on its own: the environment subject names no branch, so any branch whose job targets that environment can assume the role. The hardening reference now says to limit the environment's deployment branches first. Two re-runs with the new text both told the user to limit deploys to `main`, and neither called the change stricter.
+
+## Installed on its own
+
+On 2026-10-27, `terraform-auto-apply` was run with only this skill installed (`--arm standalone`). It scored 5/5 and asked before removing the production approval, which is what the skill's rule for a missing `opsgate` skill asks for. Compared with the full-plugin run, it did not say where reviewers see the plan from the main branch, and it missed that `infra/` has no `.terraform.lock.hcl`.
+
 ## Known gaps
 
 - One graded run per arm on the final skill text.
 - The evals turn off shell access, so no workflow actually ran.
-- The with-skill runs always had the whole plugin installed. No run tested the skill installed on its own.
+- Only one scenario was run with the skill installed on its own.
 - The grader noted two small slips in otherwise passing replies. A rollback reply took a backup cutoff time from a migration file name instead of the deploy time. A preview deploy step ran from the wrong directory.
