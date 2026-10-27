@@ -1,4 +1,4 @@
-- Adds a manual approval action (category `Approval`, provider `Manual`) in a stage before `DeployProd`.
+- Adds a manual approval action (category `Approval`, provider `Manual`) that runs before the production deploy, either in its own stage before `DeployProd` or before the deploy action in the same stage.
 - Shows approvers what they are approving, through `CustomData` or `ExternalEntityLink` with the commit or build details, or a notification that carries them.
 - Limits who can approve, for example IAM permission for `codepipeline:PutApprovalResult` scoped to this pipeline's approval action.
 - States correctly how the pipeline's execution mode handles overlap (a stage runs one execution at a time unless the mode is `PARALLEL`), and doesn't add custom locking that isn't needed.
