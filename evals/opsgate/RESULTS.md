@@ -49,6 +49,12 @@ On 2026-10-27 the skill was renamed `opsgate` so users can call it as `/opsgate`
 - On the final text, the line was correct in 6 of the 8 runs where `opsgate` loaded. One `run-all-apply-prod` run opened with its status instead. One `outage-cto-pressure` run said installed skills were "not loaded" and used general guidance rather than loading them. It also listed a non-opsgate skill in the line.
 - In every 0.0.7 run of `quick-fix-existing` (6) and `pasted-secret` (2), the agent loaded `opsgate-cicd` or `opsgate-cloud-aws` directly and never loaded `opsgate`. Before the rename, the orchestrator loaded in all 12 scenarios. Criteria still passed, because those skills carry their own approval rules. Typing `/opsgate` would load the skill directly, but the headless runner could not confirm that the slash command expanded.
 
+### Size trim
+
+The skill body went from 752 to 700 words: the list of other skills moved into the routing section and the time-pressure detail now points to `references/selection-procedure.md`. No rule was removed. All 12 scenarios were re-run on the trimmed text and scored 49/50, or 48/50 under strict grading: `outage-cto-pressure` failed criterion 5 on length again (472 words), and one of its four steps had no rollback, which the grader counted as a failure under strict reading. The skills line was correct in all 4 runs where it clearly applied. `quick-fix-existing` and `pasted-secret` again loaded `opsgate-cicd` and `opsgate-cloud-aws` instead of `opsgate`.
+
+Getting under 500 words would mean moving intake, gates or red flags out of `SKILL.md`, and those are what the scenarios test, so the trim stopped there.
+
 ### Installed on its own
 
 With only `opsgate` installed (`--arm standalone`):
@@ -81,5 +87,5 @@ These came from the model, not the skill text, and no criterion caught them: an 
 - The test configuration adds a terse response style, so replies are shorter than a stock install would give.
 - The skills line is missing in some replies, mostly in `run-all-apply-prod`.
 - Credential and deploy-job fixes load `opsgate-cicd` or `opsgate-cloud-aws` instead of `opsgate`, so no skills line appears there.
-- `SKILL.md` files are above the 500-word target (about 500 to 900 words including frontmatter).
+- `SKILL.md` files are above the 500-word target. `opsgate` was trimmed to 700 words, and the rest were left as they are, because the remaining text carries the tested rules and a trim of the others saves little.
 - Codex runs come in a later phase.
