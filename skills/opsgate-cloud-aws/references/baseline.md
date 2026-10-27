@@ -11,13 +11,13 @@
 
 - People sign in through IAM Identity Center (or an external identity provider) with MFA and short-lived credentials. No IAM users for people.
 - Workloads use roles: instance profiles, task roles, execution roles.
-- CI/CD uses OIDC federation to assume a role scoped to the repository, branch or environment. No stored access keys.
+- CI/CD uses OIDC federation to assume a role scoped to the repository and branch, and for production roles only to the protected environment's subject (see `opsgate-cicd`). No stored access keys.
 - Least privilege, reviewed with IAM Access Analyzer. Use permission boundaries where teams create their own roles.
 
 ## Network
 
 - Private subnets for workloads, isolated subnets for data, and public subnets only for load balancers and NAT.
-- Security groups reference other security groups instead of CIDR ranges where possible. No `0.0.0.0/0` ingress except HTTPS on public load balancers, and HTTP only when it just redirects to HTTPS.
+- Security groups reference other security groups instead of CIDR ranges where possible. No `0.0.0.0/0` or `::/0` ingress except HTTPS on public load balancers, and HTTP only when it just redirects to HTTPS.
 - No SSH or RDP open to the internet. Use Session Manager instead.
 - Default security group locked down. Remove or leave unused the default VPC.
 - VPC flow logs on.

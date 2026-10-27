@@ -21,7 +21,7 @@ Check the ones for the services you touch. For details and current limits, use t
 ## Network
 
 - NAT gateways charge per GB processed as well as per hour. S3 and DynamoDB traffic can use gateway endpoints instead.
-- Lambda functions in a VPC have no internet access without a NAT gateway. VPC endpoints reach AWS services only, not the internet.
+- Lambda functions in a VPC have no IPv4 internet access without a NAT gateway (IPv6 needs dual-stack subnets and an egress-only internet gateway). VPC endpoints reach AWS services only, not the internet.
 - Public IPv4 addresses are charged per hour, including those on load balancers and instances.
 - Security group rules that reference a CIDR break when IP ranges change. Reference security groups instead.
 - Overlapping CIDRs block peering and Transit Gateway routing later.
