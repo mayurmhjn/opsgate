@@ -33,7 +33,7 @@ Prefer no secret at all: OIDC and roles for CI and workloads. Where a secret is 
 
 ## Access policy reviews
 
-Flag escalation paths first: `iam:PassRole` without an `iam:PassedToService` condition, `iam:*`, `iam:CreatePolicyVersion`, `iam:AttachRolePolicy` or `iam:PutRolePolicy`, `iam:UpdateAssumeRolePolicy`, `iam:CreateAccessKey`, `sts:AssumeRole` on `*`, and compute actions that run code under another role (for example `lambda:UpdateFunctionCode` or `ecs:ExecuteCommand`). Then broad service wildcards. Propose a scoped replacement with conditions, and suggest IAM Access Analyzer validation and last-accessed data.
+Flag escalation paths first, for example `iam:PassRole` without an `iam:PassedToService` condition, `iam:*`, `iam:CreatePolicyVersion`, `iam:AttachRolePolicy` or `iam:PutRolePolicy`, `iam:UpdateAssumeRolePolicy`, `iam:CreateAccessKey`, the user and group variants (`iam:AttachUserPolicy`, `iam:PutUserPolicy`, `iam:AddUserToGroup`, `iam:CreateLoginProfile`, `iam:UpdateLoginProfile`), `iam:SetDefaultPolicyVersion`, `sts:AssumeRole` on `*`, and compute actions that run code under another role (for example `lambda:UpdateFunctionCode` or `ecs:ExecuteCommand`). Then broad service wildcards. Propose a scoped replacement with conditions, and suggest IAM Access Analyzer validation and last-accessed data.
 
 ## Supply chain
 
