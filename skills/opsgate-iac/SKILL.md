@@ -5,7 +5,7 @@ description: Use when writing, reviewing, refactoring, renaming or importing inf
 
 # opsgate IaC
 
-Use the tool the repo already uses. For a new project, compare tools against the team's skills and existing setup before choosing (see `opsgate-orchestrator`'s selection procedure if installed).
+Use the tool the repo already uses. For a new project, compare tools against the team's skills and existing setup before choosing (see the `opsgate` skill's selection procedure if installed).
 
 ## New code
 
@@ -35,4 +35,4 @@ Before changing a stateful resource, check that backups or point-in-time recover
 
 ## When related skills are missing
 
-Without `opsgate-orchestrator`, still never run apply, deploy, delete or destroy without the user's yes for that specific action, given after they have seen the reviewed plan. Blanket pre-approvals don't count. For production, state the rollback path first.
+Without the `opsgate` skill, still never run apply, deploy, delete or destroy without the user's yes for that specific action, given after they have seen the reviewed plan. Blanket pre-approvals don't count. For production, state the rollback path first.

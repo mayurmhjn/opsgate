@@ -40,4 +40,4 @@ Edit files only after the user picks which savings to make.
 
 ## When related skills are missing
 
-If `opsgate-orchestrator` is not installed, still follow the approval rules above: no apply, deploy, resize, delete or destroy without a yes for that action. The yes must come after the user has seen the reviewed plan for that action. Blanket pre-approvals don't count.
+If the `opsgate` skill is not installed, still follow the approval rules above: no apply, deploy, resize, delete or destroy without a yes for that action. The yes must come after the user has seen the reviewed plan for that action. Blanket pre-approvals don't count.

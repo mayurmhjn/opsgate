@@ -36,4 +36,4 @@ New AWS setups follow `references/baseline.md`: lock down root, separate account
 
 ## When related skills are missing
 
-If `opsgate-orchestrator` is not installed, still never run apply, deploy, delete or destroy without the user's explicit yes for that action. The yes must come after the user has seen the reviewed plan for that action. Blanket pre-approvals don't count.
+If the `opsgate` skill is not installed, still never run apply, deploy, delete or destroy without the user's explicit yes for that action. The yes must come after the user has seen the reviewed plan for that action. Blanket pre-approvals don't count.

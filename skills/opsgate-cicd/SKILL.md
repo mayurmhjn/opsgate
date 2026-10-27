@@ -5,7 +5,7 @@ description: Use when creating, changing, speeding up or debugging CI/CD pipelin
 
 # opsgate CI/CD
 
-Use the CI system the repo already uses. For a new project, compare options against the team's setup before choosing (with `opsgate-orchestrator`'s selection procedure if installed). Pipeline changes ship to everyone who touches the repo, so they follow the same review rules as production code. List every behavior change you make, including steps you removed or replaced. For systems other than GitHub Actions, see `references/other-ci.md`.
+Use the CI system the repo already uses. For a new project, compare options against the team's setup before choosing (with the `opsgate` skill's selection procedure if installed). Pipeline changes ship to everyone who touches the repo, so they follow the same review rules as production code. List every behavior change you make, including steps you removed or replaced. For systems other than GitHub Actions, see `references/other-ci.md`.
 
 ## Production deploys are gated
 
@@ -46,4 +46,4 @@ Follow `references/release-rollback.md`: redeploy the last known-good artifact r
 
 ## When related skills are missing
 
-Without `opsgate-orchestrator`, still never run a production deploy, apply or rollback without the user's yes for that specific action, given after they have seen what it will do.
+Without the `opsgate` skill, still never run a production deploy, apply or rollback without the user's yes for that specific action, given after they have seen what it will do.

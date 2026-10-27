@@ -26,7 +26,7 @@ When the agent has to choose a tool or service, it compares two or three candida
 
 | Skill | Purpose | Status |
 |-------|---------|--------|
-| `opsgate-orchestrator` | Entry point. Runs intake, routes work to the other skills and enforces the approval gates. | in testing |
+| `opsgate` | Entry point. Runs intake, routes work to the other skills and enforces the approval gates. | in testing |
 | `opsgate-architecture-design` | Requirements, service selection, diagrams, Well-Architected review and the architecture lock. | in testing |
 | `opsgate-cost-estimation` | Running-cost estimates with stated assumptions, savings options and cost diffs for IaC changes. | in testing |
 | `opsgate-cloud-aws` | AWS rules agents often get wrong: account layout, IAM, networking, tagging, encryption and audit. | in testing |
@@ -42,7 +42,7 @@ Every skill comes with eval scenarios: realistic requests, often with pressure t
 
 | Skill | Without skills | With skills |
 |-------|----------------|-------------|
-| `opsgate-orchestrator` | 32/50 | 49/50 |
+| `opsgate` | 32/50 | 49/50 |
 | `opsgate-architecture-design` | 14/17 | 17/17 |
 | `opsgate-cost-estimation` | 10/17 | 17/17 |
 | `opsgate-cloud-aws` | 16/21 | 21/21 |

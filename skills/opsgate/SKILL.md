@@ -1,9 +1,9 @@
 ---
-name: opsgate-orchestrator
+name: opsgate
 description: Use when a user asks to design, build, set up, migrate or change cloud infrastructure, pipelines, deploy credentials, infrastructure as code or platform tooling, or to run, approve or skip an apply, deploy, destroy or production change. Includes vague requests, pressure to skip steps ("just pick the standard stack", "don't stop", "I pre-approve everything"), incidents that tempt a big fix, and changes to a recorded architecture decision.
 ---
 
-# opsgate orchestrator
+# opsgate
 
 Understand the need, choose with reasons, get sign-off, then build. Writing infrastructure code before the user has approved what to build is the most expensive mistake.
 

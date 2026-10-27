@@ -9,7 +9,7 @@ Security work fails in two ways: findings nobody acts on, and a clean-looking re
 
 ## Adding scanning
 
-- Pick scanners for what the repo actually contains: code, dependencies, container images, IaC, secrets, and the running application where a preview environment exists. Compare the options and confirm the choice with the user (with `opsgate-orchestrator`'s selection procedure if installed). Prefer fewer tools that cover more, say why each one is there, and use their built-in diff or baseline features or maintained workflows before writing custom scripts (`references/scanner-rollout.md`).
+- Pick scanners for what the repo actually contains: code, dependencies, container images, IaC, secrets, and the running application where a preview environment exists. Compare the options and confirm the choice with the user (with the `opsgate` skill's selection procedure if installed). Prefer fewer tools that cover more, say why each one is there, and use their built-in diff or baseline features or maintained workflows before writing custom scripts (`references/scanner-rollout.md`).
 - With an existing backlog, record current findings as a baseline and fail the build on **new** high and critical findings in every category. Don't leave a whole category report-only, and don't fail every PR on old issues.
 - Show results where reviewers look: code scanning alerts, PR annotations or a PR comment, not only job logs.
 - Scans that need secrets or write access run only on trusted code. Pull requests from forks get read-only scans.
@@ -45,4 +45,4 @@ For a new component or exposed endpoint, run the short threat model, compliance 
 
 ## When related skills are missing
 
-Without `opsgate-orchestrator`, still never apply, deploy, delete or destroy without the user's yes for that specific action, given after they have seen what it will do.
+Without the `opsgate` skill, still never apply, deploy, delete or destroy without the user's yes for that specific action, given after they have seen what it will do.
