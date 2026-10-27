@@ -41,6 +41,24 @@ The model already handled leaked keys, IAM policy review and the core of signing
 - The `zero-findings-friday` fixture had no infrastructure files, so neither arm could apply a fix. Real Terraform files and a `package.json` were added, and both arms were re-run. Criterion 1 now asks for the fix in the code.
 - Two `add-scanning` criteria were reworded to state the bar they were graded against: a gate in every category, and pinning to a full SHA with pull request results on the pull request. Both arms were re-graded.
 
+## Design review, policy as code and threat modeling (2026-10-27)
+
+Three scenarios were added for the parts of the skill no eval covered. Both arms ran on 2026-10-27. After the first grading, three criteria were changed and disclosed here: `policy-as-code-guardrails` line 1 now also accepts a concrete proposal that waits for the user to confirm the tool, because the skill asks for that confirmation; `threat-model-admin-tool` line 5 was split into "names an owner for each risk" and "asks at least two of the questions that would change the model". Both arms are scored on the current criteria.
+
+| Scenario | Without skills | With skills |
+|----------|----------------|-------------|
+| design-review-webhook | 5/5 | 5/5 |
+| policy-as-code-guardrails | 2/5 | 4/5 |
+| threat-model-admin-tool | 5/6 | 5/6 |
+| **Total** | **12/16** | **14/16** |
+
+The first with-skill runs matched the baseline (11 of 15 on the old criteria): the policy-as-code rules in `references/design-review.md` never came up, because `SKILL.md` only sent new components there. The skill now sends policy-as-code and guardrail work to that section, with owners, an exception process and the note that service control policies don't apply to the management account, and threat models end with a risk, control and owner table. The scores above are from the re-run on that text.
+
+- Both arms review the webhook well. The model already knows Stripe signature checks, replay protection and log redaction.
+- Neither arm names owners: the threat model left every owner as "?", and the policy reply asked who owns the policies without proposing an exception process.
+- In the latest webhook run no opsgate skill loaded. In the latest `ci-role-review` run the AWS skill loaded instead of this one and dropped the Access Analyzer suggestion, so `opsgate-cloud-aws` now suggests Access Analyzer and last-accessed data for policy reviews too. Two re-runs both made the suggestion; only that line was re-checked.
+- Wrong or loose claims in replies: one said ECR pushes to a repository with a customer managed KMS key need `kms:` permissions on the pushing role (likely wrong, since ECR uses grants), one listed card brand and last four digits as part of a `payment_intent.succeeded` payload, and one put Cognito login under the ALB's `authenticate-oidc` action instead of `authenticate-cognito`.
+
 ## Known gaps
 
 - One graded run per arm. All with-skill runs above used the final skill text. The `zero-findings-friday` baseline was re-run on the new fixture; the other baselines are from the first run, on fixtures that did not change.
