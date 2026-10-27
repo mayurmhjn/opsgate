@@ -48,6 +48,6 @@ If the skill is not installed, say so in one line and continue with this skill's
 ## Commands against real accounts
 
 1. Before the first command that touches a cloud account, find out which account, role and environment it reaches: ask, or run `aws sts get-caller-identity` (or the tool's equivalent) as a command on its own. Compare the result with the account or environment the user named. If they don't match, or nothing says which environment this is, say what you found and ask before going on.
-2. After that, read-only commands are fine: describe and list calls, pricing queries, logs, and `plan` against non-production environments.
+2. After that, read-only commands are fine: describe and list calls, pricing queries, logs, and `plan` against non-production environments (plan still runs provider and external data source code).
 3. Ask before running a plan against production, unless the user asked for that plan, and before installing any tool. A plan the user asked for still waits for the account check in rule 1.
 4. Never run apply, deploy, delete or destroy without a yes for that specific action. For production, state the rollback path first.

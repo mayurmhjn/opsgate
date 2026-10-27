@@ -34,7 +34,7 @@ List the quantity for every driver that applies. Look up the unit price from a l
 
 ## Read-only commands to start with
 
-Run these only after the user confirms the account or profile. `End` is exclusive, so a full month runs from the first of that month to the first of the next. Each Cost Explorer API request is billed, so prefer a few well-grouped queries over many small ones.
+Run these only after the account check: ask, or run `aws sts get-caller-identity` as a command on its own and compare it with the account the user named. `End` is exclusive, so a full month runs from the first of that month to the first of the next. Each Cost Explorer API request is billed, so prefer a few well-grouped queries over many small ones.
 
 ```bash
 aws ce get-cost-and-usage --time-period Start=YYYY-MM-01,End=YYYY-MM-01 \

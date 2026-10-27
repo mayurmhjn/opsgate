@@ -13,8 +13,9 @@ This skill holds the cross-cutting AWS rules that apply to every task. For depth
 - **Check the known traps** in `references/traps.md` before writing code for the service involved.
 - **Pasted credentials.** If the user pastes an access key or secret, never repeat it back and never write it to a file. Tell them it is exposed: deactivate it, check CloudTrail for any use, and rotate it. Then move them to OIDC or roles, or a secret store where a stored secret is unavoidable.
 - **Whole-setup reviews and audits** belong to `opsgate-architecture-design` if it is installed. Load it. Either way, say which proposed fixes replace a resource, such as changing an instance's key pair, subnet or root volume encryption.
+- **Check the account before any command against it:** ask, or run `aws sts get-caller-identity` as a command on its own, and stop if it isn't the account or environment the user named.
 - **Ask for the region, account and environment** instead of defaulting them. Recommend one if the user has no preference.
-- **Validate before apply.** Tell the user to run `fmt`, `validate` and `plan` (or the tool's equivalent, such as a CloudFormation change set or `cdk diff`) and to review the plan. Don't make `-target` a routine step. It leaves state partly applied, so use it only for exceptional cases, such as values unknown until apply in `count` or `for_each`, or recovering from a mistake, and say why.
+- **Validate before apply.** Tell the user to run `fmt`, `validate` and `plan` (or the tool's equivalent, such as a CloudFormation change set, or `cdk diff`, which is advisory; see `opsgate-iac`) and to review the plan. Don't make `-target` a routine step. It leaves state partly applied, so use it only for exceptional cases, such as values unknown until apply in `count` or `for_each`, or recovering from a mistake, and say why.
 
 ## IAM
 
