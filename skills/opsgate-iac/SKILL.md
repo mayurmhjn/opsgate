@@ -29,7 +29,7 @@ Before changing a stateful resource, check that backups or point-in-time recover
 - When a change is cosmetic (a rename for style), first offer the option that changes no infrastructure, such as keeping the resource or construct ID and renaming only the code.
 - Adopt with `import` blocks, refactor with `moved` blocks, and stop managing a resource without deleting it with a `removed` block that keeps it (or the tool's equivalent). Continue until the plan shows no unintended changes.
 - Don't change existing backend, version or provider settings while doing another task. Suggest those changes separately.
-- Before importing, confirm the account and region the resource lives in. Take every value from the real resource (describe output or generated configuration). Leave out what you can't see rather than guessing it.
+- Before running `plan`, `import` or any other command against an account, confirm the account and region: run `aws sts get-caller-identity` as a command on its own, or ask. Stop if it isn't the environment the user named. Take every value from the real resource (describe output or generated configuration). Leave out what you can't see rather than guessing it.
 - `force-unlock`, `state rm`, `state mv` and `-target` need a stated reason and the user's yes. Never edit state by hand.
 - Try experimental or unstable commands (for example, generated configuration or refactoring commands behind an unstable flag) on non-production first, and review their output before trusting it.
 
