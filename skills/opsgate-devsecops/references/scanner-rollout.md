@@ -27,8 +27,8 @@ Every category gates on new high and critical findings from the first day. Lower
 
 ## Making results visible
 
-- Upload SARIF to code scanning on pushes to the default branch and on pull requests from the same repository, so reviewers see alerts on the diff. The upload job needs `security-events: write`, plus `actions: read` in private repositories. Code scanning on private repositories needs a code security license. Without one, use annotations or the job summary.
-- Pull requests from forks get a read-only token, so uploads fail there. Show results as annotations or in the job summary instead.
+- Upload SARIF to code scanning on pushes to the default branch and on `pull_request` runs, so reviewers see alerts on the diff. The upload job needs `security-events: write`, plus `actions: read` in private repositories. Code scanning on private repositories needs a code security license. Without one, use annotations or the job summary.
+- Code scanning accepts uploads from `pull_request` runs even with a read-only token, fork pull requests included. Other triggers need `security-events: write`.
 - Make the scan jobs required status checks.
 
 ## Safety of the scan jobs
