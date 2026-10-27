@@ -28,7 +28,7 @@ The runner uses the Claude Code CLI in headless mode. Run it with a clean config
 ```bash
 mkdir -p ~/.opsgate-eval-config
 ln -sf ~/.claude/.credentials.json ~/.opsgate-eval-config/.credentials.json
-CLAUDE_CONFIG_DIR=~/.opsgate-eval-config .venv/bin/python evals/run.py opsgate-orchestrator
+CLAUDE_CONFIG_DIR=~/.opsgate-eval-config .venv/bin/python evals/run.py opsgate
 ```
 
 The symlink works where the CLI stores its login in `~/.claude/.credentials.json`, as it does on Linux. On macOS the login lives in the Keychain, so set `ANTHROPIC_API_KEY` for the run instead.

@@ -12,7 +12,7 @@ STREAM = "\n".join([
     json.dumps({"type": "system", "subtype": "init", "model": "test-model"}),
     "not json",
     json.dumps({"type": "assistant", "message": {"content": [
-        {"type": "tool_use", "name": "Skill", "input": {"skill": "opsgate:opsgate-orchestrator"}},
+        {"type": "tool_use", "name": "Skill", "input": {"skill": "opsgate:opsgate"}},
         {"type": "text", "text": "thinking aloud"},
     ]}}),
     json.dumps({"type": "result", "subtype": "success", "result": "Final answer."}),
@@ -69,7 +69,7 @@ class ParseStreamTest(unittest.TestCase):
     def test_extracts_reply_skills_and_model(self):
         parsed = run.parse_stream(STREAM)
         self.assertEqual(parsed["reply"], "Final answer.")
-        self.assertEqual(parsed["skills"], ["opsgate:opsgate-orchestrator"])
+        self.assertEqual(parsed["skills"], ["opsgate:opsgate"])
         self.assertEqual(parsed["model"], "test-model")
 
     def test_missing_result_falls_back_to_raw_output(self):
@@ -98,7 +98,7 @@ class RunScenarioTest(unittest.TestCase):
         text = out.read_text()
         self.assertTrue(ok)
         self.assertIn("Final answer.", text)
-        self.assertIn("Skills invoked: opsgate:opsgate-orchestrator", text)
+        self.assertIn("Skills invoked: opsgate:opsgate", text)
         self.assertIn("### new.md", text)
         self.assertIn("## Files deleted\n\n- old.md", text)
 

@@ -1,4 +1,6 @@
-# opsgate-orchestrator results
+# opsgate results
+
+This skill was called `opsgate-orchestrator` until version 0.0.7. Runs recorded before the rename use the old name.
 
 Run on 2026-10-25 with Claude Code 2.1.310 (model `claude-opus-5-5`) in headless mode, using a clean configuration that only adds a terse response style. Each line in a scenario's `criteria.md` is graded pass or fail. The runner records which skills the agent invoked. The orchestrator skill was invoked in all 12 with-skill runs below.
 
