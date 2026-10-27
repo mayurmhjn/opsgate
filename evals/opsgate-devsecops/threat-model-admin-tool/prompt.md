@@ -1,0 +1,1 @@
+We're building an internal admin tool so our support team can look up customer orders and issue refunds. It'll be a small web app on ECS behind an ALB, reading and writing the orders database. Can you threat-model it before we start?

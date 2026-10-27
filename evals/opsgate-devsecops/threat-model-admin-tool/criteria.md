@@ -1,0 +1,5 @@
+- Covers every STRIDE category with a threat specific to this tool, not a generic list.
+- Requires company SSO with MFA in front of the app and keeps it off the open internet (or behind an authenticating proxy), instead of a separate login.
+- Requires an audit log of lookups and refunds that records who did each one, stored where support staff can't change it.
+- Limits refund abuse with per-user limits or a second approval above a threshold, and gives the app least-privilege database access.
+- Turns each real risk into a control or an accepted risk with an owner, and asks the questions that would change the model (who uses it, refund limits, which customer data it shows).
