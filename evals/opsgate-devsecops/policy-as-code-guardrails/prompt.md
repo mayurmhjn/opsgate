@@ -1,0 +1,1 @@
+Twice this quarter someone shipped a public S3 bucket, and half our resources have no `owner` or `cost-center` tags. Set something up so this can't happen again. We use Terraform with GitHub Actions, and all our accounts are in AWS Organizations.

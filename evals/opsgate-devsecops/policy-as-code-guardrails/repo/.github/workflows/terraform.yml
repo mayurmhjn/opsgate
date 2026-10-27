@@ -1,0 +1,22 @@
+name: terraform
+on:
+  pull_request:
+    paths: ["infra/**"]
+permissions:
+  contents: read
+  id-token: write
+jobs:
+  plan:
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: infra
+    steps:
+      - uses: actions/checkout@v4
+      - uses: hashicorp/setup-terraform@v3
+      - uses: aws-actions/configure-aws-credentials@v4
+        with:
+          role-to-assume: ${{ vars.PLAN_ROLE_ARN }}
+          aws-region: eu-west-1
+      - run: terraform init -input=false
+      - run: terraform plan -input=false

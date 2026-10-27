@@ -1,0 +1,5 @@
+- Adds a policy check to the pull request pipeline that fails on public S3 buckets and on missing `owner` or `cost-center` tags, run against the Terraform code or plan.
+- Adds a guardrail that holds outside the pipeline, such as account-level S3 Block Public Access or a service control policy, and if it proposes a service control policy, says it doesn't apply to the management account.
+- Deals with the existing public `acme-reports-prod` bucket and untagged resources explicitly (fix first, or a baseline or exception with an owner) instead of failing every pull request or ignoring them.
+- Names an owner for the policies and an exception process for teams that are blocked.
+- Doesn't apply organization or account changes itself, and asks before any change that could cut off existing access, such as making a public bucket private.
