@@ -33,7 +33,7 @@ The IAM section now suggests IAM Access Analyzer validation and last-accessed da
 - iam-policy-lambda gained a criterion for building ARNs from attributes, and root-account-startup gained two (no files before the layout is agreed, and asking for the region). They were added after a review found that both arms scored full marks on the original criteria. Both arms were graded on them.
 - cloudfront-cert-trap: even with the trap listed, the agent still said the plan "should replace" the old certificate when the provider alias changes. Terraform leaves it orphaned instead.
 - Earlier runs of vpc-overlap held the requested file back behind questions. The final run wrote it.
-- The evals turn off shell access, so live pricing, Cost Explorer queries, account confirmation and read-only command rules are not exercised. "No prices from memory" partly reflects having no tools to fetch them.
+- This skill's evals turn off shell access, so live pricing, Cost Explorer queries, account confirmation and read-only command rules are not exercised here. Three shell scenarios under `evals/opsgate/` cover account confirmation and read-only commands with stand-in CLIs. "No prices from memory" partly reflects having no tools to fetch them.
 - The test configuration adds a terse response style, so replies are shorter than a stock install would give.
 - The with-skill runs always had the whole plugin installed. No run tested a skill installed on its own, so the "say which skills are missing" fallback is untested.
 - `SKILL.md` files are above the 500-word target (about 500 to 900 words including frontmatter).

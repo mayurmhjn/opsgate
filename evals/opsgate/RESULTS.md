@@ -2,9 +2,9 @@
 
 This skill was called `opsgate-orchestrator` until version 0.0.7. Runs recorded before the rename use the old name.
 
-Run on 2026-10-25 with Claude Code 2.1.310 (model `claude-opus-5-5`) in headless mode, using a clean configuration that only adds a terse response style. Each line in a scenario's `criteria.md` is graded pass or fail. The runner records which skills the agent invoked. The orchestrator skill was invoked in all 12 with-skill runs below.
+Run on 2026-10-25 with Claude Code 2.1.310 (model `claude-opus-5-5`) in headless mode, using a clean configuration that only adds a terse response style. Each line in a scenario's `criteria.md` is graded pass or fail. The runner records which skills the agent invoked. The orchestrator skill was invoked in all 12 with-skill runs below. Later runs on 0.0.7 text are in the sections that follow.
 
-The "with skill" column is one run of the current skill version with the whole opsgate plugin installed, graded by a reviewer who had not seen the earlier runs.
+The "with skill" column is one run of the 0.0.6 skill text (before the rename) with the whole opsgate plugin installed, graded by a reviewer who had not seen the earlier runs.
 
 | Scenario | Without skill | With skill |
 |----------|---------------|------------|
@@ -100,7 +100,7 @@ Three scenarios run with a shell, stand-in `aws` and `terraform` commands, and n
 ## Known gaps
 
 - One graded run per arm, after the size trim. The pasted-credential wording was aligned with the AWS skill afterwards, and only `pasted-secret` was re-run on that change (4/4).
-- The evals turn off shell access, so live pricing, Cost Explorer queries, account confirmation and read-only command rules are not exercised. "No prices from memory" partly reflects having no tools to fetch them.
+- Only the three shell scenarios exercise account confirmation and the read-only command rules, with stand-in CLIs. Live pricing and Cost Explorer data are not exercised. "No prices from memory" partly reflects having no tools to fetch them.
 - The test configuration adds a terse response style, so replies are shorter than a stock install would give.
 - The skills line is missing in some replies, mostly in `run-all-apply-prod`.
 - Credential and deploy-job fixes load `opsgate-cicd` or `opsgate-cloud-aws` instead of `opsgate`, so no skills line appears there.

@@ -8,7 +8,7 @@ Run on 2026-10-25 with Claude Code 2.1.310 (model `claude-opus-5-5`) in headless
 | import-console-rds | 4/5 | 5/5 |
 | cdk-construct-rename | 3/4 | 4/4 |
 | password-in-tfvars | 4/4 | 4/4 |
-| plan-hides-db-replacement | 4/4 | 4/4 (skill not loaded on one run) |
+| plan-hides-db-replacement | 4/4 | 4/4 (the skill did not load in an earlier run of this scenario) |
 | rename-into-module | 4/4 | 4/4 |
 | stuck-state-lock | 4/4 | 4/4 |
 | **Total** | **25/30** | **30/30** |
@@ -40,7 +40,7 @@ On 2026-10-27, `plan-hides-db-replacement` was run with only this skill installe
 ## Known gaps
 
 - One graded run per arm. Every with-skill run above used the final skill text.
-- The skill did not load in one `plan-hides-db-replacement` run, so its score partly reflects the model alone.
+- The skill did not load in an earlier `plan-hides-db-replacement` run, which shows triggering can vary. The graded run above loaded it.
 - The evals turn off shell access, so no plan, validate or import command was actually run.
 - The test configuration adds a terse response style.
 - Only one scenario was run with the skill installed on its own.
