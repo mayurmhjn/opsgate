@@ -37,7 +37,13 @@ Options: `--scenario NAME` runs one scenario, `--arm baseline` or `--arm skill` 
 
 `--arm standalone` loads only the skill under test, the way someone would have it after installing that one skill on its own. Use it to check what a skill does when the others it hands off to are missing. It is not part of `both`.
 
-The agent can read and write files in a temporary copy of `repo/`, but it can't run shell commands. With the clean configuration above, that means nothing touches a real cloud account. Results land in `evals/results/<skill>/<scenario>/<arm>.md`, which git ignores. Each one records the model, the exit code, which skills the agent invoked, the prompt, the reply, and every file the agent created, changed or deleted.
+The agent can read and write files in a temporary copy of `repo/`, but it can't run shell commands unless the scenario has a `shell/` folder (see below). With the clean configuration above, that means nothing touches a real cloud account. Results land in `evals/results/<skill>/<scenario>/<arm>.md`, which git ignores. Each one records the model, the exit code, which skills the agent invoked, the prompt, the reply, and every file the agent created, changed or deleted.
+
+## Shell scenarios
+
+A scenario with a `shell/` folder runs with shell access in both arms, to test how the agent uses cloud CLIs. The runner removes every `AWS_` variable, points the AWS config, credentials and kubeconfig files at an empty file, gives the agent an empty home directory, and puts stand-ins for `aws`, `terraform`, `tofu` and `kubectl` first on the path. A stand-in runs the matching executable script in `shell/` (for example `shell/aws`) with the same arguments, so the scenario decides what each command prints. Without a script, the stand-in fails with "not available in this environment". The result file lists every shell command the agent ran.
+
+This is not a full sandbox. The agent can still read files by absolute path and run other programs, so only run shell scenarios on a machine without cloud credentials or tools you care about.
 
 ## Grading
 
