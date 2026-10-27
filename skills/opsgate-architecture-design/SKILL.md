@@ -35,4 +35,4 @@ Map RTO and RPO to a strategy with `references/dr-strategies.md`, and show why t
 
 ## When related skills are missing
 
-If `opsgate-cost-estimation` or `opsgate-cloud-aws` is not installed, say so in one line and continue. For service details, use the official AWS skills or the AWS documentation.
+The cost estimate needs `opsgate-cost-estimation`, and the account, IAM and network layout needs `opsgate-cloud-aws`. When the design covers one of these and its skill is not installed, name the missing skill in one line and continue. For service details, use the official AWS skills or the AWS documentation.
