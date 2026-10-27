@@ -20,7 +20,7 @@ Work moves through stages, and the agent stops for your approval at the end of e
 
 Small jobs on an existing system, like fixing a failed pipeline run, go straight to the stage they belong to.
 
-When the agent has to choose a tool or service, it compares two or three candidates against your requirements, recommends one, and explains why. It does not fall back on a default because it is popular. It never runs `apply`, deploy, delete or destroy without your explicit approval for that specific action.
+When the agent has to choose a tool or service, it compares two or three candidates against your requirements, recommends one, and explains why. It does not fall back on a default because it is popular. It is instructed never to run `apply`, deploy, delete or destroy without your explicit approval for that specific action, and the evals check this.
 
 ## Modules
 
