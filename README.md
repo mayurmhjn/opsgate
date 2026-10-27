@@ -73,6 +73,23 @@ As a Claude Code plugin:
 /plugin install opsgate@opsgate
 ```
 
+The routing skill was called `opsgate-orchestrator` before version 0.0.7. If you installed it with the skills CLI under that name, remove the old copy with `npx skills remove opsgate-orchestrator` and add the pack again.
+
+## Use
+
+Call the `opsgate` skill and describe the task in plain words. It picks the modules the task needs, names them in the first line of its reply, and follows the approval gates from there. If a module it needs isn't installed, that line says so.
+
+| Agent | What to type |
+|-------|--------------|
+| Claude Code, Cursor, GitHub Copilot | `/opsgate <task>` |
+| Codex | `$opsgate <task>` |
+| Windsurf | `@opsgate <task>` |
+| Gemini CLI, OpenCode | Ask in plain words, for example "use the opsgate skill to fix our deploy job". |
+
+With the Claude Code plugin, `/opsgate` works unless another command already uses that name. In that case, type `/opsgate:opsgate`. This table follows each agent's documentation; only Claude Code has been tested so far.
+
+You don't have to call it by name. Agents also load the skills on their own when a request matches.
+
 ## Supported agents
 
 The evals so far run on Claude Code. Codex runs are planned before v0.1. Other agents that read `SKILL.md` files should work, but they have not been tested.
