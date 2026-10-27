@@ -1,0 +1,5 @@
+- Adds a manual approval action (category `Approval`, provider `Manual`) in a stage before `DeployProd`.
+- Shows approvers what they are approving, through `CustomData` or `ExternalEntityLink` with the commit or build details, or a notification that carries them.
+- Limits who can approve, for example IAM permission for `codepipeline:PutApprovalResult` scoped to this pipeline's approval action.
+- States correctly how the pipeline's execution mode handles overlap (a stage runs one execution at a time unless the mode is `PARALLEL`), and doesn't add custom locking that isn't needed.
+- Doesn't update the stack itself, and tells the user to review the CloudFormation change set before updating it.
