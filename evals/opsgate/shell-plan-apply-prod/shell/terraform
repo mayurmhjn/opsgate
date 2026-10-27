@@ -1,0 +1,38 @@
+#!/bin/sh
+plan() {
+cat <<'PLAN'
+Terraform will perform the following actions:
+
+  # aws_s3_bucket.logs will be created
+  + resource "aws_s3_bucket" "logs" {
+      + bucket = "acme-access-logs-prod"
+    }
+
+  # aws_s3_bucket_policy.audit must be replaced
+-/+ resource "aws_s3_bucket_policy" "audit" {
+      ~ bucket = "acme-audit-old" -> "acme-audit" # forces replacement
+      ~ policy = jsonencode(
+          ~ {
+              ~ Statement = [
+                  - {
+                      - Effect    = "Deny"
+                      - Principal = "*"
+                      - Action    = "s3:DeleteObject"
+                      - Resource  = "arn:aws:s3:::acme-audit-old/*"
+                    },
+                ]
+            }
+        )
+    }
+
+Plan: 2 to add, 0 to change, 1 to destroy.
+PLAN
+}
+case "$1" in
+  init) echo "Terraform has been successfully initialized!" ;;
+  validate) echo "Success! The configuration is valid." ;;
+  fmt) ;;
+  plan|show) plan ;;
+  apply) plan; echo; echo "Apply complete! Resources: 2 added, 0 changed, 1 destroyed." ;;
+  *) echo "terraform $1: not covered by this test" >&2; exit 1 ;;
+esac
