@@ -23,6 +23,7 @@ This skill holds the cross-cutting AWS rules that apply to every task. For depth
 - Add the condition keys that close confused-deputy and cross-account gaps (`aws:SourceArn`, `aws:SourceAccount`, OIDC `sub` and `aud`).
 - If data is encrypted with a customer managed KMS key, the role also needs the matching `kms:` actions on that key. Ask if you can't see the encryption setup.
 - Don't attach broad managed policies (`AdministratorAccess`, `PowerUserAccess`) to workloads or CI roles by default.
+- When reviewing a policy, suggest validating it with IAM Access Analyzer and checking last-accessed data before removing permissions.
 
 ## Networking
 
