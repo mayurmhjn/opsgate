@@ -73,6 +73,15 @@ def snapshot(directory):
     }
 
 
+def describe_file(path):
+    """Text content for the result file, or a size note for binary files such as downloaded archives."""
+    data = path.read_bytes()
+    try:
+        return f"```\n{data.decode()}\n```"
+    except UnicodeDecodeError:
+        return f"(binary file, {len(data)} bytes)"
+
+
 def diff_snapshots(before, after):
     changed = sorted(p for p, h in after.items() if before.get(p) != h)
     deleted = sorted(p for p in before if p not in after)
@@ -140,7 +149,7 @@ def run_scenario(skill, scenario_dir, arm, results_dir=RESULTS_DIR):
         before = snapshot(work)
         code, output = run_agent(arm, prompt, work, plugin_dir, env)
         changed, deleted = diff_snapshots(before, snapshot(work))
-        files = [(p, (work / p).read_text(errors="replace")) for p in changed]
+        files = [(p, describe_file(work / p)) for p in changed]
 
     parsed = parse_stream(output)
     out = results_dir / skill / scenario_dir.name / f"{arm}.md"
@@ -155,7 +164,7 @@ def run_scenario(skill, scenario_dir, arm, results_dir=RESULTS_DIR):
         "## Reply", parsed["reply"],
         "## Files written",
     ]
-    parts += [f"### {p.as_posix()}\n\n```\n{text}\n```" for p, text in files] or ["(none)"]
+    parts += [f"### {p.as_posix()}\n\n{text}" for p, text in files] or ["(none)"]
     parts += ["## Files deleted", "\n".join(f"- {p.as_posix()}" for p in deleted) or "(none)"]
     if shell:
         parts += ["## Commands run", "\n".join(f"- `{c}`" for c in parsed["commands"]) or "(none)"]

@@ -149,6 +149,11 @@ class RunScenarioTest(unittest.TestCase):
         self.assertIn("Shell: on", text)
         self.assertIn("## Commands run\n\n- `aws sts get-caller-identity`", text)
 
+    def test_binary_files_are_listed_by_size_only(self):
+        with stub_agent("printf 'PK\\003\\004\\377\\376' > tool.zip"):
+            out, _ = run.run_scenario("opsgate-x", self.scenario, "baseline", self.results)
+        self.assertIn("### tool.zip\n\n(binary file, 6 bytes)", out.read_text())
+
     def test_nonzero_exit_is_recorded_as_failure(self):
         with stub_agent("echo boom >&2; exit 3"):
             out, ok = run.run_scenario("opsgate-x", self.scenario, "baseline", self.results)
