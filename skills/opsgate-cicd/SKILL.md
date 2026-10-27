@@ -11,6 +11,7 @@ Use the CI system the repo already uses. For a new project, compare options agai
 
 - Deploy to production through a protected environment with required reviewers. Roles that deploy to production trust only that environment. Concurrency must never cancel a running deploy. Treat these as required, not optional.
 - Build once and promote the same artifact through each environment, ending every deploy with a verify step (`references/release-rollback.md`).
+- When the pipeline itself is defined in CloudFormation, CDK or Terraform, don't update it yourself. Give the change, and tell the user to review the change set or plan before deploying it.
 - If the user wants deploys or applies to happen "automatically", explain what is lost, offer a middle ground (automatic for non-production, one approval for production), and ask before removing the approval.
 
 ## Infrastructure pipelines
