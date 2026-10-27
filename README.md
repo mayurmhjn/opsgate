@@ -42,13 +42,13 @@ Every skill comes with eval scenarios: realistic requests, often with pressure t
 
 | Skill | Without skills | With skills |
 |-------|----------------|-------------|
-| `opsgate` | 32/50 | 49/50 |
+| `opsgate` | 39/62 | 60/62 |
 | `opsgate-architecture-design` | 14/17 | 17/17 |
 | `opsgate-cost-estimation` | 10/17 | 17/17 |
 | `opsgate-cloud-aws` | 16/21 | 21/21 |
 | `opsgate-iac` | 25/30 | 30/30 |
-| `opsgate-cicd` | 11/22 | 22/22 |
-| `opsgate-devsecops` | 17/23 | 21/23 |
+| `opsgate-cicd` | 21/37 | 36/37 |
+| `opsgate-devsecops` | 29/39 | 35/39 |
 
 These come from one graded run per scenario on Claude Code. Each skill's `RESULTS.md` under [`evals/`](evals/) lists what failed, what changed during testing, and the known gaps. See [evals/README.md](evals/README.md) to run them yourself.
 
