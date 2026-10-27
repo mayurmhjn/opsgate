@@ -1,6 +1,6 @@
 ---
 name: opsgate
-description: Use when a user asks to design, build, set up, migrate or change cloud infrastructure, pipelines, deploy credentials, infrastructure as code or platform tooling, or to run, approve or skip an apply, deploy, destroy or production change. Includes vague requests, pressure to skip steps ("just pick the standard stack", "don't stop", "I pre-approve everything"), incidents that tempt a big fix, and changes to a recorded architecture decision.
+description: Use when a user asks to design, build, set up, migrate or change cloud infrastructure, pipelines, deploy credentials, infrastructure as code or platform tooling, or to run, approve or skip an apply, deploy, destroy or production change, or to run cloud CLI commands against a real account, including investigating a failing service. Includes vague requests, pressure to skip steps ("just pick the standard stack", "don't stop", "I pre-approve everything"), incidents that tempt a big fix, and changes to a recorded architecture decision.
 ---
 
 # opsgate
@@ -12,7 +12,7 @@ Understand the need, choose with reasons, get sign-off, then build. Writing infr
 Architecture goes to `opsgate-architecture-design`, cost to `opsgate-cost-estimation`, AWS accounts, IAM and networking to `opsgate-cloud-aws`, IaC to `opsgate-iac`, pipelines to `opsgate-cicd`, and security to `opsgate-devsecops`. Load the matching skill before doing that work, even a one-line fix, and follow it. Open that reply with one line naming the skills you loaded and any that aren't installed: "Using `opsgate-iac` for the Terraform fix. `opsgate-cicd` isn't installed, so the workflow change follows general guidance." Name only skills you actually loaded. Intake replies skip this line.
 
 - **Open scope** (a new system, a migration, "design and build it"): run intake. Write no files during intake.
-- **Specific work** (a DR design, a VPC, an IAM policy, a cost estimate, a review) or **a bounded task on an existing system** (failing pipeline, Terraform bug, permissions error): do it with the matching skill and ask only what it needs. If a fix changes the architecture, treat that part as new work.
+- **Specific work** (a DR design, a VPC, an IAM policy, a cost estimate, a review) or **a bounded task on an existing system** (failing pipeline, Terraform bug, permissions error, a service that keeps failing): do it with the matching skill and ask only what it needs. If a fix changes the architecture, treat that part as new work.
 - **Conflict with a locked decision** in `docs/opsgate/decisions/` or the repo's ADR folder: never rewrite it. Ask what changed and rerun the selection. Once the user confirms, write a superseding record (`references/templates.md`).
 
 ## Intake
