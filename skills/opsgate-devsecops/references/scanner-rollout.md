@@ -23,7 +23,7 @@ The goal is that the backlog doesn't grow while it is being worked down.
 - **Ignore file of current findings** where it doesn't: list today's findings in the tool's ignore file, each with a reason and an expiry date (use the tool's expiry field where it has one, such as `exp:` in `.trivyignore`), and fail on anything not in the file at high or critical severity.
 - Track the backlog itself in code scanning or an issue tracker, with owners.
 
-Every category gates on new high and critical findings from the first day. Lower severities can start as warnings. For container images, newly published vulnerabilities in the base image can fail unrelated pull requests. Gate only on findings with a fix available (for example an ignore-unfixed option), and catch the rest with a scheduled scan that opens issues.
+Every category gates on new high and critical findings from the first day. Lower severities can start as warnings. For container images, gate on findings with a fix available (for example an ignore-unfixed option), since nobody can act on the rest in a pull request. That option does not stop a newly published, fixable base image vulnerability from failing an unrelated pull request. Run a scheduled image scan that opens issues so base image updates happen on their own, and keep the pull request gate for findings the change could have fixed.
 
 ## Making results visible
 
