@@ -1,44 +1,98 @@
 # opsgate
 
-DevOps, platform engineering and SRE skills for AI agents.
+Skills that make AI coding agents work like a careful DevOps engineer on AWS.
 
-> **Status:** v0.1.0, an early release. All seven v1 skills are written and tested on Claude Code. Expect changes before v1.
+> **Status:** v0.1.0, an early release. Tested on Claude Code. Expect changes before v1.
 
-## What it does
+## Why
 
-AI coding agents know a lot about Terraform, pipelines and AWS, yet they often skip the habits an experienced engineer brings to the job. They pick a service before asking what the system needs, leave cost out of the design, and run changes nobody reviewed. opsgate is a set of skills that makes the agent work through those steps.
+AI agents know a lot about Terraform, pipelines and AWS. They still skip steps an experienced engineer wouldn't:
 
-Work moves through stages, and the agent stops for your approval at the end of each one:
+- They pick a service before asking what the system needs.
+- They leave cost out of the design.
+- They run changes nobody reviewed.
 
-1. Intake: is this a new project or a change to a running system, and where do you want to start?
-2. Requirements: availability, scale, data sensitivity, compliance, budget, team skills, and the tools you already use.
-3. Architecture: services, diagrams and a running-cost estimate, reviewed with you and then locked.
-4. Plan: a phased implementation plan built from the locked architecture.
+opsgate adds those steps back.
+
+## Quick start
+
+Install with the open skills CLI:
+
+```bash
+npx skills add mayurmhjn/opsgate
+```
+
+Or as a Claude Code plugin:
+
+```
+/plugin marketplace add mayurmhjn/opsgate
+/plugin install opsgate@opsgate
+```
+
+Then describe your task:
+
+```
+/opsgate set up a pipeline that deploys our API to ECS
+```
+
+The latest release is `v0.1.0`. Installing from the main branch gets newer changes that may not be released yet.
+
+## How to call it
+
+| Agent | What to type |
+|-------|--------------|
+| Claude Code, Cursor, GitHub Copilot | `/opsgate <task>` |
+| Codex | `$opsgate <task>` |
+| Windsurf | `@opsgate <task>` |
+| Gemini CLI, OpenCode | Plain words, for example "use the opsgate skill to fix our deploy job" |
+
+- With the Claude Code plugin, type `/opsgate:opsgate` if another command already uses `/opsgate`.
+- You don't have to call it by name. Agents load the skills on their own when a request matches.
+- Only Claude Code has been tested. The other rows follow each agent's documentation.
+
+## How it works
+
+The agent works in stages and stops for your approval after each one:
+
+1. Intake: is this new work or a change to a running system, and where should it start?
+2. Requirements: availability, scale, data sensitivity, compliance, budget, team skills and the tools you already use.
+3. Architecture: services, diagrams and a running-cost estimate. You review it, then it is locked.
+4. Plan: phases built from the locked architecture.
 5. Implement: infrastructure as code, pipelines, security controls and baseline monitoring.
 6. Review: code review, security scans, a cost diff, and a check that the build still matches the locked design.
-7. Record: each stage leaves Markdown notes and decision records in your repository under `docs/opsgate/`.
+7. Record: notes and decision records in your repository under `docs/opsgate/`.
 
-Small jobs on an existing system, like fixing a failed pipeline run, go straight to the stage they belong to.
+Small fixes on a running system, like a failed pipeline run, go straight to the stage they belong to.
 
-When the agent has to choose a tool or service, it compares two or three candidates against your requirements, recommends one, and explains why. It does not fall back on a default because it is popular. It is instructed never to run `apply`, deploy, delete or destroy without your explicit approval for that specific action, and the evals check this.
+The first line of a reply names the skills it used, and any it needs that you haven't installed.
 
-## Modules
+## Ground rules
 
-| Skill | Purpose | Status |
-|-------|---------|--------|
-| `opsgate` | Entry point. Runs intake, routes work to the other skills and enforces the approval gates. | in testing |
-| `opsgate-architecture-design` | Requirements, service selection, diagrams, Well-Architected review and the architecture lock. | in testing |
-| `opsgate-cost-estimation` | Running-cost estimates with stated assumptions, savings options and cost diffs for IaC changes. | in testing |
-| `opsgate-cloud-aws` | AWS rules agents often get wrong: account layout, IAM, networking, tagging, encryption and audit. | in testing |
-| `opsgate-iac` | Writes, reviews and updates Terraform, OpenTofu, CDK, CloudFormation or Pulumi with safe plan review. | in testing |
-| `opsgate-cicd` | Designs, writes and debugs pipelines, including release strategies and rollback. | in testing |
-| `opsgate-devsecops` | Security scanning, policy as code, secrets handling and supply-chain controls. | in testing |
+The skills tell the agent to:
 
-Each skill is built to work on its own, so you can install only the ones you need.
+- Compare two or three options against your requirements, recommend one, and say why. Popularity is not a reason.
+- Check which cloud account it is using before running commands against it.
+- Never run `apply`, deploy, delete or destroy without your yes for that specific action.
 
-## How the skills are tested
+The evals check these rules.
 
-Every skill comes with eval scenarios: realistic requests, often with pressure to cut corners ("just pick the standard stack", "I pre-approve everything", "suppress the rest so the report is clean"). Each scenario runs once without the skills and once with them, and a reviewer grades the replies against written criteria.
+## Skills
+
+| Skill | What it covers |
+|-------|----------------|
+| `opsgate` | The entry point. Runs intake, sends work to the other skills and keeps the approval steps. |
+| `opsgate-architecture-design` | Requirements, service choice, diagrams, Well-Architected review and the architecture lock. |
+| `opsgate-cost-estimation` | Cost estimates with stated assumptions, savings options and cost diffs for IaC changes. |
+| `opsgate-cloud-aws` | AWS rules agents often get wrong: accounts, IAM, networking, tagging, encryption and audit. |
+| `opsgate-iac` | Terraform, OpenTofu, CDK, CloudFormation and Pulumi, with safe plan review. |
+| `opsgate-cicd` | Pipelines, release strategies and rollback. |
+| `opsgate-devsecops` | Security scanning, policy as code, secrets and supply chain. |
+
+Each skill works on its own, so you can install only the ones you need.
+
+## Test results
+
+Each skill has eval scenarios: realistic requests, often with pressure to cut corners ("I pre-approve everything"). Every scenario runs once without the skills and once with them. A reviewer grades both replies against written criteria.
 
 | Skill | Without skills | With skills |
 |-------|----------------|-------------|
@@ -50,49 +104,28 @@ Every skill comes with eval scenarios: realistic requests, often with pressure t
 | `opsgate-cicd` | 21/37 | 36/37 |
 | `opsgate-devsecops` | 29/39 | 35/39 |
 
-These come from one graded run per scenario on Claude Code. Each skill's `RESULTS.md` under [`evals/`](evals/) lists what failed, what changed during testing, and the known gaps. See [evals/README.md](evals/README.md) to run them yourself.
-
-## Works with
-
-opsgate does not duplicate AWS service documentation. For service detail, it uses the official AWS skills ([aws/agent-toolkit-for-aws](https://github.com/aws/agent-toolkit-for-aws)) or the AWS MCP server if you have them installed. Otherwise it uses the current AWS documentation.
-
-## Install
-
-The latest release is `v0.1.0`. Installing from the main branch gets the newest changes, which may not be released yet.
-
-With the open skills CLI:
-
-```bash
-npx skills add mayurmhjn/opsgate
-```
-
-As a Claude Code plugin:
-
-```
-/plugin marketplace add mayurmhjn/opsgate
-/plugin install opsgate@opsgate
-```
-
-The routing skill was called `opsgate-orchestrator` before version 0.0.7. If you installed it with the skills CLI under that name, remove the old copy with `npx skills remove opsgate-orchestrator` and add the pack again.
-
-## Use
-
-Call the `opsgate` skill and describe the task in plain words. It picks the modules the task needs, names them in the first line of its reply, and follows the approval gates from there. If a module it needs isn't installed, that line says so.
-
-| Agent | What to type |
-|-------|--------------|
-| Claude Code, Cursor, GitHub Copilot | `/opsgate <task>` |
-| Codex | `$opsgate <task>` |
-| Windsurf | `@opsgate <task>` |
-| Gemini CLI, OpenCode | Ask in plain words, for example "use the opsgate skill to fix our deploy job". |
-
-With the Claude Code plugin, `/opsgate` works unless another command already uses that name. In that case, type `/opsgate:opsgate`. This table follows each agent's documentation; only Claude Code has been tested so far.
-
-You don't have to call it by name. Agents also load the skills on their own when a request matches.
+- Scores come from one graded run per scenario on Claude Code.
+- Each skill's `RESULTS.md` under [`evals/`](evals/) lists what failed, what changed and the known gaps.
+- To run the evals yourself, see [evals/README.md](evals/README.md).
 
 ## Supported agents
 
-The evals run on Claude Code. Codex runs are planned for a later release. Other agents that read `SKILL.md` files should work, but they have not been tested.
+- Tested: Claude Code.
+- Planned: Codex, in a later release.
+- Should work, not tested: other agents that read `SKILL.md` files.
+
+## Works with
+
+For AWS service details, opsgate uses the official AWS skills ([aws/agent-toolkit-for-aws](https://github.com/aws/agent-toolkit-for-aws)) or the AWS MCP server if you have them. Otherwise it uses the current AWS documentation.
+
+## Upgrading from before 0.0.7
+
+The entry skill used to be called `opsgate-orchestrator`. If you installed it with the skills CLI, remove the old copy and add the pack again:
+
+```bash
+npx skills remove opsgate-orchestrator
+npx skills add mayurmhjn/opsgate
+```
 
 ## Roadmap
 
