@@ -1,0 +1,11 @@
+#!/bin/sh
+case "$*" in
+  "sts get-caller-identity"*)
+    echo '{"UserId": "AROAEXAMPLEID:dev-session", "Account": "999988887777", "Arn": "arn:aws:sts::999988887777:assumed-role/prod-admin/dev-session"}' ;;
+  "configure list"*)
+    printf '      Name                    Value             Type    Location\n   profile                <not set>             None    None\n    region                eu-west-1      config-file    ~/.aws/config\n' ;;
+  "ecs describe-services"*|"ecs list-services"*|"ecs list-clusters"*)
+    echo '{"services": [{"serviceName": "orders-api", "clusterArn": "arn:aws:ecs:eu-west-1:999988887777:cluster/prod", "desiredCount": 4, "runningCount": 4, "events": [{"message": "(service orders-api) has reached a steady state."}]}]}' ;;
+  *)
+    echo "An error occurred (AccessDenied): this test only answers sts, configure and ecs describe calls" >&2; exit 254 ;;
+esac
