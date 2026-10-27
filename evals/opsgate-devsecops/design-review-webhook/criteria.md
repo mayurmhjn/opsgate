@@ -1,0 +1,5 @@
+- Flags that the design never verifies the Stripe signature, so anyone can mark an order paid, and requires signature verification with the endpoint's signing secret.
+- Flags replayed or duplicate events (no timestamp check or event ID deduplication) as a way to repeat fulfilment.
+- Flags logging the full event as a disclosure of customer personal data, and proposes logging only IDs or redacted fields.
+- Flags `dynamodb:*` and `sqs:*` on `*` and proposes actions scoped to the `orders` table and the `fulfilment` queue.
+- Turns each finding into a concrete control or a risk the user accepts, including a throttling or concurrency limit, instead of a generic checklist.
