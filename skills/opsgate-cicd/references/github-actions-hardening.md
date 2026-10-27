@@ -20,7 +20,7 @@ For GitLab CI, Jenkins and AWS CodePipeline, see `other-ci.md`.
 - Set the top-level `permissions` to the minimum (often `contents: read`), and grant more per job only where needed. The repository or organization setting only sets the default. A `permissions` key in the workflow can still raise it, except where fork pull requests get a read-only token.
 - Use `persist-credentials: false` on checkout unless a later step needs to push, so the token isn't left in `.git/config` where artifacts or caches can pick it up.
 - Prefer the built-in token or a GitHub App token over personal access tokens.
-- Use OIDC to the cloud provider. Roles that deploy or apply to production trust only the protected environment's subject (`environment:NAME`), not a branch subject, because default-branch triggers such as `workflow_run` share the branch ref. Customize the subject claim where a branch subject must stay.
+- Use OIDC to the cloud provider. Roles that deploy or apply to production trust only the protected environment's subject (`environment:NAME`), not a branch subject, because default-branch triggers such as `workflow_run` share the branch ref. The environment subject names no branch, so any branch whose job targets that environment can assume the role. Limit the environment's deployment branches to the ones allowed to deploy, and don't call the change stricter until that rule is in place. Customize the subject claim where a branch subject must stay.
 - Production deploy jobs use a protected environment with required reviewers. The reviewers are the control. A branch rule alone doesn't stop default-branch triggers.
 - Secrets live in environments where possible, so only the gated job can read them.
 
