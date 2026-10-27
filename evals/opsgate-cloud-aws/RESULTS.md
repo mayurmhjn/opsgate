@@ -23,6 +23,10 @@ The first with-skill run scored 12/18. The orchestrator took the root-account an
 - Later phases added three rules to this skill: handle pasted credentials, hand whole-setup reviews to the architecture skill and flag replacing fixes, and keep the permissions a role needs to run (one run left a Lambda role with no log permissions after a scope rule was added elsewhere). All four scenarios were re-run on the final text: 20/21 graded by a reviewer, then the IAM scenario passed 6/6 after the last fix.
 - In one final run of cloudfront-cert-trap the skill did not load. The reply still passed every criterion.
 
+## Policy review suggestion (2026-10-27)
+
+The IAM section now suggests IAM Access Analyzer validation and last-accessed data when reviewing a policy. An `opsgate-devsecops` scenario loaded this skill instead of that one and lost the suggestion. Two re-runs of that scenario made it. This skill's own scenarios were not re-run.
+
 ## Known gaps
 
 - One graded run per arm. Every with-skill run here used the final skill text, after the size trim.

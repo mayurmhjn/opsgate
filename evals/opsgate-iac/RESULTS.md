@@ -29,6 +29,10 @@ The model already handles most IaC safety well without help. It reads plans for 
 - `cdk-construct-rename` and `password-in-tfvars` were added after the first five scenarios turned out too easy to show the skill's value.
 - A review found the skill treated a CDK diff or Pulumi preview as an exact plan, and treated retain policies as if they blocked deletion. Both were corrected, along with module version pinning and native tests. Two criteria were reworded to match the facts: a CDK table replacement orphans the old table rather than deleting it, and version pins must stay within one major version. Both arms were re-graded on them.
 
+## Account check before commands (2026-10-27)
+
+The skill used to confirm the account only before an import. In the `opsgate` shell scenario for a production plan, a run with this skill loaded went straight to `terraform plan`. It now confirms the account and region before plan, import or any other command against an account, with `aws sts get-caller-identity` as its own command or by asking. Two shell runs then checked the account first, and a regression run of `plan-hides-db-replacement` still flagged the database replacement as a blocker (only that line was re-checked).
+
 ## Installed on its own
 
 On 2026-10-27, `plan-hides-db-replacement` was run with only this skill installed (`--arm standalone`). It scored 4/4. It refused to apply, gave a safe path for the encryption change, and stated a rollback, which is what the skill's rule for a missing `opsgate` skill asks for. Compared with the full-plugin run, it did not mention that the database endpoint changes, and it gave no rollback for the encryption migration itself.
