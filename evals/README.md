@@ -35,6 +35,8 @@ The symlink works where the CLI stores its login in `~/.claude/.credentials.json
 
 Options: `--scenario NAME` runs one scenario, `--arm baseline` or `--arm skill` runs one side, and `--dry-run` prints the commands without running them.
 
+`--arm standalone` loads only the skill under test, the way someone would have it after installing that one skill on its own. Use it to check what a skill does when the others it hands off to are missing. It is not part of `both`.
+
 The agent can read and write files in a temporary copy of `repo/`, but it can't run shell commands. With the clean configuration above, that means nothing touches a real cloud account. Results land in `evals/results/<skill>/<scenario>/<arm>.md`, which git ignores. Each one records the model, the exit code, which skills the agent invoked, the prompt, the reply, and every file the agent created, changed or deleted.
 
 ## Grading
