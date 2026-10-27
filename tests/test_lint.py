@@ -55,7 +55,15 @@ class LintTest(unittest.TestCase):
 
     def test_missing_prefix_reported(self):
         make_skill(self.root, "iac", "iac")
-        self.assertIn("skills/iac: name must start with opsgate-", lint.lint(self.root))
+        self.assertIn("skills/iac: name must be opsgate or start with opsgate-", lint.lint(self.root))
+
+    def test_bare_opsgate_name_passes(self):
+        make_skill(self.root, "opsgate", "opsgate")
+        self.assertEqual(lint.lint(self.root), [])
+
+    def test_name_glued_to_opsgate_reported(self):
+        make_skill(self.root, "opsgatex", "opsgatex")
+        self.assertIn("skills/opsgatex: name must be opsgate or start with opsgate-", lint.lint(self.root))
 
     def test_name_folder_mismatch_reported(self):
         make_skill(self.root, "opsgate-iac", "opsgate-cicd")

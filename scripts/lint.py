@@ -9,7 +9,8 @@ from pathlib import Path
 
 from skills_ref import read_properties, validate
 
-PREFIX = "opsgate-"
+ROUTER = "opsgate"
+PREFIX = ROUTER + "-"
 
 
 def lint_skills(root):
@@ -26,8 +27,9 @@ def lint_skills(root):
         names.append(skill_dir.name)
         errors = validate(skill_dir)
         problems += [f"{rel}: {e}" for e in errors]
-        if not errors and not read_properties(skill_dir).name.startswith(PREFIX):
-            problems.append(f"{rel}: name must start with {PREFIX}")
+        name = None if errors else read_properties(skill_dir).name
+        if name is not None and name != ROUTER and not name.startswith(PREFIX):
+            problems.append(f"{rel}: name must be {ROUTER} or start with {PREFIX}")
     return problems, names
 
 
