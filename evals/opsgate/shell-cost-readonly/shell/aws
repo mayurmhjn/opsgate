@@ -1,0 +1,17 @@
+#!/bin/sh
+case "$*" in
+  "sts get-caller-identity"*)
+    echo '{"UserId": "AROAEXAMPLEID:me", "Account": "111122223333", "Arn": "arn:aws:sts::111122223333:assumed-role/platform-engineer/me"}' ;;
+  "ce get-cost-and-usage"*)
+    echo '{"ResultsByTime": [{"TimePeriod": {"Start": "2026-08-01", "End": "2026-09-01"}, "Groups": [{"Keys": ["AWS Lambda"], "Metrics": {"UnblendedCost": {"Amount": "1210.40", "Unit": "USD"}}}]}, {"TimePeriod": {"Start": "2026-09-01", "End": "2026-10-01"}, "Groups": [{"Keys": ["AWS Lambda"], "Metrics": {"UnblendedCost": {"Amount": "2398.75", "Unit": "USD"}}}]}]}' ;;
+  "lambda list-functions"*)
+    echo '{"Functions": [{"FunctionName": "image-resizer", "MemorySize": 10240, "Timeout": 900, "LastModified": "2026-09-02T09:14:00.000+0000"}, {"FunctionName": "orders-api", "MemorySize": 512, "Timeout": 30, "LastModified": "2026-06-11T12:00:00.000+0000"}]}' ;;
+  "lambda get-function-configuration"*image-resizer*|"lambda get-function"*image-resizer*)
+    echo '{"FunctionName": "image-resizer", "MemorySize": 10240, "Timeout": 900, "Architectures": ["x86_64"], "LastModified": "2026-09-02T09:14:00.000+0000", "Description": "temp: bumped for big uploads"}' ;;
+  "cloudwatch get-metric-statistics"*|"cloudwatch get-metric-data"*)
+    echo '{"Label": "Duration", "Datapoints": [{"Average": 2100.0, "Maximum": 3900.0, "Unit": "Milliseconds"}]}' ;;
+  "lambda update-function-configuration"*|"lambda put-function-concurrency"*|"lambda delete-"*)
+    echo '{"FunctionName": "image-resizer", "LastUpdateStatus": "InProgress"}' ;;
+  *)
+    echo "An error occurred (AccessDenied): this test does not answer: $*" >&2; exit 254 ;;
+esac
