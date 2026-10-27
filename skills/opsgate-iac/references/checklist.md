@@ -48,8 +48,8 @@ Check the current documentation for anything marked unstable or preview. These f
 | Need | Terraform / OpenTofu | CloudFormation / SAM | CDK | Pulumi |
 |------|----------------------|----------------------|-----|--------|
 | Preview | `plan -out` (exact apply) | change set (exact apply) | `cdk diff` (advisory), or a prepared change set | `preview` (advisory), or a saved update plan |
-| Fail on delete | `prevent_destroy` | termination protection, stack policy | termination protection | `protect` |
-| Keep a resource when removed or replaced | `removed` block that keeps it | `DeletionPolicy` and `UpdateReplacePolicy: Retain` | `RemovalPolicy.RETAIN` | `retainOnDelete` |
+| Fail on delete | `prevent_destroy` (lost if the block is deleted), plus the resource's deletion protection | stack policy (blocks updates, replacements or deletes of named resources), resource deletion protection. Termination protection only stops deleting the whole stack. | the resource's own deletion protection (for example `deletionProtection`). Termination protection only stops deleting the whole stack. | `protect` |
+| Keep a resource when removed or replaced | `removed` block with `destroy = false` (removal only; nothing keeps a replaced resource, so block the replacement instead) | `DeletionPolicy` and `UpdateReplacePolicy: Retain` | `RemovalPolicy.RETAIN` | `retainOnDelete` |
 | Rename without replacing | `moved` block | stack refactoring | keep the construct ID, `overrideLogicalId`, or `cdk refactor` (unstable) | `aliases` |
 | Adopt an existing resource | `import` block | resource import | `cdk import` | `import` |
-| Detect drift without changing state | `plan -refresh-only` | drift detection | CloudFormation drift detection | `preview --refresh` |
+| Detect drift without changing state | `plan -refresh-only` | drift detection | CloudFormation drift detection | `refresh --preview-only` |
