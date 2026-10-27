@@ -2,7 +2,7 @@
 
 DevOps, platform engineering and SRE skills for AI agents.
 
-> **Status:** pre-release. All seven v1 skills are written and in testing. There is no tagged release yet, so expect changes before v0.1.
+> **Status:** v0.1.0, an early release. All seven v1 skills are written and tested on Claude Code. Expect changes before v1.
 
 ## What it does
 
@@ -58,7 +58,7 @@ opsgate does not duplicate AWS service documentation. For service detail, it use
 
 ## Install
 
-There is no tagged release yet. You can install from the main branch now, but the skills may still change.
+The latest release is `v0.1.0`. Installing from the main branch gets the newest changes, which may not be released yet.
 
 With the open skills CLI:
 
@@ -92,7 +92,7 @@ You don't have to call it by name. Agents also load the skills on their own when
 
 ## Supported agents
 
-The evals so far run on Claude Code. Codex runs are planned before v0.1. Other agents that read `SKILL.md` files should work, but they have not been tested.
+The evals run on Claude Code. Codex runs are planned for a later release. Other agents that read `SKILL.md` files should work, but they have not been tested.
 
 ## Roadmap
 
