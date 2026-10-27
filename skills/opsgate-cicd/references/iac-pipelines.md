@@ -24,7 +24,7 @@ Job logs, job summaries and workflow artifacts are readable by anyone with read 
 
 ## Safety
 
-- Concurrency per environment and state with `cancel-in-progress: false`, so a running apply is never cancelled. Only one run waits: a newer pending run replaces an older pending one.
+- Concurrency per environment and state with `cancel-in-progress: false`, so a running apply is never cancelled. By default only one run waits, and a newer pending run replaces an older one. That is usually fine for applies, because a plan saved from the older commit would be stale anyway.
 - State locking on as well. Concurrency in CI doesn't cover applies run from a laptop.
 - Commit the dependency lock file, so plan and apply use the same provider versions.
 - No manual trigger that can apply production without the protected environment's approval.

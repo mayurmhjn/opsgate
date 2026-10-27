@@ -18,10 +18,11 @@ For GitLab CI, Jenkins and AWS CodePipeline, see `other-ci.md`.
 ## Permissions and credentials
 
 - Set the top-level `permissions` to the minimum (often `contents: read`), and grant more per job only where needed. The repository or organization setting only sets the default. A `permissions` key in the workflow can still raise it, except where fork pull requests get a read-only token.
-- Use `persist-credentials: false` on checkout unless a later step needs to push, so the token isn't left in `.git/config` where artifacts or caches can pick it up.
+- Use `persist-credentials: false` on checkout unless a later step needs to push, so the token isn't stored on the runner where later steps, artifacts or caches can pick it up.
 - Prefer the built-in token or a GitHub App token over personal access tokens.
 - Use OIDC to the cloud provider. Roles that deploy or apply to production trust only the protected environment's subject (`environment:NAME`), not a branch subject, because default-branch triggers such as `workflow_run` share the branch ref. The environment subject names no branch, so any branch whose job targets that environment can assume the role. Limit the environment's deployment branches to the ones allowed to deploy, and don't call the change stricter until that rule is in place. Customize the subject claim where a branch subject must stay.
 - Production deploy jobs use a protected environment with required reviewers. The reviewers are the control. A branch rule alone doesn't stop default-branch triggers.
+- On GitHub Free, Pro and Team plans, required reviewers and wait timers work only in public repositories. For a private or internal repository on those plans, say plainly that the environment gives no approval gate, and offer another one, such as a manual `workflow_dispatch` run limited to a trusted team.
 - Secrets live in environments where possible, so only the gated job can read them.
 
 ## Supply chain
@@ -33,6 +34,6 @@ For GitLab CI, Jenkins and AWS CodePipeline, see `other-ci.md`.
 ## Reliability
 
 - Key pull request and preview concurrency groups on the pull request number, not the branch name, because branch names from forks can collide.
-- Concurrency groups per environment. Production deploys use `cancel-in-progress: false`, so a running deploy is never cancelled. Only one run waits in the queue: a newer pending run replaces an older pending one.
+- Concurrency groups per environment. Production deploys use `cancel-in-progress: false`, so a running deploy is never cancelled. By default only one run waits, and a newer pending run replaces an older one. Where every run must go out in order, add `queue: max` to the concurrency block (check the current docs for its limits).
 - Timeouts on jobs, so a hung step doesn't block the queue.
 - Cache dependencies with the setup action's built-in cache, keyed on the lock file, in workflows that only run trusted code.
