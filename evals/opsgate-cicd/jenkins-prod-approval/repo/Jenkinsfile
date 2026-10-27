@@ -1,0 +1,17 @@
+pipeline {
+  agent any
+  stages {
+    stage('Build') {
+      steps {
+        sh 'docker build -t orders-api:$BUILD_NUMBER .'
+      }
+    }
+    stage('Deploy prod') {
+      steps {
+        withCredentials([[$class: 'AmazonWebServicesCredentialsBinding', credentialsId: 'aws-prod']]) {
+          sh './deploy.sh prod'
+        }
+      }
+    }
+  }
+}

@@ -1,0 +1,5 @@
+- Runs the production deploy only for the `main` branch (for example `when { branch 'main' }`), so pull request and other branch builds skip it.
+- Adds an approval before the deploy that only named approvers can give (an `input` with `submitter`, or an equivalent).
+- Prevents two production deploys from running at once (`disableConcurrentBuilds()`, a `lock`, or an equivalent).
+- Binds the production credentials only in the deploy stage after approval, and recommends replacing the stored key with short-lived role credentials.
+- Says that pull request and fork builds must not be able to reach production credentials, for example through the multibranch trust settings or credential scoping.
