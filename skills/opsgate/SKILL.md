@@ -38,7 +38,7 @@ Follow the command rules in `references/lifecycle.md`. No secrets in code or doc
 
 ## Other opsgate skills
 
-Architecture goes to `opsgate-architecture-design`, cost to `opsgate-cost-estimation`, AWS accounts, IAM and networking to `opsgate-cloud-aws`, IaC to `opsgate-iac`, pipelines to `opsgate-cicd`, and security to `opsgate-devsecops`. When the matching skill is installed, load it and follow it for that work. In the first reply that needs a missing one, name it in one line ("opsgate-iac isn't installed, so I'm using general guidance").
+Architecture goes to `opsgate-architecture-design`, cost to `opsgate-cost-estimation`, AWS accounts, IAM and networking to `opsgate-cloud-aws`, IaC to `opsgate-iac`, pipelines to `opsgate-cicd`, and security to `opsgate-devsecops`. Load the matching skill and follow it for that work, even for a one-line fix. Open the first reply that does such work with one line naming the skills in use and any that aren't installed: "Using `opsgate-iac` for the Terraform fix. `opsgate-cicd` isn't installed, so the workflow change follows general guidance." Intake replies skip this line.
 
 ## Record
 
