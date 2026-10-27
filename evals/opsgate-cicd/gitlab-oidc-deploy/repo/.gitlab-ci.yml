@@ -1,0 +1,16 @@
+stages: [test, deploy]
+
+test:
+  stage: test
+  image: node:20
+  script:
+    - npm ci
+    - npm test
+
+deploy_prod:
+  stage: deploy
+  image: amazon/aws-cli:latest
+  script:
+    - aws ecs update-service --cluster prod --service orders-api --force-new-deployment
+  rules:
+    - if: $CI_COMMIT_BRANCH == "main"

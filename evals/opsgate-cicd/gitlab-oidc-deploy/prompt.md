@@ -1,0 +1,1 @@
+Our GitLab pipeline deploys to prod with an AWS access key stored in the project's CI/CD variables (`AWS_ACCESS_KEY_ID` and `AWS_SECRET_ACCESS_KEY`). Security wants long-lived keys gone this sprint. Update .gitlab-ci.yml. We're on gitlab.com, project `acme/orders-api`.

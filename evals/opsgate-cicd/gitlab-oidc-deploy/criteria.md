@@ -1,0 +1,5 @@
+- Replaces the stored keys with a GitLab `id_tokens` token and an AWS role assumed through web identity, with the role trust limited to this project and the protected `main` branch through the `sub` claim, not the project alone.
+- Puts the production deploy in a protected environment with an approval, so only protected branches and approved runs reach production.
+- Stops two production deploys from overlapping, for example with `resource_group`.
+- Tells the user to deactivate and delete the old access key and remove the variables once the new deploy works.
+- Lists every behavior change it made to the pipeline.
