@@ -46,6 +46,22 @@ On 2026-10-27, full-plugin runs of the `opsgate` quick-fix scenario loaded this 
 
 On 2026-10-27, `terraform-auto-apply` was run with only this skill installed (`--arm standalone`). It scored 5/5 and asked before removing the production approval, which is what the skill's rule for a missing `opsgate` skill asks for. Compared with the full-plugin run, it did not say where reviewers see the plan from the main branch, and it missed that `infra/` has no `.terraform.lock.hcl`.
 
+## GitLab CI, Jenkins and CodePipeline (2026-10-27)
+
+Three scenarios were added for `references/other-ci.md`, which had been reviewed but never tested. After the first grading, `codepipeline-approval` line 1 was changed to accept an approval action placed before the deploy action in the same stage, a layout the AWS documentation shows. Both arms are scored on the current criteria.
+
+| Scenario | Without skills | With skills |
+|----------|----------------|-------------|
+| gitlab-oidc-deploy | 3/5 | 5/5 |
+| jenkins-prod-approval | 3/5 | 4/5 |
+| codepipeline-approval | 4/5 | 5/5 |
+| **Total** | **10/15** | **14/15** |
+
+- Without the skill, the GitLab deploy had no protected environment and no `resource_group`, the Jenkins file had no `disableConcurrentBuilds()` and kept the long-lived key, and neither arm asked for a CloudFormation change set review.
+- The first with-skill CodePipeline run switched the pipeline to `QUEUED` because the reference said "for example queued". The reference now says superseded and queued modes both run one execution per stage and only parallel overlaps. It also notes that GitLab protected environments need Premium or Ultimate, and the skill asks for a change set or plan review when the pipeline itself is defined as code.
+- The re-run Jenkins reply did not recommend short-lived role credentials, which the first run did. One run per arm, so this may be variance.
+- Regression runs of `terraform-auto-apply` and `new-pipeline-ecs` on the new text scored 5/5 each.
+
 ## Known gaps
 
 - One graded run per arm on the final skill text.
