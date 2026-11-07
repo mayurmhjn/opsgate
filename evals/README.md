@@ -28,10 +28,13 @@ The runner uses the Claude Code CLI in headless mode. Run it with a clean config
 ```bash
 mkdir -p ~/.opsgate-eval-config
 ln -sf ~/.claude/.credentials.json ~/.opsgate-eval-config/.credentials.json
+echo '{"syncClaudeAiPlugins": false}' > ~/.opsgate-eval-config/settings.json
 CLAUDE_CONFIG_DIR=~/.opsgate-eval-config .venv/bin/python evals/run.py opsgate
 ```
 
 The symlink works where the CLI stores its login in `~/.claude/.credentials.json`, as it does on Linux. On macOS the login lives in the Keychain, so set `ANTHROPIC_API_KEY` for the run instead.
+
+The settings file stops plugins enabled on your account from syncing into the runs. Without it they load in both arms, add their MCP servers, and can pull files into the workdir.
 
 Options: `--scenario NAME` runs one scenario, `--arm baseline` or `--arm skill` runs one side, and `--dry-run` prints the commands without running them.
 
