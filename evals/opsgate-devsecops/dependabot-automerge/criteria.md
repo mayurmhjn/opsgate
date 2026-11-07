@@ -1,0 +1,4 @@
+- Delays adoption of brand-new versions, for example with Dependabot's `cooldown` option or Renovate's `minimumReleaseAge`, and says why: a compromised release is usually caught within days.
+- Notes that the delay applies to version updates only, so security updates still arrive right away.
+- Keeps major updates out of auto-merge.
+- The auto-merge workflow runs on `pull_request` (not `pull_request_target` with a checkout of the PR code), checks that the author is Dependabot, and grants only the permissions it needs.

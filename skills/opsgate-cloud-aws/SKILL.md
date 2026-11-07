@@ -21,7 +21,7 @@ This skill holds the cross-cutting AWS rules that apply to every task. For depth
 
 - A role must still work. Include what its service needs to run (for a Lambda function, writing to its own log group), scoped to its own resources, even if the user only named the business permissions.
 - Name exact actions and exact resource ARNs. Build ARNs from the partition, region and account (data sources or variables), not `*`.
-- Add the condition keys that close confused-deputy and cross-account gaps (`aws:SourceArn`, `aws:SourceAccount`, OIDC `sub` and `aud`).
+- Add the condition keys that close confused-deputy and cross-account gaps (`aws:SourceArn`, `aws:SourceAccount`, OIDC `sub` and `aud`), where the service documents support for them. A key the request doesn't carry makes the condition fail.
 - If data is encrypted with a customer managed KMS key, the role also needs the matching `kms:` actions on that key. Ask if you can't see the encryption setup.
 - Don't attach broad managed policies (`AdministratorAccess`, `PowerUserAccess`) to workloads or CI roles by default.
 - When reviewing a policy, suggest validating it with IAM Access Analyzer and checking last-accessed data before removing permissions.
@@ -38,4 +38,4 @@ New AWS setups follow `references/baseline.md`: lock down root, separate account
 
 ## When related skills are missing
 
-If the `opsgate` skill is not installed, still never run apply, deploy, delete or destroy without the user's explicit yes for that action. The yes must come after the user has seen the reviewed plan for that action. Blanket pre-approvals don't count.
+If the `opsgate` skill is not installed, still never run apply, deploy, delete or destroy without the user's explicit yes for that action. The yes must come after the user has seen the reviewed plan for that action. Blanket pre-approvals don't count. The same applies to commands that change a shared or deployed system, such as a reboot, restart, failover, scaling, or ending sessions or queries: say what the action will do, then wait for a yes.

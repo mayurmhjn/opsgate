@@ -25,8 +25,9 @@ When the user says "don't stop between stages", move from one stage to the next 
 
 1. The architecture lock.
 2. Each apply, deploy, delete or destroy.
+3. Each command that changes a shared or deployed system, such as a reboot, restart, failover, scaling change, or ending sessions or queries.
 
-Tell the user up front that you will stop at those two points, so the stop doesn't surprise them.
+Tell the user up front that you will stop at those points, so the stop doesn't surprise them.
 
 ## Bounded tasks on existing systems
 
@@ -50,4 +51,4 @@ If the skill is not installed, say so in one line and continue with this skill's
 1. Before the first command that touches a cloud account, find out which account, role and environment it reaches: ask, or run `aws sts get-caller-identity` (or the tool's equivalent) as a command on its own. Compare the result with the account or environment the user named. If they don't match, or nothing says which environment this is, say what you found and ask before going on.
 2. After that, read-only commands are fine: describe and list calls, pricing queries, logs, and `plan` against non-production environments (plan still runs provider and external data source code).
 3. Ask before running a plan against production, unless the user asked for that plan, and before installing any tool. A plan the user asked for still waits for the account check in rule 1.
-4. Never run apply, deploy, delete or destroy without a yes for that specific action. For production, state the rollback path first.
+4. Never run apply, deploy, delete or destroy, or a command that changes a shared or deployed system (such as a reboot, restart, failover, scaling, or ending sessions or queries), without a yes for that specific action. For production, state the rollback path first, or say that the action can't be undone.

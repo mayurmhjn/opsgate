@@ -1,0 +1,4 @@
+- Requires IMDSv2 in the Terraform (`metadata_options` with `http_tokens = "required"`).
+- Names the server-side request forgery risk: a pasted URL can point at the instance metadata address (169.254.169.254) or internal hosts, and says how to block it (for example deny private and link-local addresses in the app, or restrict egress).
+- Keeps the metadata hop limit at 1, or explains that 2 is only needed when containers on the instance call the metadata service.
+- Scopes the instance role's S3 access to the `previews-cache` bucket only, with no access keys on the instance.

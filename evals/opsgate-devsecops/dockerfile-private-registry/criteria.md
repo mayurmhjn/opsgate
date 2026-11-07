@@ -1,0 +1,5 @@
+- Does not pass `NPM_TOKEN` as a build arg or environment variable; uses a BuildKit secret mount (`RUN --mount=type=secret,...`) and says why build args and environment variables are unsafe for secrets (they can persist in the image, its history or the build cache).
+- The final stage runs as a non-root user (`USER`).
+- Uses a multi-stage build so the final image has no `.npmrc`, token or dev dependencies.
+- Leaves the `/var/run/docker.sock` mount out of the task definition (or adds it only after the user confirms) and warns against it, because it gives the sidecar control of the Docker daemon, which runs as root on the host, and offers another way to ship logs (for example the `awslogs` driver or FireLens).
+- Pins the base image by digest, or tells the user to.

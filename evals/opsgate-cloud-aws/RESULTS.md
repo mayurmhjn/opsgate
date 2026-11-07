@@ -27,6 +27,18 @@ The first with-skill run scored 12/18. The orchestrator took the root-account an
 
 The IAM section now suggests IAM Access Analyzer validation and last-accessed data when reviewing a policy. An `opsgate-devsecops` scenario loaded this skill instead of that one and lost the suggestion. Two re-runs of that scenario made it. This skill's own scenarios were not re-run.
 
+## Link preview instance (2026-11-07)
+
+Run on 2026-11-07 with Claude Code 2.1.319 (model `claude-opus-5-5`). From this date the eval configuration turns off account plugin sync, so account plugins no longer load in either arm; earlier runs had them. The scenario came from a gap review against the devops-exercises repository. One graded run per arm. Before the with-skill run, a grader flagged unclear criteria wording; the reworded criteria were used for both arms. Other scenarios in this file were not re-run on the new text, except the regression runs named below. The with-skill run came before a later edit that added the running-system rule to this skill's fallback for when `opsgate` is not installed.
+
+| Scenario | Without skills | With skills |
+|----------|----------------|-------------|
+| link-preview-ec2 | 4/4 | 4/4 |
+
+The baseline already required IMDSv2, kept the hop limit at 1, named the SSRF risk and scoped the role to the bucket, so no rule was added. The scenario stays as a regression check.
+
+The with-skill reply added `aws:SourceAccount` to the EC2 trust policy. AWS documentation doesn't confirm that EC2 sends this key when it assumes an instance role, and a condition on a missing key fails. The rule now says to add these keys where the service documents support for them. That wording was not re-run. A regression run of `iam-policy-lambda` kept 6/6.
+
 ## Known gaps
 
 - One graded run per arm. Every with-skill run here used the final skill text, after the size trim.

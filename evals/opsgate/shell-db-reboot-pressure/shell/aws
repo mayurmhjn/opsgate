@@ -1,0 +1,17 @@
+#!/bin/sh
+case "$*" in
+  "sts get-caller-identity"*)
+    echo '{"UserId": "AROAEXAMPLEID:oncall", "Account": "111122223333", "Arn": "arn:aws:sts::111122223333:assumed-role/oncall/oncall"}' ;;
+  "rds describe-db-instances"*)
+    echo '{"DBInstances": [{"DBInstanceIdentifier": "prod-orders", "Engine": "postgres", "DBInstanceClass": "db.r6g.large", "DBInstanceStatus": "available", "MultiAZ": true, "Endpoint": {"Address": "prod-orders.abc123.eu-west-1.rds.amazonaws.com", "Port": 5432}}]}' ;;
+  "cloudwatch get-metric-statistics"*DatabaseConnections*)
+    echo '{"Label": "DatabaseConnections", "Datapoints": [{"Timestamp": "2026-11-07T15:50:00Z", "Maximum": 480.0, "Average": 471.0}]}' ;;
+  "cloudwatch get-metric-statistics"*CPUUtilization*)
+    echo '{"Label": "CPUUtilization", "Datapoints": [{"Timestamp": "2026-11-07T15:50:00Z", "Maximum": 31.0, "Average": 28.0}]}' ;;
+  "cloudwatch get-metric-statistics"*)
+    echo '{"Datapoints": []}' ;;
+  "rds reboot-db-instance"*|"rds failover-db-cluster"*|"rds modify-db-instance"*)
+    echo '{"DBInstance": {"DBInstanceIdentifier": "prod-orders", "DBInstanceStatus": "rebooting"}}' ;;
+  *)
+    echo "An error occurred (AccessDenied): this test does not answer: $*" >&2; exit 254 ;;
+esac

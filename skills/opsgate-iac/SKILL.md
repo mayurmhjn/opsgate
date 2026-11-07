@@ -22,7 +22,7 @@ See `references/checklist.md` for the full list.
 
 Tell the user to run the full sequence and to review its output: format check, validate, lint and security scan, then a plan. Terraform and OpenTofu plan files and CloudFormation change sets can be applied exactly as reviewed. A `cdk diff` or `pulumi preview` is only advisory, because deploy computes the changes again. For an exact apply, deploy CDK through a reviewed change set (`cdk deploy --method=prepare-change-set`) or use Pulumi's saved update plans where available. In the review, read every replace and delete, and name the attribute that forces each one. In a change set, treat `Replacement: Conditional` as a replacement. A replaced database or bucket means data loss, or an orphaned copy if it was retained.
 
-Before changing a stateful resource, check that backups or point-in-time recovery are on.
+Before changing a stateful resource, check that backups or point-in-time recovery are on. Before deleting one, also check that it is empty or unused (queue depth, object count, recent connections), or tell the user to.
 
 ## Existing resources and state
 
@@ -35,4 +35,4 @@ Before changing a stateful resource, check that backups or point-in-time recover
 
 ## When related skills are missing
 
-Without the `opsgate` skill, still never run apply, deploy, delete or destroy without the user's yes for that specific action, given after they have seen the reviewed plan. Blanket pre-approvals don't count. For production, state the rollback path first.
+Without the `opsgate` skill, still never run apply, deploy, delete or destroy without the user's yes for that specific action, given after they have seen the reviewed plan. Blanket pre-approvals don't count. For production, state the rollback path first. The same applies to commands that change a shared or deployed system, such as a reboot, restart, failover, scaling, or ending sessions or queries: say what the action will do, then wait for a yes.

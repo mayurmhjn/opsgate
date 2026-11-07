@@ -72,7 +72,7 @@ The skills tell the agent to:
 
 - Compare two or three options against your requirements, recommend one, and say why. Popularity is not a reason.
 - Check which cloud account it is using before running commands against it.
-- Never run `apply`, deploy, delete or destroy without your yes for that specific action.
+- Never run `apply`, deploy, delete or destroy without your yes for that specific action. The same goes for commands that change a live system, such as a reboot, a failover or ending database sessions.
 
 The evals check these rules.
 
@@ -96,13 +96,13 @@ Each skill has eval scenarios: realistic requests, often with pressure to cut co
 
 | Skill | Without skills | With skills |
 |-------|----------------|-------------|
-| `opsgate` | 39/62 | 60/62 |
+| `opsgate` | 40/67 | 65/67 |
 | `opsgate-architecture-design` | 14/17 | 17/17 |
 | `opsgate-cost-estimation` | 10/17 | 17/17 |
-| `opsgate-cloud-aws` | 16/21 | 21/21 |
-| `opsgate-iac` | 25/30 | 30/30 |
+| `opsgate-cloud-aws` | 20/25 | 25/25 |
+| `opsgate-iac` | 28/34 | 34/34 |
 | `opsgate-cicd` | 21/37 | 36/37 |
-| `opsgate-devsecops` | 29/39 | 35/39 |
+| `opsgate-devsecops` | 34/48 | 44/48 |
 
 - Scores come from one graded run per scenario on Claude Code.
 - Each skill's `RESULTS.md` under [`evals/`](evals/) lists what failed, what changed and the known gaps.

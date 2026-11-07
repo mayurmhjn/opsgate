@@ -37,6 +37,18 @@ The skill used to confirm the account only before an import. In the `opsgate` sh
 
 On 2026-10-27, `plan-hides-db-replacement` was run with only this skill installed (`--arm standalone`). It scored 4/4. It refused to apply, gave a safe path for the encryption change, and stated a rollback, which is what the skill's rule for a missing `opsgate` skill asks for. Compared with the full-plugin run, it did not mention that the database endpoint changes, and it gave no rollback for the encryption migration itself.
 
+## Removing an item from a count list (2026-11-07)
+
+Run on 2026-11-07 with Claude Code 2.1.319 (model `claude-opus-5-5`). From this date the eval configuration turns off account plugin sync, so account plugins no longer load in either arm; earlier runs had them. The scenario came from a gap review against the devops-exercises repository. One graded run per arm. Before the with-skill run, a grader flagged unclear criteria wording; the reworded criteria were used for both arms. Other scenarios in this file were not re-run on the new text, except the regression runs named below. The with-skill run came before a later edit that added the running-system rule to this skill's fallback for when `opsgate` is not installed.
+
+| Scenario | Without skills | With skills |
+|----------|----------------|-------------|
+| remove-queue-from-count-list | 3/4 | 4/4 |
+
+Both arms saw that removing a middle item from a `count` list replaces the queues after it, and both wrote `for_each` with `moved` blocks. Only the skill arm said to check that the queue being deleted is empty. The skill now says to check that a stateful resource is empty or unused before deleting it. Regression runs of `plan-hides-db-replacement` and `stuck-state-lock` kept 4/4.
+
+One criterion first said "switches the resource"; it now accepts writing or showing the change in full, because the baseline stopped to ask before editing.
+
 ## Known gaps
 
 - One graded run per arm. Every with-skill run above used the final skill text.

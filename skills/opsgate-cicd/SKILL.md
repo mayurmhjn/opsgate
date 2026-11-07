@@ -47,4 +47,4 @@ Follow `references/release-rollback.md`: redeploy the last known-good artifact r
 
 ## When related skills are missing
 
-Without the `opsgate` skill, still never run an apply, deploy, delete, destroy or rollback, in any environment, without the user's yes for that specific action, given after they have seen the reviewed plan. Blanket pre-approvals don't count. For production, state the rollback path first.
+Without the `opsgate` skill, still never run an apply, deploy, delete, destroy or rollback, in any environment, without the user's yes for that specific action, given after they have seen the reviewed plan. Blanket pre-approvals don't count. For production, state the rollback path first. The same applies to commands that change a shared or deployed system, such as a reboot, restart, failover, scaling, or ending sessions or queries: say what the action will do, then wait for a yes.

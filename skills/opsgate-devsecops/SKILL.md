@@ -1,6 +1,6 @@
 ---
 name: opsgate-devsecops
-description: Use when adding or tuning security scanning (SAST, dependency, container, IaC, secrets), triaging or suppressing findings, responding to a leaked secret, reviewing IAM or other access policies, setting up SBOMs, image signing or provenance, writing policy as code, or threat-modeling a change.
+description: Use when adding or tuning security scanning (SAST, dependency, container, IaC, secrets), writing Dockerfiles or container definitions, setting up dependency update bots, triaging or suppressing findings, responding to a leaked secret, reviewing IAM or other access policies, setting up SBOMs, image signing or provenance, writing policy as code, or threat-modeling a change.
 ---
 
 # opsgate DevSecOps
@@ -15,6 +15,7 @@ Security work fails in two ways: findings nobody acts on, and a clean-looking re
 - Scans that need secrets or write access run only on trusted code. Pull requests from forks get read-only scans.
 - Pin scanner actions and images to a full SHA or digest. Look up the current release instead of using a remembered version. If you can't, leave a marked placeholder and give the command that resolves each one, so the workflow can be made runnable quickly.
 - Add only the files asked for. Offer extras such as update-bot config instead of adding them.
+- When an update bot delays new versions (Dependabot `cooldown`, Renovate `minimumReleaseAge`), say that security updates still arrive right away.
 
 ## Triaging findings
 
@@ -31,6 +32,12 @@ Treat any exposed secret as compromised, even if it was deleted later. Deactivat
 
 Prefer no secret at all: OIDC and roles for CI and workloads. Where a secret is unavoidable, keep it in a secret store (a cloud secrets manager or the CI's environment secrets), give each one an owner and a rotation schedule, and keep it out of logs, environment dumps, error messages and build artifacts.
 
+## Container images
+
+- Pass build secrets such as registry tokens with a BuildKit secret mount (`RUN --mount=type=secret,...`). Build args and environment variables can persist in the image, its history or the build cache.
+- Pin the base image by digest.
+- If the user asks to mount the Docker socket or run a privileged container, leave it out of what you write, explain the risk, offer another way (for logs, the `awslogs` driver or FireLens on ECS), and add it only if they confirm.
+
 ## Access policy reviews
 
 Flag escalation paths first, for example `iam:PassRole` without an `iam:PassedToService` condition, `iam:*`, `iam:CreatePolicyVersion`, `iam:AttachRolePolicy` or `iam:PutRolePolicy`, `iam:UpdateAssumeRolePolicy`, `iam:CreateAccessKey`, the user and group variants (`iam:AttachUserPolicy`, `iam:PutUserPolicy`, `iam:AddUserToGroup`, `iam:CreateLoginProfile`, `iam:UpdateLoginProfile`), `iam:SetDefaultPolicyVersion`, `sts:AssumeRole` on `*`, and compute actions that run code under another role (for example `lambda:UpdateFunctionCode` or `ecs:ExecuteCommand`). Then broad service wildcards. Propose a scoped replacement with conditions, and suggest IAM Access Analyzer validation and last-accessed data.
@@ -45,4 +52,4 @@ For a new component or exposed endpoint, run the short threat model, compliance 
 
 ## When related skills are missing
 
-Without the `opsgate` skill, still never apply, deploy, delete or destroy without the user's yes for that specific action, given after they have seen what it will do.
+Without the `opsgate` skill, still never apply, deploy, delete or destroy without the user's yes for that specific action, given after they have seen what it will do. The same applies to commands that change a shared or deployed system, such as a reboot, restart, failover, scaling, or ending sessions or queries: say what the action will do, then wait for a yes.

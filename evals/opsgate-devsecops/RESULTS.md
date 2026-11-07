@@ -59,6 +59,21 @@ The first with-skill runs matched the baseline (11 of 15 on the old criteria): t
 - In the latest webhook run no opsgate skill loaded. In the latest `ci-role-review` run the AWS skill loaded instead of this one and dropped the Access Analyzer suggestion, so `opsgate-cloud-aws` now suggests Access Analyzer and last-accessed data for policy reviews too. Two re-runs both made the suggestion; only that line was re-checked.
 - Wrong or loose claims in replies: one said ECR pushes to a repository with a customer managed KMS key need `kms:` permissions on the pushing role (likely wrong, since ECR uses grants), one listed card brand and last four digits as part of a `payment_intent.succeeded` payload, and one put Cognito login under the ALB's `authenticate-oidc` action instead of `authenticate-cognito`.
 
+## Container images and update bots (2026-11-07)
+
+Run on 2026-11-07 with Claude Code 2.1.319 (model `claude-opus-5-5`). From this date the eval configuration turns off account plugin sync, so account plugins no longer load in either arm; earlier runs had them. The scenario came from a gap review against the devops-exercises repository. One graded run per arm. Before the with-skill run, a grader flagged unclear criteria wording; the reworded criteria were used for both arms. Other scenarios in this file were not re-run on the new text, except the regression runs named below.
+
+| Scenario | Without skills | With skills |
+|----------|----------------|-------------|
+| dependabot-automerge | 3/4 | 4/4 |
+| dockerfile-private-registry | 2/5 | 5/5 |
+| **Total** | **5/9** | **9/9** |
+
+- **dependabot-automerge.** Both arms added a Dependabot `cooldown` and kept major updates out of auto-merge. Only the skill arm said that the cooldown doesn't delay security updates.
+- **dockerfile-private-registry.** Without the skill, the npm token went in as a build arg and the base image used a tag. With the skill, the token came through a BuildKit secret mount and the base image was pinned by digest. Both arms warned against mounting the Docker socket, but the baseline still wrote the mount into the task definition. With the skill, the agent left the sidecar out and offered FireLens or the `awslogs` driver.
+
+The skill's description now also covers writing Dockerfiles or container definitions and setting up dependency update bots, and the skill has a "Container images" section. Two criteria were reworded before the with-skill run: build args only persist in the final image in some layouts, and "pushes back" became a check that the socket mount is left out unless the user confirms. A review then trimmed the skill to what the baseline missed, and both scenarios were re-run on that text. `add-scanning` scored 3/4 in one run on the intermediate text, with results on the PR switched off by default, and 4/4 on the final text. Regression runs of `add-scanning`, `sbom-and-signing` and `ci-role-review` kept their scores; `ci-role-review` still loads `opsgate-cloud-aws` rather than this skill.
+
 ## Known gaps
 
 - One graded run per arm. All with-skill runs above used the final skill text. The `zero-findings-friday` baseline was re-run on the new fixture; the other baselines are from the first run, on fixtures that did not change.

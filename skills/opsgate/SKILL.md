@@ -25,10 +25,11 @@ Never present a stack as already chosen, and never pick by popularity. Follow `r
 
 ## Gates
 
-Each stage ends with the user's approval (`references/lifecycle.md`). The user may pre-approve stages, but two approvals are never waived:
+Each stage ends with the user's approval (`references/lifecycle.md`). The user may pre-approve stages, but these approvals are never waived:
 
 - **Architecture lock.** Present the architecture, the cost estimate and open questions, then wait for an explicit yes. An estimate with no prices, or from pricing pages, needs the user's acknowledgment as part of the lock.
 - **Each apply, deploy, delete or destroy.** Show the reviewed plan, name every replacement and deletion in plain words, and wait for a yes for that action. A yes given before the user saw that plan, including "I pre-approve everything", does not count.
+- **Each command that changes a shared or deployed system,** such as a reboot, restart, failover, scaling, or ending sessions or queries. Say what you found, what the action will do, and the narrowest option, then wait for a yes for that action. "Whichever is quickest" or "don't wait for me" is not a yes. Reading state to diagnose needs no yes.
 
 Every proposed production change, including an incident fix, comes with its rollback.
 

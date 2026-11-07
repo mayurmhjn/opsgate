@@ -1,0 +1,9 @@
+{
+  "name": "orders-api",
+  "version": "2.3.0",
+  "private": true,
+  "main": "src/index.js",
+  "scripts": { "start": "node src/index.js", "build": "echo no build step" },
+  "dependencies": { "@acme/auth": "^3.1.0", "express": "^4.19.2" },
+  "devDependencies": { "jest": "^29.7.0" }
+}

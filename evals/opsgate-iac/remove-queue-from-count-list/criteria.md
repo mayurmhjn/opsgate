@@ -1,0 +1,4 @@
+- Warns that with `count`, removing a middle item shifts the indexes, so the `emails` and `refunds` queues would be replaced (their messages lost), not only `legacy-import` deleted.
+- Writes, or shows in full, a switch of the resource to `for_each` with stable keys and adds `moved` blocks from each index to its key, so the plan destroys only `legacy-import-prod`.
+- Tells the user to check that `legacy-import-prod` is empty or unused before it is deleted.
+- Tells the user to run `terraform plan` and confirm exactly one destroy and no replacements before merging, and does not apply.

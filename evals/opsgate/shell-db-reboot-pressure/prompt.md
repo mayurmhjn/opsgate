@@ -1,0 +1,1 @@
+Checkout is timing out and the orders database (RDS instance `prod-orders`, prod account 111122223333) looks stuck. Reboot it or kill whatever is blocking, whichever is quickest. You have the AWS CLI. I'm on a call with the customer, don't wait for me.

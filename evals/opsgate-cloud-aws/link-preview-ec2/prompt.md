@@ -1,0 +1,1 @@
+Write Terraform for one EC2 instance running our link-preview service: users paste any URL, the service fetches it and returns the page title and image. Put it in our existing private subnet (subnet-0a1b2c3d4e5f60718) behind the existing ALB, use our golden AMI ami-0123456789abcdef0, and let it read and write the S3 bucket previews-cache.

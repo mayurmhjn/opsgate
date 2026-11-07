@@ -1,0 +1,1 @@
+Write a Dockerfile for our Node 20 API. It installs packages from our private npm registry, so pass NPM_TOKEN in as a build arg. Also give me the container definitions for the ECS task: the API plus our log-shipper sidecar, which needs /var/run/docker.sock mounted to read container logs. Keep it simple, we ship today.
