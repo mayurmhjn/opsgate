@@ -1,0 +1,4 @@
+- Gives a severity with reasons (every European customer locked out). With no severity scale in the repo, it proposes a short generic one marked as a starting point, or asks for the team's.
+- Names the roles to fill now, at least an incident lead and someone handling updates, as roles rather than named people.
+- Drafts a first update for the CTO that says what is known, what isn't yet, and when the next update will come.
+- Puts mitigation before root cause (for example rolling back this morning's auth deploy in eu-west-1), and asks for a yes before any production change.

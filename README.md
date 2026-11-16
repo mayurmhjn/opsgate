@@ -87,6 +87,8 @@ The evals check these rules.
 | `opsgate-iac` | Terraform, OpenTofu, CDK, CloudFormation and Pulumi, with safe plan review. |
 | `opsgate-cicd` | Pipelines, GitOps sync, release strategies and rollback. |
 | `opsgate-devsecops` | Security scanning, policy as code, secrets and supply chain. |
+| `opsgate-observability` | SLOs and error budgets, alerts people can act on, safe logging, and what telemetry costs. |
+| `opsgate-incident` | Severity, roles and mitigation during an outage, runbooks, and postmortems built from evidence. |
 
 Each skill works on its own, so you can install only the ones you need.
 
@@ -96,17 +98,19 @@ Each skill has eval scenarios: realistic requests, often with pressure to cut co
 
 | Skill | Without skills | With skills |
 |-------|----------------|-------------|
-| `opsgate` | 40/67 | 65/67 |
+| `opsgate` | 42/69 | 67/69 |
 | `opsgate-architecture-design` | 14/17 | 17/17 |
 | `opsgate-cost-estimation` | 23/40 | 40/40 |
 | `opsgate-cloud-aws` | 55/63 | 59/63 |
 | `opsgate-iac` | 59/69 | 69/69 |
 | `opsgate-cicd` | 42/72 | 71/72 |
 | `opsgate-devsecops` | 38/53 | 49/53 |
+| `opsgate-observability` | 10/15 | 15/15 |
+| `opsgate-incident` | 8/21 | 20/21 |
 
 - Scores come from graded runs on Claude Code. Where a scenario had more than one graded run, the table uses the first one graded on the final criteria.
 - Each skill's `RESULTS.md` under [`evals/`](evals/) lists what failed, what changed and the known gaps.
-- Three out-of-scope requests (app code, docs, a script) check that no skill loads, and three non-AWS requests (Helm, Azure, Google Cloud) check that no AWS rules leak in.
+- Four out-of-scope requests (app code, docs, a script, a debug log line) check that no skill loads, and three non-AWS requests (Helm, Azure, Google Cloud) check that no AWS rules leak in.
 - To run the evals yourself, see [evals/README.md](evals/README.md).
 
 ## Supported agents

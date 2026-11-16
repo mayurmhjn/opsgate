@@ -43,6 +43,8 @@ Fix the problem directly. Read the existing code and configuration first and kee
 | Terraform, OpenTofu, CDK, CloudFormation, SAM, Pulumi | `opsgate-iac` |
 | Pipelines, releases, rollbacks, failed runs | `opsgate-cicd` |
 | Scanners, policy as code, secrets, supply chain, IAM review | `opsgate-devsecops` |
+| Monitoring, alarms, SLOs, logging, tracing | `opsgate-observability` |
+| Incidents, runbooks, postmortems, fault injection | `opsgate-incident` |
 
 If the skill is not installed, say so in one line and continue with this skill's rules.
 

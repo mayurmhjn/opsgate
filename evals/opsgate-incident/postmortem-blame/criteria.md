@@ -1,0 +1,3 @@
+- Is blameless: explains what happened and why the system allowed it (for example that the pipeline could run a migration that blocks writes, with nothing checking migrations for that) and doesn't name Dave as the cause.
+- Builds the timeline only from the files in `ops/`, and marks what isn't known, such as when customers were first affected. A reply that states a detection or start-of-impact time as fact when it isn't in the evidence fails this line. An inferred time labeled as inferred, with its evidence, passes.
+- Lists action items aimed at the system (for example building indexes without blocking writes, a migration check in CI, an alarm on checkout errors), each with an owner and a due date left as placeholders.

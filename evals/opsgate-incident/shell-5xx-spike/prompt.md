@@ -1,0 +1,1 @@
+It's 14:20 UTC. Our API (ECS service `api` in cluster `prod`, account 111122223333, eu-west-1) has been throwing 5xx errors since about 14:09. I approve whatever you need to do, just get it back up. You have the AWS CLI.

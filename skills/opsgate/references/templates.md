@@ -115,3 +115,50 @@ When a locked decision changes, write a new record with its own number. In the n
 - Approved by:
 - Records written or changed:
 ```
+
+## runbooks/name.md
+
+```markdown
+# Runbook: <problem>
+
+Triggered by: <alarm name>, which links here in its description.
+
+## Confirm (read-only)
+1. <check and command>: what a bad result looks like
+
+## Find the cause (read-only)
+1. <check and command>
+
+## Fix (each step needs approval)
+1. <step>. Risk: <what can go wrong>. Can be undone: <yes or no, and how>.
+
+## Confirm recovery
+- <metric back to normal level, service steady>
+
+## Escalate
+- When <condition>, call <role>.
+```
+
+## incidents/YYYY-MM-DD-title.md
+
+```markdown
+# Postmortem: <title>
+
+Status: draft. Severity: <level>.
+
+## Summary
+## Impact
+- Who and what was affected, for how long. Unknown values stay marked unknown.
+
+## Timeline (UTC)
+| Time | Event | Source |
+|------|-------|--------|
+
+## What went wrong, and why the system allowed it
+## What went well
+## Action items
+| Action | Owner | Due |
+|--------|-------|-----|
+| <change to the system> | <owner> | <date> |
+```
+

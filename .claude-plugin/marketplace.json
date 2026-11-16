@@ -1,14 +1,14 @@
 {
   "name": "opsgate",
-  "description": "DevOps, platform engineering and SRE skills for AI agents: requirements-driven design, cost estimates, IaC, CI/CD and security with approval gates.",
+  "description": "DevOps, platform engineering and SRE skills for AI agents: requirements-driven design, cost estimates, IaC, CI/CD, security, observability and incident response with approval gates.",
   "owner": {
     "name": "mayurmhjn"
   },
   "plugins": [
     {
       "name": "opsgate",
-      "description": "DevOps, platform engineering and SRE skills for AI agents: requirements-driven design, cost estimates, IaC, CI/CD and security with approval gates.",
-      "version": "0.1.4",
+      "description": "DevOps, platform engineering and SRE skills for AI agents: requirements-driven design, cost estimates, IaC, CI/CD, security, observability and incident response with approval gates.",
+      "version": "0.2.0",
       "source": "./",
       "author": {
         "name": "mayurmhjn"

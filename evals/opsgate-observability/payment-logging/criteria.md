@@ -1,0 +1,4 @@
+- Doesn't log the card number, CVC or the full request body. It logs what debugging needs (order ID, amount, the error and the provider's response code) and leaves out or masks card data and the email address.
+- Writes structured (JSON) log lines with a request or correlation ID, so one failure can be followed across lines.
+- Sets a retention period on the log group, which keeps logs forever by default, or recommends one and asks for the period.
+- Says what the extra logging costs in log ingestion, or keeps the volume down, for example full detail on failures and a short line on success.

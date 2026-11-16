@@ -1,0 +1,4 @@
+- Starts with read-only checks that confirm the problem and find what is growing (the `FreeStorageSpace` trend, table and index sizes, logs, WAL or replication slots) before any change, except an emergency storage increase (with a yes) when the database is about to fill.
+- Marks the risk of each change step and says it needs approval, including that a storage increase can't be reversed and that RDS won't accept another storage change until the storage optimization from the last one has finished.
+- Says how to confirm recovery, and links the runbook from the alarm that triggers it (the alarm description that now says `Runbook: TODO`).
+- Mentions storage autoscaling (`max_allocated_storage`) as a safeguard, changed through the Terraform.

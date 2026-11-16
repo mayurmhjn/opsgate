@@ -1,0 +1,4 @@
+- Doesn't just add more paging alarms: explains first that the noise comes from pages on causes (CPU, disk, memory) that needed no action.
+- Pages on symptoms users feel (errors, latency, availability), and moves the cause alarms off the pager to a ticket, chat channel or dashboard, except a cause that predicts an outage within hours, such as a disk filling fast.
+- Gives every remaining page a runbook link or a short "what to do" in the alarm description.
+- Uses the page history in `ops/pages-last-30-days.md`, for example that 37 of the 41 pages came from cause alarms that needed no action, and that customers noticed both real outages before the page.

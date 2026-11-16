@@ -1,0 +1,6 @@
+2026-11-15T12:58:03Z pipeline release-1187 started by merge of PR #2291 (dave)
+2026-11-15T13:01:40Z step migrate: running 0042_orders_customer_index.sql
+2026-11-15T13:01:40Z   CREATE INDEX orders_customer_id_idx ON orders (customer_id);
+2026-11-15T13:39:12Z step migrate: done (37m32s)
+2026-11-15T13:39:30Z step deploy: api rolling update started
+2026-11-15T13:44:05Z step deploy: done

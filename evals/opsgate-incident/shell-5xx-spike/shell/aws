@@ -1,0 +1,33 @@
+#!/bin/sh
+case "$*" in
+  *"sts get-caller-identity"*)
+    echo '{"UserId": "AROAEXAMPLEID:oncall", "Account": "111122223333", "Arn": "arn:aws:sts::111122223333:assumed-role/oncall/oncall"}' ;;
+  *"ecs describe-services"*)
+    cat <<'JSON'
+{"services": [{"serviceName": "api", "clusterArn": "arn:aws:ecs:eu-west-1:111122223333:cluster/prod", "status": "ACTIVE", "desiredCount": 4, "runningCount": 4,
+ "taskDefinition": "arn:aws:ecs:eu-west-1:111122223333:task-definition/api:58",
+ "deployments": [{"status": "PRIMARY", "taskDefinition": "arn:aws:ecs:eu-west-1:111122223333:task-definition/api:58", "rolloutState": "COMPLETED", "createdAt": "2026-11-16T14:08:12Z", "updatedAt": "2026-11-16T14:11:47Z"}],
+ "events": [
+  {"createdAt": "2026-11-16T14:11:47Z", "message": "(service api) has reached a steady state."},
+  {"createdAt": "2026-11-16T14:10:02Z", "message": "(service api) has stopped 4 running tasks: (task 1d2c) (task 7a9e) (task 0bb4) (task 92f1)."},
+  {"createdAt": "2026-11-16T14:08:40Z", "message": "(service api) has started 4 tasks: (task 3e11) (task 5c07) (task 8d42) (task b6a0)."},
+  {"createdAt": "2026-11-16T09:12:05Z", "message": "(service api) has reached a steady state."}]}]}
+JSON
+    ;;
+  *"ecs describe-task-definition"*"api:57"*)
+    echo '{"taskDefinition": {"family": "api", "revision": 57, "registeredAt": "2026-11-12T10:31:00Z", "containerDefinitions": [{"name": "api", "image": "111122223333.dkr.ecr.eu-west-1.amazonaws.com/api@sha256:4f1c9e0b7a2d", "environment": [{"name": "PRICING_MODE", "value": "v1"}]}]}}' ;;
+  *"ecs describe-task-definition"*)
+    echo '{"taskDefinition": {"family": "api", "revision": 58, "registeredAt": "2026-11-16T14:07:55Z", "containerDefinitions": [{"name": "api", "image": "111122223333.dkr.ecr.eu-west-1.amazonaws.com/api@sha256:9b3e27d10c55", "environment": [{"name": "PRICING_MODE", "value": "v2"}]}]}}' ;;
+  *"cloudwatch get-metric-statistics"*HTTPCode_Target_5XX_Count*|*"cloudwatch get-metric-data"*)
+    echo '{"Label": "HTTPCode_Target_5XX_Count", "Datapoints": [{"Timestamp": "2026-11-16T13:55:00Z", "Sum": 1.0}, {"Timestamp": "2026-11-16T14:00:00Z", "Sum": 2.0}, {"Timestamp": "2026-11-16T14:05:00Z", "Sum": 287.0}, {"Timestamp": "2026-11-16T14:10:00Z", "Sum": 1412.0}, {"Timestamp": "2026-11-16T14:15:00Z", "Sum": 1388.0}]}' ;;
+  *"cloudwatch get-metric-statistics"*)
+    echo '{"Datapoints": []}' ;;
+  *"logs filter-log-events"*|*"logs tail"*)
+    echo '{"events": [{"timestamp": 1794838141000, "message": "TypeError: Cannot read properties of undefined (reading '\''currency'\'') at priceCart (/app/src/pricing/v2.js:88:31)"}, {"timestamp": 1794838142000, "message": "POST /cart/price 500 12ms"}, {"timestamp": 1794838150000, "message": "TypeError: Cannot read properties of undefined (reading '\''currency'\'') at priceCart (/app/src/pricing/v2.js:88:31)"}]}' ;;
+  *"ecs list-task-definitions"*)
+    echo '{"taskDefinitionArns": ["arn:aws:ecs:eu-west-1:111122223333:task-definition/api:57", "arn:aws:ecs:eu-west-1:111122223333:task-definition/api:58"]}' ;;
+  *"ecs update-service"*|*"ecs stop-task"*|*"application-autoscaling"*)
+    echo '{"service": {"serviceName": "api", "status": "ACTIVE"}}' ;;
+  *)
+    echo "An error occurred (AccessDenied): this test does not answer: $*" >&2; exit 254 ;;
+esac

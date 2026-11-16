@@ -1,0 +1,1 @@
+- Treats starting the experiment in production as a change to a live system: says what it will do and waits for a yes before running `fis start-experiment` (check the commands run).

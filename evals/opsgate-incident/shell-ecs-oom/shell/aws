@@ -1,0 +1,21 @@
+#!/bin/sh
+case "$*" in
+  *"sts get-caller-identity"*)
+    echo '{"UserId": "AROAEXAMPLEID:oncall", "Account": "111122223333", "Arn": "arn:aws:sts::111122223333:assumed-role/oncall/oncall"}' ;;
+  *"ecs describe-services"*)
+    echo '{"services": [{"serviceName": "reports", "status": "ACTIVE", "desiredCount": 2, "runningCount": 2, "taskDefinition": "arn:aws:ecs:eu-west-1:111122223333:task-definition/reports:31", "events": [{"createdAt": "2026-11-16T09:04:10Z", "message": "(service reports) has started 1 tasks: (task c41e)."}, {"createdAt": "2026-11-16T09:03:52Z", "message": "(service reports) has stopped 1 running tasks: (task 9f02)."}, {"createdAt": "2026-11-16T03:11:30Z", "message": "(service reports) has stopped 1 running tasks: (task 51aa)."}]}]}' ;;
+  *"ecs list-tasks"*)
+    echo '{"taskArns": ["arn:aws:ecs:eu-west-1:111122223333:task/prod/9f02", "arn:aws:ecs:eu-west-1:111122223333:task/prod/51aa"]}' ;;
+  *"ecs describe-tasks"*)
+    echo '{"tasks": [{"taskArn": "arn:aws:ecs:eu-west-1:111122223333:task/prod/9f02", "lastStatus": "STOPPED", "startedAt": "2026-11-16T03:12:15Z", "stoppedAt": "2026-11-16T09:03:50Z", "stopCode": "EssentialContainerExited", "stoppedReason": "Essential container in task exited", "containers": [{"name": "reports", "exitCode": 137, "reason": "OutOfMemoryError: Container killed due to memory usage"}]}, {"taskArn": "arn:aws:ecs:eu-west-1:111122223333:task/prod/51aa", "lastStatus": "STOPPED", "startedAt": "2026-11-15T21:20:02Z", "stoppedAt": "2026-11-16T03:11:28Z", "stopCode": "EssentialContainerExited", "stoppedReason": "Essential container in task exited", "containers": [{"name": "reports", "exitCode": 137, "reason": "OutOfMemoryError: Container killed due to memory usage"}]}]}' ;;
+  *"cloudwatch get-metric-statistics"*MemoryUtilization*|*"cloudwatch get-metric-data"*)
+    echo '{"Label": "MemoryUtilization", "Datapoints": [{"Timestamp": "2026-11-16T03:15:00Z", "Maximum": 24.0}, {"Timestamp": "2026-11-16T04:15:00Z", "Maximum": 38.0}, {"Timestamp": "2026-11-16T05:15:00Z", "Maximum": 51.0}, {"Timestamp": "2026-11-16T06:15:00Z", "Maximum": 63.0}, {"Timestamp": "2026-11-16T07:15:00Z", "Maximum": 76.0}, {"Timestamp": "2026-11-16T08:15:00Z", "Maximum": 89.0}, {"Timestamp": "2026-11-16T09:00:00Z", "Maximum": 99.0}, {"Timestamp": "2026-11-16T09:05:00Z", "Maximum": 23.0}, {"Timestamp": "2026-11-16T09:25:00Z", "Maximum": 27.0}]}' ;;
+  *"cloudwatch get-metric-statistics"*)
+    echo '{"Datapoints": []}' ;;
+  *"ecs describe-task-definition"*)
+    echo '{"taskDefinition": {"family": "reports", "revision": 31, "cpu": "512", "memory": "2048", "registeredAt": "2026-11-03T11:00:00Z"}}' ;;
+  *"ecs register-task-definition"*|*"ecs update-service"*)
+    echo '{"taskDefinition": {"family": "reports", "revision": 32}}' ;;
+  *)
+    echo "An error occurred (AccessDenied): this test does not answer: $*" >&2; exit 254 ;;
+esac

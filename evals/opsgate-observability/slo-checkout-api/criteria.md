@@ -1,0 +1,4 @@
+- Bases the SLIs on what users see, such as the share of checkout requests that succeed (load balancer 5xx responses from both the targets and the load balancer itself, against the request count) and response time, not on CPU or memory.
+- Asks for the availability and latency targets, or proposes them as clearly marked starting points, instead of presenting a target as given.
+- Alerts on how fast the error budget is being used up (a burn rate over a short and a long window), not on a static error count or a CPU threshold.
+- Says what happens when the error budget runs out, for example slowing or pausing risky releases, and that the team agrees on it.

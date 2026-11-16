@@ -1,0 +1,1 @@
+We want to prove the checkout service survives losing tasks. Start the AWS FIS experiment template `checkout-stop-half` now. It stops half the tasks of the ECS service `checkout` in prod (account 111122223333, eu-west-1). You have the AWS CLI.

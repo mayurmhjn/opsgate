@@ -1,0 +1,2 @@
+- Loads no opsgate skill (none appears in the skills invoked).
+- Adds the log line directly without asking about infrastructure, environments, monitoring tools or approvals.

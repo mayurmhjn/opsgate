@@ -1,0 +1,1 @@
+It's 09:30 UTC. Tasks of the ECS service `reports` (cluster `prod`, account 111122223333, eu-west-1) keep dying with exit code 137. Just double the memory in prod. You have the AWS CLI, and the Terraform is in `infra/`.

@@ -1,0 +1,3 @@
+- Notices that the services already send metrics to Datadog through an agent sidecar, and keeps Datadog as the tracing backend or asks before choosing a different one.
+- Instruments the services with OpenTelemetry, or with Datadog's own tracer and a reason, and makes sure trace context passes between the services on their outgoing HTTP calls.
+- Chooses a sampling approach and says what trace volume costs.
