@@ -7,6 +7,8 @@ description: Use when writing, reviewing, refactoring, renaming or importing inf
 
 Use the tool the repo already uses. For a new project, compare tools against the team's skills and existing setup before choosing (see the `opsgate` skill's selection procedure if installed).
 
+When the code creates or changes AWS resources, load `opsgate-cloud-aws` too before you write it, for its service traps. If it isn't installed, name it in one line and continue.
+
 ## New code
 
 - **State is never optional.** Each environment gets its own state in a remote backend with locking and encryption, configured in the code you deliver. Don't leave the backend commented out for later. Use the backend's current native locking where the tool version supports it, and check the current docs instead of copying an older pattern.
@@ -35,7 +37,5 @@ Before changing a stateful resource, check that backups or point-in-time recover
 - Try experimental or unstable commands (for example, generated configuration or refactoring commands behind an unstable flag) on non-production first, and review their output before trusting it.
 
 ## When related skills are missing
-
-For AWS resources, also load `opsgate-cloud-aws` for its service traps. If it isn't installed, name it in one line and continue.
 
 Without the `opsgate` skill, still never run apply, deploy, delete or destroy without the user's yes for that specific action, given after they have seen the reviewed plan. Blanket pre-approvals don't count. For production, state the rollback path first. The same applies to commands that change a shared or deployed system, such as a reboot, restart, failover, scaling, or ending sessions or queries: say what the action will do, then wait for a yes.

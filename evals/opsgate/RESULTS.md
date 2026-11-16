@@ -157,3 +157,7 @@ Misses that were left alone:
 - `opsgate-cloud-aws/autoscaling-flap` loads `opsgate-iac` without the AWS skill, and `bastion-for-rds` loads the AWS skill in some runs only.
 
 No scenario yet checks a review of AWS resources other than IAM, such as an S3 or VPC change in Terraform, which can now load only `opsgate-iac` or `opsgate-architecture-design`. The runner records skills loaded through the Skill tool, so a `SKILL.md` read directly would not show. These six scenarios are not counted in the README table, which compares runs with and without the skills.
+
+## IaC for AWS resources (2026-11-16)
+
+The router now sends AWS service behavior to `opsgate-cloud-aws`, and IaC that creates or changes AWS resources to both `opsgate-iac` and `opsgate-cloud-aws`. Regression runs of the out-of-scope requests (`out-of-scope-csv-script`, `out-of-scope-react-bug`, `out-of-scope-readme`) still loaded no opsgate skill. `non-aws-azure` loaded `opsgate` and `opsgate-iac`, `non-aws-gcp` loaded `opsgate-cicd` and `non-aws-helm` loaded `opsgate`, so no AWS skill loaded for them. These runs were checked for which skills loaded, not scored. `bastion-for-rds` still loaded only `opsgate`, and `replica-stale-reads` still loaded no opsgate skill in two runs.

@@ -112,5 +112,5 @@ Regression runs of `ecs-new-service` (4/4) and `replica-stale-reads` (3/4, still
 
 ### Known gaps
 
-- This skill still loads for only some Terraform tasks on AWS resources. When it doesn't, the ECR trap doesn't apply, and one such run scored below both baseline runs.
+- This skill still loads for only some Terraform tasks on AWS resources. When it doesn't, the ECR trap doesn't apply, and one such run scored below both baseline runs. After the `opsgate-iac` line moved to the top of that skill, it loaded in 10 of 14 AWS Terraform runs but in none of three ECR runs. Those three replies still covered the staging image and the lifecycle policy preview without it, but weren't graded.
 - With-skill ECR replies passed the yes-before-apply half of the last line only when this skill loaded.
