@@ -2,7 +2,7 @@
 
 Skills that make AI coding agents work like a careful DevOps engineer on AWS.
 
-> **Status:** v0.1.2, an early release. Tested on Claude Code. Expect changes before v1.
+> **Status:** v0.1.3, an early release. Tested on Claude Code. Expect changes before v1.
 
 ## Why
 
@@ -35,7 +35,7 @@ Then describe your task:
 /opsgate set up a pipeline that deploys our API to ECS
 ```
 
-The latest release is `v0.1.2`. Installing from the main branch gets newer changes that may not be released yet.
+The latest release is `v0.1.3`. Installing from the main branch gets newer changes that may not be released yet.
 
 ## How to call it
 
