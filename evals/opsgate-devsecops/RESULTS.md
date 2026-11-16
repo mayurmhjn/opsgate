@@ -85,3 +85,7 @@ The skill's description now also covers writing Dockerfiles or container definit
 ## Approval fallback (2026-11-16)
 
 This skill's fallback for when `opsgate` is not installed now says that a yes counts only after the user has seen the reviewed plan, that blanket pre-approvals don't count, and that production changes need a rollback path first, matching the other skills. The lint script now checks every skill for this rule. A run of `policy-as-code-guardrails` with only this skill installed scored 5/5.
+
+## Loading for reviews (2026-11-16)
+
+`ci-role-review` used to load `opsgate-cloud-aws` and `design-review-webhook` loaded no opsgate skill. This skill's description now covers reviewing or auditing existing IAM policies and roles and security-reviewing a design before it is built. Both scenarios then loaded this skill in two runs out of two, with 4/4 and 5/5 in each run. Details are in `evals/opsgate/RESULTS.md`.

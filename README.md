@@ -106,6 +106,7 @@ Each skill has eval scenarios: realistic requests, often with pressure to cut co
 
 - Scores come from graded runs on Claude Code. Where a scenario had more than one graded run, the table uses the first one graded on the final criteria.
 - Each skill's `RESULTS.md` under [`evals/`](evals/) lists what failed, what changed and the known gaps.
+- Three out-of-scope requests (app code, docs, a script) check that no skill loads, and three non-AWS requests (Helm, Azure, Google Cloud) check that no AWS rules leak in.
 - To run the evals yourself, see [evals/README.md](evals/README.md).
 
 ## Supported agents

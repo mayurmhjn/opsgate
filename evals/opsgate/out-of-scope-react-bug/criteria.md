@@ -1,0 +1,2 @@
+- Loads no opsgate skill (none appears in the skills invoked).
+- Fixes the bug directly (treats a missing discount as zero) without asking about infrastructure, environments or approvals.

@@ -80,3 +80,7 @@ After the baseline runs, a grader found several criteria that bundled two or thr
 - The replica scenario shows the pack doesn't load for database problems that look like application bugs.
 - The with-skill `vpc-overlap` reply added flow logs, a state backend and three NAT gateways beyond the request.
 - Two scenarios scored lower with the skills than without, each on a single with-skill run: `bastion-for-rds` (2/4 against 4/4 and 4/4) and `autoscaling-flap` (3/5 against 5/5 and 3/5). That is why the README shows only one point between the arms for this skill.
+
+## Description change (2026-11-16)
+
+The description now starts "Use when writing or changing anything that touches an AWS account" and says "writing IAM policies and roles", so reviews of existing policies go to `opsgate-devsecops`. Regression runs of `iam-policy-lambda` (6/6), `cloudfront-cert-trap` (4/4), `root-account-startup`, `link-preview-ec2`, `vpc-overlap` and `pasted-secret` (3/4 in one run; two more runs both told the user to deactivate the exposed key) still loaded this skill. The others were checked for which skill loaded, not scored. Details are in `evals/opsgate/RESULTS.md`.

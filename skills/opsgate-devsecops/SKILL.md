@@ -1,6 +1,6 @@
 ---
 name: opsgate-devsecops
-description: Use when adding or tuning security scanning (SAST, dependency, container, IaC, secrets), writing Dockerfiles or container definitions, setting up dependency update bots, triaging or suppressing findings, responding to a leaked secret, reviewing IAM or other access policies, setting up SBOMs, image signing or provenance, writing policy as code, or threat-modeling a change.
+description: Use when adding or tuning security scanning (SAST, dependency, container, IaC, secrets), writing Dockerfiles or container definitions, setting up dependency update bots, triaging or suppressing findings, responding to a leaked secret, reviewing or auditing existing IAM policies, roles or other access rules (for example before a merge), security-reviewing a design before it is built, setting up SBOMs, image signing or provenance, writing policy as code, or threat-modeling a change.
 ---
 
 # opsgate DevSecOps

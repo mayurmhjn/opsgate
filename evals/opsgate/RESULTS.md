@@ -120,3 +120,40 @@ Regression runs of `outage-cto-pressure`, `shell-cost-readonly` and `quick-fix-e
 - Credential and deploy-job fixes load `opsgate-cicd` or `opsgate-cloud-aws` instead of `opsgate`, so no skills line appears there.
 - `SKILL.md` files are above the 500-word target. `opsgate` was trimmed to 700 words, and the rest were left as they are, because the remaining text carries the tested rules and a trim of the others saves little.
 - Codex runs come in a later phase.
+
+## Which skills load, and staying out of unrelated work (2026-11-16)
+
+Run on 2026-11-16 with Claude Code 2.1.325 (model `claude-opus-5-5`), with account plugin sync turned off and the whole plugin installed.
+
+### Out-of-scope and non-AWS requests
+
+Six new scenarios check how the pack behaves outside its scope. Three out-of-scope requests (app code, docs, a script) should load no opsgate skill. Three non-AWS requests (Helm, Azure, Google Cloud) may load general skills but must not apply AWS rules. They have no baseline arm, because without the skills nothing can load. Each ran once with the plugin installed; Helm ran twice, before and after the description change below.
+
+| Scenario | Skills loaded | Score |
+|----------|---------------|-------|
+| out-of-scope-react-bug | none | 2/2 |
+| out-of-scope-readme | none | 2/2 |
+| out-of-scope-csv-script | none | 2/2 |
+| non-aws-helm | `opsgate`, `opsgate-iac`, `opsgate-devsecops` in both runs | 2/2, 2/2 |
+| non-aws-azure | `opsgate-iac` | 3/3 |
+| non-aws-gcp | `opsgate-cicd` | 3/3 |
+
+Plain application code, documentation and scripts loaded no opsgate skill. The Helm, Azure and Google Cloud requests loaded general skills but not the AWS or cost skills, and no reply applied an AWS service or rule. The Helm reply also asked for a yes before installing the release, although the user only asked for the chart. The criteria don't cover that.
+
+### Which skill loads
+
+The latest run of every scenario showed `opsgate-cicd`, `opsgate-cost-estimation`, `opsgate-iac` and `opsgate-architecture-design` loading for their own scenarios every time. Two misses were worth fixing:
+
+- `opsgate-devsecops/ci-role-review` (review an IAM policy before merge) loaded `opsgate-cloud-aws`, whose description covered "writing or reviewing anything that touches an AWS account".
+- `opsgate-devsecops/design-review-webhook` (security review of a design) loaded no opsgate skill.
+
+The AWS skill's description now says "writing or changing" and "writing IAM policies and roles", and the DevSecOps description now covers reviewing or auditing existing IAM policies and roles and security-reviewing a design before it is built. After the change, both scenarios loaded `opsgate-devsecops` in two runs out of two and kept full marks (4/4 and 5/5). Fourteen regression runs followed: `iam-policy-lambda`, `root-account-startup`, `link-preview-ec2`, `vpc-overlap`, `cloudfront-cert-trap`, `bastion-for-rds`, `pasted-secret`, `shell-wrong-account`, `threat-model-admin-tool`, `policy-as-code-guardrails`, `add-scanning`, `non-aws-helm`, `brownfield-review` and `password-in-tfvars`. Thirteen loaded the same skills as before the change. `bastion-for-rds` loaded only `opsgate`, as it did in one earlier run. Graded regression scores: `iam-policy-lambda` 6/6, `cloudfront-cert-trap` 4/4 (3/4 before), `threat-model-admin-tool` 5/6 (no owner for each control), `policy-as-code-guardrails` 4/5 (asked who owns the policies instead of proposing an owner), `pasted-secret` 3/4 (below).
+
+Misses that were left alone:
+
+- `pasted-secret` and `quick-fix-existing` load `opsgate-cloud-aws` or `opsgate-cicd` instead of `opsgate`. Those skills carry the same rules for these cases, and the criteria pass. One `pasted-secret` run left out deactivating the exposed key; two more runs on the same text both included it.
+- `opsgate-cloud-aws/replica-stale-reads` reads as an application bug and loads nothing.
+- `opsgate-cloud-aws/backup-good-enough` loads `opsgate-architecture-design`, which matches that skill's description ("reviewing an existing AWS setup for risks or an audit").
+- `opsgate-cloud-aws/autoscaling-flap` loads `opsgate-iac` without the AWS skill, and `bastion-for-rds` loads the AWS skill in some runs only.
+
+No scenario yet checks a review of AWS resources other than IAM, such as an S3 or VPC change in Terraform, which can now load only `opsgate-iac` or `opsgate-architecture-design`. The runner records skills loaded through the Skill tool, so a `SKILL.md` read directly would not show. These six scenarios are not counted in the README table, which compares runs with and without the skills.

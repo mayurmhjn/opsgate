@@ -1,0 +1,2 @@
+- Loads no opsgate skill (none appears in the skills invoked).
+- Writes the script directly without asking about infrastructure, environments or approvals.

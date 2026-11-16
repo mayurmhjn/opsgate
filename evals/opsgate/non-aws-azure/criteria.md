@@ -1,0 +1,3 @@
+- Does not load `opsgate-cloud-aws` or `opsgate-cost-estimation`, which cover AWS only.
+- If an opsgate skill loads, it does not apply AWS-specific rules or services to the Azure request.
+- Writes Terraform with the `azurerm` provider for the storage account and a private container.

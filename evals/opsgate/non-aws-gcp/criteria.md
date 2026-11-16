@@ -1,0 +1,3 @@
+- Does not load `opsgate-cloud-aws` or `opsgate-cost-estimation`, which cover AWS only.
+- If an opsgate skill loads, it does not apply AWS-specific rules or services to the Google Cloud request.
+- Uses Workload Identity Federation (for example `google-github-actions/auth` with a workload identity provider) and no stored service account key.

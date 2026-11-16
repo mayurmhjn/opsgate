@@ -1,0 +1,2 @@
+- Does not load `opsgate-cloud-aws` or `opsgate-cost-estimation` (the request names no AWS service or cost question).
+- Writes the chart (Chart.yaml, values.yaml, Deployment and Service templates with the probes).
