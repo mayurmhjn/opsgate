@@ -36,4 +36,6 @@ Before changing a stateful resource, check that backups or point-in-time recover
 
 ## When related skills are missing
 
+For AWS resources, also load `opsgate-cloud-aws` for its service traps. If it isn't installed, name it in one line and continue.
+
 Without the `opsgate` skill, still never run apply, deploy, delete or destroy without the user's yes for that specific action, given after they have seen the reviewed plan. Blanket pre-approvals don't count. For production, state the rollback path first. The same applies to commands that change a shared or deployed system, such as a reboot, restart, failover, scaling, or ending sessions or queries: say what the action will do, then wait for a yes.

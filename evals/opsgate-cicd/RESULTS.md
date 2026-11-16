@@ -97,3 +97,34 @@ After the baseline runs, a grader found criteria that bundled several checks or 
 - One with-skill Jenkins run dropped the executor trade-off and the advice to replace the stored key with role credentials, and wrongly said that anyone in Jenkins could approve if `submitter` named no real user.
 - One regression reply for `rollback-bad-release` claimed that addresses without a comma survive its reverse migration unchanged. With the reverse migration it wrote, they gain a trailing comma.
 - Self-hosted runs left the integration tests, which need the VPC, in the hosted pull request job, where they can't reach the database.
+
+## Preview environments, GitOps sync, deploy order and flaky tests (2026-11-16)
+
+Run on 2026-11-16 with Claude Code (model `claude-opus-5-5`), with account plugin sync turned off. The scenarios came from a gap review of public DevOps and platform engineering topics. Each arm ran twice, and all runs are graded on the final criteria.
+
+| Scenario | Without skills | With skills |
+|----------|----------------|-------------|
+| preview-env-teardown | 3/4, 3/4 | 4/4, 3/4 |
+| argocd-auto-sync | 4/4, 3/4 | 4/4, 4/4 |
+| parallel-env-deploy | 3/4, 3/4 | 4/4, 4/4 |
+| flaky-test-retry | 0/3, 0/3 | 3/3, 3/3 |
+
+- **flaky-test-retry.** Without the skills, both runs added a retry for every e2e test and left the fixed `waitForTimeout(2000)` sleep in place. The skill now says not to retry the whole job or suite, to fix or visibly quarantine the flaky test, and to look for the cause in the test. With it, both runs replaced the sleep with a `toHaveText` assertion and added no retry.
+- **parallel-env-deploy.** Without the skills, both runs made production deploy alongside staging, with a warning. The skill now says a new artifact reaches production only after the environment before it has deployed and passed its verify step. Earlier environments may run in parallel, and a rollback doesn't go through them again. Both with-skill runs kept the order and offered other ways to save time.
+- **argocd-auto-sync.** One run without the skills turned on prune for production without protecting the database and offered the annotation afterwards. A new GitOps bullet covers what prune deletes, `Prune=false` and the Flux prune annotation, `allowEmpty`, and how Argo CD self-heal and Flux reconciliation undo a manual fix during an incident.
+- **preview-env-teardown.** Without the skills, both runs wrote a nightly sweep that deleted the old stacks for real on its first run, before anyone had seen the list. The skill now says a scheduled bulk delete only lists what it would delete until the user has reviewed that list. One with-skill run did exactly that. The other wrote a manual cleanup script with a dry run by default and left the schedule as a follow-up, which missed the scheduled cleanup line.
+
+Regression runs of `new-pipeline-ecs` (5/5), `rollback-bad-release` (4/4) and `frontend-build-once` (3/4, the same line as before) didn't change.
+
+### Changes made during testing
+
+- The flaky line about quarantine now also accepts fixing the cause in the test, because both with-skill runs in the first round did that and failed the old wording. The rule and the criterion first said a suite-wide retry "hides new failures". A reviewer pointed out that a retry still catches a deterministic regression, so both now say it lets new intermittent failures pass unnoticed.
+- The preview line about unattended deletes now says a sweep that deletes on its first run fails even if the reply advises a manual dry run. The bucket line no longer accepts "otherwise handles it", which would have passed a stack delete that leaves the bucket behind.
+- The Argo CD line no longer mentions volumes, because the StatefulSet controller creates the claims and Argo CD doesn't prune them.
+- The first version of the deploy order rule also blocked earlier environments running in parallel and rollbacks. It was reworded after review, and the runs above use the final text.
+- The flaky fixture got a real `package-lock.json`, and the Argo CD fixture got a Service and a password secret for Postgres. The baseline runs used the older fixtures; the graded outcomes don't depend on them.
+
+### Known gaps
+
+- The preview criteria for a scheduled cleanup and for no unattended deletes leave one design that passes both: a schedule that only lists until someone turns deletion on.
+- One baseline preview run cancels a running deploy when the PR closes. That can leave the stack mid-update, and the later delete then fails. Both with-skill runs queued the teardown instead.

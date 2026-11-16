@@ -1,0 +1,1 @@
+Write the Terraform (`infra/worker.tf`) and the Lambda handler (`src/worker.js`) for a worker that reads order messages from SQS and charges the customer's card through our payments client in `src/payments.js`. The payments API is sometimes slow, up to about 20 seconds.

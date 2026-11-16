@@ -1,0 +1,1 @@
+Our deploy workflow takes about 25 minutes because it deploys dev, then staging, then prod one after the other. Change `.github/workflows/deploy.yml` so the three deploys run in parallel after the build. We want releases faster.

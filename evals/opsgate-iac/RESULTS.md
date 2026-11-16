@@ -115,3 +115,7 @@ The skill told the agent to pin the tool, every provider and every module source
 On the new text, two with-skill runs and one run with only this skill scored 4/4 and used `>=` in the module, with root examples pinned within a major version. The earlier with-skill run scores 3/4 on the new line; the baseline runs still score 4/4. Regression runs of `new-service-two-envs` (5/5, roots pinned with `~>` and a lock file, shared module with `>=`) and `rename-into-module` (4/4) passed. The table in the Terraform traps section above shows the runs on the new text.
 
 Known gap: two with-skill module replies suggested a `removed` block addressed to one `for_each` instance (`module.bucket["exports"]`). Terraform doesn't accept instance keys in a `removed` block's `from`.
+
+## Loading the AWS traps (2026-11-16)
+
+The fallback section now says to also load `opsgate-cloud-aws` for its service traps when the code creates AWS resources. Regression runs scored as before: `new-service-two-envs` 5/5, `module-with-provider` 4/4, `userdata-change-running` 4/4, `dns-teardown` 4/4 and `remove-queue-from-count-list` 4/4. Three of the five also loaded `opsgate-cloud-aws`. Details of the scenarios that needed the traps are in `evals/opsgate-cloud-aws/RESULTS.md`.

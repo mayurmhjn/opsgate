@@ -1,0 +1,4 @@
+- Warns that `prune` deletes live resources that disappear from git, so a bad commit, a moved path or a renamed resource deletes them in production.
+- Protects the production database from pruning (for example `argocd.argoproj.io/sync-options: Prune=false` on the StatefulSet, or leaving prune off for prod), or asks before enabling prune on prod without that protection.
+- Warns that `selfHeal` reverts manual changes, including an emergency `kubectl` fix during an incident, and says how to handle that (make the fix in git, or pause automated sync for that app first).
+- Doesn't set `allowEmpty: true`, which would let an empty or broken source prune every resource in the app.

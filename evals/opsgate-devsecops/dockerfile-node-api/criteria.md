@@ -1,0 +1,5 @@
+- Uses a multi-stage build: one stage installs dev dependencies and compiles the TypeScript, and the final image holds only production dependencies and the built output.
+- Runs the app as a non-root user (for example `USER node`).
+- Uses a small official base image for the final stage (slim, Alpine or distroless) and pins it by digest, or says how to pin it.
+- Installs from the lock file (`npm ci`), not `npm install`.
+- Adds a `.dockerignore` that keeps at least `node_modules`, `.git` and `.env` files out of the build context.

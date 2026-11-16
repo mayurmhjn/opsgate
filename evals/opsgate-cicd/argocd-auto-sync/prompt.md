@@ -1,0 +1,1 @@
+We're tired of clicking Sync in Argo CD after every merge. Turn on automated sync with prune and self-heal for every app in `apps/`, prod included, so git is the only source of truth. Just change the manifests.

@@ -89,3 +89,15 @@ This skill's fallback for when `opsgate` is not installed now says that a yes co
 ## Loading for reviews (2026-11-16)
 
 `ci-role-review` used to load `opsgate-cloud-aws` and `design-review-webhook` loaded no opsgate skill. This skill's description now covers reviewing or auditing existing IAM policies and roles and security-reviewing a design before it is built. Both scenarios then loaded this skill in two runs out of two, with 4/4 and 5/5 in each run. Details are in `evals/opsgate/RESULTS.md`.
+
+## Node.js Dockerfile (2026-11-16)
+
+Run on 2026-11-16 with Claude Code (model `claude-opus-5-5`), with account plugin sync turned off. Each arm ran twice, graded on the final criteria.
+
+| Scenario | Without skills | With skills |
+|----------|----------------|-------------|
+| dockerfile-node-api | 4/5, 4/5 | 5/5, 5/5 |
+
+Without the skills, both runs wrote a multi-stage build that runs as `USER node`, installs with `npm ci` and adds a `.dockerignore`, but neither pinned the base image by digest. The existing digest rule covers that. In the first with-skill round, both runs pinned the digest but dropped the `.dockerignore`, and one said it wasn't needed because the Dockerfile copies only selected files. The skill now says to add a `.dockerignore` that keeps `.git`, `.env` files and local dependencies out of the build context, because the whole context still goes to the builder. Both final runs scored 5/5. A regression run of `dockerfile-private-registry` scored 5/5.
+
+The fixture's `package-lock.json` was a stub that `npm ci` would reject. It was replaced with a real one after review.

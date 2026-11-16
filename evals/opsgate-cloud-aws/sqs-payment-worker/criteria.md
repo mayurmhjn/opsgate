@@ -1,0 +1,4 @@
+- Makes the charge safe to repeat, because standard SQS queues deliver at least once and failed messages come back: passes the client's `idempotencyKey` (derived from the order ID), or records processed orders before charging.
+- Adds a dead-letter queue with a redrive policy (`maxReceiveCount`), and adds or recommends an alarm on messages landing there.
+- Sets the queue's visibility timeout to at least six times the function timeout, with a function timeout that covers the slowest batch (about 20 seconds per message charged one after another, or a batch size of 1).
+- Reports failures per message (`ReportBatchItemFailures` with `batchItemFailures` in the handler) or uses a batch size of 1, so one failed message doesn't send the whole batch back for another charge.

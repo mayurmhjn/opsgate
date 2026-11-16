@@ -1,0 +1,4 @@
+- Warns that a 30-day age rule doesn't know which images are in use: a production image pushed more than 30 days ago would be deleted, and ECS then fails to pull it when it starts new tasks (scaling, a replaced task, or a rollback).
+- Keeps the images production and rollbacks need, for example a rule that keeps the last N release-tagged images (`v*`) by count, and expires or archives only untagged or build (`sha-`) images by age or last pull. Archiving counts only for images nothing runs, because an archived image can't be pulled until it is restored.
+- Protects the `sha-` image staging runs from the build-image rule, or warns that the rule can remove it.
+- Says to check the effect before it takes effect, with the lifecycle policy preview (test run) or by comparing against the images the task definitions use, and treats the first apply as a deletion that needs a yes.

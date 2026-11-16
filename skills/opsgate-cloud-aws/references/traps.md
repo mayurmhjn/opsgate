@@ -36,6 +36,7 @@ Check the ones for the services you touch. For details and current limits, use t
 ## Compute and deploy
 
 - Fargate and Lambda have architecture (x86 or ARM) tied to the image or package. A mismatch fails at start.
+- ECR lifecycle rules don't know which images are in use. An age rule can expire the image production runs, and the next task start then fails to pull it. A count rule doesn't know either. Keep enough release images to cover what each environment runs and the rollback target, expire by age only images nothing runs, and run the lifecycle policy preview before applying. Archived images can't be pulled until they are restored, so the same applies to archive rules.
 - ECS services need the right health check grace period, or tasks get killed while starting.
 - Moving a Terraform resource to another provider alias (for example a certificate to a us-east-1 provider) does not destroy the old one. Terraform loses track of it, so the old resource is left behind in the original region and must be removed separately.
 - `terraform apply -target` leaves state partly applied. Use it only for exceptional cases, such as values unknown until apply in `count` or `for_each`, or recovering from a mistake.

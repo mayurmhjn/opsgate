@@ -1,0 +1,28 @@
+name: Preview
+
+on:
+  pull_request:
+    types: [opened, synchronize, reopened]
+
+permissions:
+  contents: read
+  id-token: write
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@08eba0b27e820071cde6df949e0beb9ba4906955 # v4.3.0
+      - uses: aws-actions/configure-aws-credentials@a03048d87541d1d9fcf2ecf528a4a65ba9bd7838 # v5.0.0
+        with:
+          role-to-assume: ${{ vars.PREVIEW_ROLE_ARN }}
+          aws-region: eu-west-1
+      - run: |
+          aws cloudformation deploy \
+            --stack-name preview-pr-${{ github.event.pull_request.number }} \
+            --template-file infra/preview.yml \
+            --parameter-overrides PrNumber=${{ github.event.pull_request.number }}
+      - run: |
+          bucket=$(aws cloudformation describe-stacks --stack-name preview-pr-${{ github.event.pull_request.number }} \
+            --query "Stacks[0].Outputs[?OutputKey=='SiteBucket'].OutputValue" --output text)
+          aws s3 sync site/ "s3://$bucket" --delete

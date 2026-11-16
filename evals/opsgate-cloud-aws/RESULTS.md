@@ -84,3 +84,33 @@ After the baseline runs, a grader found several criteria that bundled two or thr
 ## Description change (2026-11-16)
 
 The description now starts "Use when writing or changing anything that touches an AWS account" and says "writing IAM policies and roles", so reviews of existing policies go to `opsgate-devsecops`. Regression runs of `iam-policy-lambda` (6/6), `cloudfront-cert-trap` (4/4), `root-account-startup`, `link-preview-ec2`, `vpc-overlap` and `pasted-secret` (3/4 in one run; two more runs both told the user to deactivate the exposed key) still loaded this skill. The others were checked for which skill loaded, not scored. Details are in `evals/opsgate/RESULTS.md`.
+
+## ECR cleanup, Lambda connections and SQS workers (2026-11-16)
+
+Run on 2026-11-16 with Claude Code (model `claude-opus-5-5`), with account plugin sync turned off. Each arm ran twice, graded on the final criteria.
+
+| Scenario | Without skills | With skills |
+|----------|----------------|-------------|
+| ecr-image-cleanup | 3/4, 3/4 | 4/4, 2/4 |
+| lambda-rds-connections | 4/4, 4/4 | 4/4, 4/4 |
+| sqs-payment-worker | 3/4, 3/4 | 4/4, 4/4 |
+
+All three prompts ask for Terraform, and in the first with-skill round they loaded `opsgate-iac` and, in only one of six runs, this skill, so `references/traps.md` never reached them. `opsgate-iac` now says to also load this skill for its service traps on AWS resources. In the final round this skill loaded in 7 of 12 with-skill runs on AWS Terraform tasks, counting the regression runs.
+
+- **ecr-image-cleanup.** Both runs without the skills warned that a 30-day rule would delete the image production runs. One missed the lifecycle policy preview, and neither treated the first apply as a deletion that needs a yes. A trap now says that age and count rules don't know which images are in use, to keep enough release images for what each environment runs and the rollback target, to run the preview first, and that archived images can't be pulled until they are restored. The with-skill run that loaded this skill scored 4/4. The one that loaded only `opsgate-iac` scored 2/4: it didn't protect the image staging runs and didn't ask for a yes.
+- **lambda-rds-connections.** Every run, with or without the skills, moved the pool out of the handler, recommended RDS Proxy and said `max_connections` needs a reboot. No rule was added.
+- **sqs-payment-worker.** Every run used the order ID as the idempotency key, added a dead-letter queue, set the visibility timeout to six times the function timeout and reported failures per message. Without the skills, neither run mentioned an alarm on the dead-letter queue. With them, both offered one, following the `opsgate-iac` rule to mention useful extras instead of adding them. A trap line for the alarm was written and then removed, because the with-skill runs offered the alarm whether or not this skill loaded.
+
+Regression runs of `ecs-new-service` (4/4) and `replica-stale-reads` (3/4, still no opsgate skill loads) didn't change.
+
+### Changes made during testing
+
+- A reviewer found that the first ECR criteria accepted archiving instead of deleting. An archived image can't be pulled until it is restored, so archiving now counts only for images nothing runs. A fourth line was added for the image staging runs, which the fixture tags `sha-` like every other build.
+- The SQS alarm line now accepts a recommendation as well as an alarm, matching the `opsgate-iac` rule. The timeout line now asks for a function timeout that covers the slowest batch, not a single 20 second call.
+- The SQS fixture's role description now includes `sqs:GetQueueAttributes`, which the event source mapping needs. The Lambda fixture's `rds.tf` was aligned the way `terraform fmt` would.
+- The baseline runs were graded again on the final criteria.
+
+### Known gaps
+
+- This skill still loads for only some Terraform tasks on AWS resources. When it doesn't, the ECR trap doesn't apply, and one such run scored below both baseline runs.
+- With-skill ECR replies passed the yes-before-apply half of the last line only when this skill loaded.

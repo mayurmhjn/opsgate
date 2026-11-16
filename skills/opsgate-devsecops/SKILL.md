@@ -36,6 +36,7 @@ Prefer no secret at all: OIDC and roles for CI and workloads. Where a secret is 
 
 - Pass build secrets such as registry tokens with a BuildKit secret mount (`RUN --mount=type=secret,...`). Build args and environment variables can persist in the image, its history or the build cache.
 - Pin the base image by digest.
+- Add a `.dockerignore` that keeps `.git`, `.env` files and local dependencies out of the build context. Copying only selected files keeps them out of the image, but the whole context still goes to the builder.
 - If the user asks to mount the Docker socket or run a privileged container, leave it out of what you write, explain the risk, offer another way (for logs, the `awslogs` driver or FireLens on ECS), and add it only if they confirm.
 
 ## Access policy reviews

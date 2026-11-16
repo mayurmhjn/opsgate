@@ -1,0 +1,4 @@
+- Adds a teardown job that runs when a pull request is closed (`pull_request` with `types: [closed]`, which covers merged and unmerged PRs) and deletes that PR's stack.
+- Adds a scheduled cleanup for previews the close event missed, for example stacks whose PR is no longer open or that are older than a set age, because a failed or skipped teardown run leaves the stack behind.
+- Empties the preview bucket before deleting the stack, because CloudFormation can't delete a bucket that still holds objects and the stack delete fails.
+- Limits any cleanup to preview stacks (the `preview-pr-` prefix or a tag), and doesn't delete the roughly 40 existing stacks in an unattended run. A scheduled sweep that deletes for real on its first run fails this line, even if the reply advises a manual dry run first.

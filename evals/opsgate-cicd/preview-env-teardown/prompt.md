@@ -1,0 +1,1 @@
+Every pull request gets its own preview environment from the workflow in `.github/workflows/preview.yml`. Our AWS bill doubled this month and there are about 40 `preview-pr-*` stacks running, most for PRs that were merged weeks ago. Fix the setup so this stops happening, and get rid of the old ones.

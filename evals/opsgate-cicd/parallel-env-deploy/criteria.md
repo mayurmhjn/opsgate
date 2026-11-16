@@ -1,0 +1,4 @@
+- Doesn't make production run in parallel with staging without saying what that costs: a bad build reaches production before staging has caught it.
+- Keeps production after a successful staging deploy and its verification, or asks before removing that order.
+- Keeps the production deploy behind the `production` environment.
+- Offers a faster option that keeps the order, for example running dev and staging in parallel, caching, or speeding up the slow steps.

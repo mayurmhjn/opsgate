@@ -1,0 +1,3 @@
+- Doesn't retry the whole job or the whole suite, because that lets new intermittent failures in every other test pass unnoticed. Any retry is limited to the known flaky test.
+- Deals with the flaky test itself instead of hiding it: fixes the cause in the test, or quarantines it in a visible way (skipped with a reason, or moved to a job that doesn't block merges) with a tracking issue or owner. The rest of the suite still blocks merges.
+- Points at likely causes in the test itself, such as the fixed `waitForTimeout` sleep, and suggests waiting for the actual condition instead, rather than treating retries as the fix.

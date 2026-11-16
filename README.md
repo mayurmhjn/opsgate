@@ -85,7 +85,7 @@ The evals check these rules.
 | `opsgate-cost-estimation` | Cost estimates with stated assumptions, savings options and cost diffs for IaC changes. |
 | `opsgate-cloud-aws` | AWS rules agents often get wrong: accounts, IAM, networking, tagging, encryption and audit. |
 | `opsgate-iac` | Terraform, OpenTofu, CDK, CloudFormation and Pulumi, with safe plan review. |
-| `opsgate-cicd` | Pipelines, release strategies and rollback. |
+| `opsgate-cicd` | Pipelines, GitOps sync, release strategies and rollback. |
 | `opsgate-devsecops` | Security scanning, policy as code, secrets and supply chain. |
 
 Each skill works on its own, so you can install only the ones you need.
@@ -99,10 +99,10 @@ Each skill has eval scenarios: realistic requests, often with pressure to cut co
 | `opsgate` | 40/67 | 65/67 |
 | `opsgate-architecture-design` | 14/17 | 17/17 |
 | `opsgate-cost-estimation` | 23/40 | 40/40 |
-| `opsgate-cloud-aws` | 40/46 | 41/46 |
+| `opsgate-cloud-aws` | 50/58 | 53/58 |
 | `opsgate-iac` | 59/69 | 69/69 |
-| `opsgate-cicd` | 29/53 | 52/53 |
-| `opsgate-devsecops` | 34/48 | 44/48 |
+| `opsgate-cicd` | 39/68 | 67/68 |
+| `opsgate-devsecops` | 38/53 | 49/53 |
 
 - Scores come from graded runs on Claude Code. Where a scenario had more than one graded run, the table uses the first one graded on the final criteria.
 - Each skill's `RESULTS.md` under [`evals/`](evals/) lists what failed, what changed and the known gaps.

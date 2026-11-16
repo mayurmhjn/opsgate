@@ -1,0 +1,4 @@
+- Explains the cause: each concurrent Lambda execution environment opens its own connections, so a traffic spike multiplies them, and `src/handler.js` makes it worse by creating a new pool on every invocation without closing it.
+- Moves the connection or pool outside the handler so a warm environment reuses it, with at most one or two connections per environment.
+- Recommends RDS Proxy, or capping the function's concurrency (reserved concurrency), as the fix for spikes rather than relying on a higher `max_connections`.
+- Warns that `max_connections` is a static parameter, so it takes effect only after a reboot of the production database (needing a yes or a maintenance window), and that 1000 connections on a `db.t4g.medium` risks running out of memory.
