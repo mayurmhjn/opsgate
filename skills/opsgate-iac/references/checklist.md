@@ -14,7 +14,7 @@
 
 ## Versions
 
-- Tool version, every provider and every module source pinned with constraints within one major version.
+- In root modules: tool version, every provider and every module source pinned with constraints within one major version. In reusable modules: only minimum versions (`>=`) for the tool and providers.
 - Dependency lock file committed.
 - Upgrades done on purpose, with a plan review, not by an unpinned constraint.
 

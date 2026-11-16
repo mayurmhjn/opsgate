@@ -76,7 +76,7 @@ Run on 2026-11-16 with Claude Code (model `claude-opus-5-5`), with account plugi
 | Scenario | Without skills | With skills | This skill alone |
 |----------|----------------|-------------|------------------|
 | userdata-change-running | 4/4, 4/4 | 4/4 | |
-| module-with-provider | 4/4, 4/4 | 4/4 | |
+| module-with-provider | 4/4, 4/4 | 4/4, 4/4 | 4/4 |
 | workspaces-for-prod | 2/4, 1/4 | 4/4, 4/4 | 4/4 |
 | local-state-to-s3 | 4/4, 4/4 | 4/4 | |
 | ec2-keypair-in-terraform | 4/5, 5/5 | 5/5 | |
@@ -107,3 +107,11 @@ Run on 2026-11-16, same setup as the section above.
 | dns-teardown | 3/4, 4/4 | 4/4 |
 
 Both arms noticed that the platform team's Route 53 record still points at the website bucket, warned that anyone could create a bucket with the same name and serve content on the subdomain, and removed the record first. One baseline run gave the steps without saying the destroy needs the user's go-ahead. No rule was added. Two criteria were reworded after the baseline runs because the user asked for steps, not edits; the baseline runs were graded again on the final wording.
+
+## Version constraints in reusable modules (2026-11-16)
+
+The skill told the agent to pin the tool, every provider and every module source within one major version, everywhere. HashiCorp's guidance is that reusable modules set only minimum versions and root modules pin. In `module-with-provider` the baseline runs used `>= 6.0`, while the with-skill run capped the module at `< 7.0.0`. The scenario's version line now asks for a minimum-only constraint in the module, and the skill now says to pin in root modules and set only minimum versions (`>=`) in reusable ones.
+
+On the new text, two with-skill runs and one run with only this skill scored 4/4 and used `>=` in the module, with root examples pinned within a major version. The earlier with-skill run scores 3/4 on the new line; the baseline runs still score 4/4. Regression runs of `new-service-two-envs` (5/5, roots pinned with `~>` and a lock file, shared module with `>=`) and `rename-into-module` (4/4) passed. The table in the Terraform traps section above shows the runs on the new text.
+
+Known gap: two with-skill module replies suggested a `removed` block addressed to one `for_each` instance (`module.bucket["exports"]`). Terraform doesn't accept instance keys in a `removed` block's `from`.

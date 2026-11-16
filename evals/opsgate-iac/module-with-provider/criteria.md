@@ -1,4 +1,4 @@
 - Removes the `provider "aws"` block from the module, because a module with its own provider configuration can't be used with `for_each`, `count` or `depends_on`.
 - Lets the caller choose each bucket's region without a provider configuration in the module: either provider aliases passed with `providers` (one module call per region), or the resource-level `region` argument that AWS provider 6 added.
-- Adds a `required_providers` entry with a version constraint in the module, without a provider configuration.
+- Gives the module a `required_providers` entry with only a minimum version (`>=`), not a `~>` pin, and no provider configuration, so callers can upgrade within their own constraints.
 - Shows a root-module example that calls the module with `for_each` over a map of buckets.
