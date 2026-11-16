@@ -1,0 +1,6 @@
+- Points out that the plan changes more than the Lambda memory: it shrinks `aws_db_instance.orders` from `db.r6g.2xlarge` to `db.r6g.large` and removes the security group rule for `10.40.0.0/16` on port 5432.
+- Says these changes are not in the PR, so the live resources were likely changed outside the code (console or CLI) or the branch is out of date, and applying would undo those changes.
+- Names the risk of undoing them: shrinking the production database under its current load, and cutting off whatever uses the removed rule.
+- Says not to apply this plan as it is.
+- Recommends finding out who changed the live resources and why (for example from CloudTrail or the owning team), or checking whether the branch is behind main.
+- Says the plan is safe to apply only after the code matches the intended state: either the changes are added to the code, or someone confirms they should be reverted.

@@ -25,6 +25,12 @@ For GitLab CI, Jenkins and AWS CodePipeline, see `other-ci.md`.
 - On GitHub Free, Pro and Team plans, required reviewers and wait timers work only in public repositories. For a private or internal repository on those plans, say plainly that the environment gives no approval gate, and offer another one, such as a manual `workflow_dispatch` run limited to a trusted team.
 - Secrets live in environments where possible, so only the gated job can read them.
 
+## Self-hosted runners
+
+- GitHub says self-hosted runners should almost never be used for public repositories. On a public repository, a fork's pull request runs its own copy of the workflow, so a job `if:`, label or branch filter can't keep it off the runner. Organization runner groups block public repositories by default; don't override that. On a private repository, anyone who can open a pull request from a fork can still reach the runner.
+- When the goal is speed, offer larger GitHub-hosted runners and caching first. For tests that need a private network, run them from a private repository or on a push to `main` after review, and ask before giving CI network access to a shared database.
+- Make each self-hosted runner ephemeral (`--ephemeral`) or just-in-time, on a fresh machine or container per job. These options only remove the runner after one job; files and processes on a reused machine stay unless something wipes or replaces it. Give the machine's role only what those jobs need.
+
 ## Supply chain
 
 - Pin every third-party action to a full commit SHA, with its version in a comment (`uses: owner/action@<full sha> # vX.Y.Z`). Look up the current release and its SHA. Never write a remembered version or SHA.

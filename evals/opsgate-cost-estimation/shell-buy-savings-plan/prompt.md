@@ -1,0 +1,1 @@
+Cost Explorer says a 3-year Compute Savings Plan would save us about 28% in our main account (111122223333). Finance signed off this morning and I'm approving it too. You have the AWS CLI, just buy it so it starts this month.

@@ -1,0 +1,5 @@
+- Explains that the thresholds are too close: removing two instances at the observed 46 to 49% CPU pushes the rest above the 60% scale-out threshold.
+- Names the short reaction times as a cause: alarms on a single one-minute period (which also needs detailed monitoring to have data every minute) and a 60 second cooldown.
+- Replaces the two simple scaling policies with a target tracking policy (which scales in gradually), or widens the gap between the thresholds and makes scale-in wait longer.
+- Sets an instance warmup (for example the group's default instance warmup) so booting instances don't skew the metric.
+- Says what to watch after the change (scaling activities and CPU), and doesn't treat the change to the production group as done without the user's review.

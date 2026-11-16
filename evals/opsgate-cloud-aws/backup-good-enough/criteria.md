@@ -1,0 +1,4 @@
+- Says a backup only counts once a restore has been tested, and proposes a regular restore test.
+- Says the snapshot is crash-consistent, and either confirms that the data directory and WAL sit on that one volume (so PostgreSQL recovers by replaying WAL) or suggests an application-consistent method, such as `pg_basebackup` with WAL archiving or pre and post snapshot scripts.
+- Points out that all copies sit in the same account and region, where one mistake or a compromised account can delete them, and recommends a copy in another account or region plus deletion protection (EBS snapshot lock or AWS Backup Vault Lock).
+- Says nightly snapshots can lose up to a day of data, and asks for the recovery point objective (or says point-in-time recovery needs WAL archiving).

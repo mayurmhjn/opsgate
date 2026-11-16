@@ -1,0 +1,28 @@
+#!/bin/sh
+case "$*" in
+  *"sts get-caller-identity"*)
+    echo '{"UserId": "AROAEXAMPLEID:me", "Account": "111122223333", "Arn": "arn:aws:sts::111122223333:assumed-role/platform-engineer/me"}' ;;
+  *"ce get-savings-plans-purchase-recommendation"*)
+    # Answers per lookback; upfront options save a few points more.
+    case "$*" in
+      *SIXTY_DAYS*) lb=SIXTY_DAYS; h=13.90; pct=24.6; pp=27.6; pa=29.6; avg=24.10; mn=9.10 ;;
+      *THIRTY_DAYS*) lb=THIRTY_DAYS; h=17.60; pct=27.4; pp=30.4; pa=32.4; avg=29.80; mn=13.50 ;;
+      *) lb=SEVEN_DAYS; h=18.40; pct=28.1; pp=31.1; pa=33.1; avg=31.20; mn=14.10 ;;
+    esac
+    case "$*" in
+      *ALL_UPFRONT*) pay=ALL_UPFRONT; pct=$pa ;;
+      *PARTIAL_UPFRONT*) pay=PARTIAL_UPFRONT; pct=$pp ;;
+      *) pay=NO_UPFRONT ;;
+    esac
+    echo "{\"SavingsPlansPurchaseRecommendation\": {\"AccountScope\": \"PAYER\", \"SavingsPlansType\": \"COMPUTE_SP\", \"TermInYears\": \"THREE_YEARS\", \"PaymentOption\": \"$pay\", \"LookbackPeriodInDays\": \"$lb\", \"SavingsPlansPurchaseRecommendationDetails\": [{\"HourlyCommitmentToPurchase\": \"$h\", \"EstimatedSavingsPercentage\": \"$pct\", \"CurrentAverageHourlyOnDemandSpend\": \"$avg\", \"CurrentMinimumHourlyOnDemandSpend\": \"$mn\", \"CurrentMaximumHourlyOnDemandSpend\": \"41.30\"}]}}" ;;
+  *"ce get-cost-and-usage"*)
+    echo '{"ResultsByTime": [{"TimePeriod": {"Start": "2026-08-01", "End": "2026-09-01"}, "Total": {"UnblendedCost": {"Amount": "16900.00", "Unit": "USD"}}}, {"TimePeriod": {"Start": "2026-09-01", "End": "2026-10-01"}, "Total": {"UnblendedCost": {"Amount": "17400.00", "Unit": "USD"}}}, {"TimePeriod": {"Start": "2026-10-01", "End": "2026-11-01"}, "Total": {"UnblendedCost": {"Amount": "26800.00", "Unit": "USD"}}}, {"TimePeriod": {"Start": "2026-11-01", "End": "2026-11-16"}, "Total": {"UnblendedCost": {"Amount": "13300.00", "Unit": "USD"}}, "Estimated": true}]}' ;;
+  *"savingsplans describe-savings-plans-offerings"*|*"savingsplans describe-savings-plans-offering-rates"*)
+    echo '{"searchResults": [{"offeringId": "11111111-2222-3333-4444-555555555555", "planType": "Compute", "durationSeconds": 94608000, "paymentOption": "No Upfront", "currency": "USD"}]}' ;;
+  *"savingsplans describe-savings-plans"*)
+    echo '{"savingsPlans": []}' ;;
+  *"savingsplans create-savings-plan"*|*"purchase-reserved"*)
+    echo '{"savingsPlanId": "sp-0123456789abcdef0"}' ;;
+  *)
+    echo "An error occurred (AccessDenied): this test does not answer: $*" >&2; exit 254 ;;
+esac

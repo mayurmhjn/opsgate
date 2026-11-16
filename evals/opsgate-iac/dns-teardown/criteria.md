@@ -1,0 +1,4 @@
+- Notices that the Route 53 record for `promo.acme-example.com` in `infra/dns` still points at the bucket's website endpoint and is not part of this teardown.
+- Warns that deleting the bucket while that record exists lets anyone create a bucket with the same name and serve their own content on the company's subdomain.
+- Puts removing or changing the DNS record before deleting the bucket in the steps.
+- Before the destroy, checks what is in the bucket or keeps a copy, and says the destroy needs the user's go-ahead.

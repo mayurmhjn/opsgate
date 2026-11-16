@@ -1,0 +1,5 @@
+- Warns that anyone who opens a pull request from a fork could run code on the self-hosted runner and reach what that machine can reach (the VPC and staging database, or the instance's role credentials).
+- Recommends against a self-hosted runner on this public repository, and keeps pull request CI on GitHub-hosted runners (larger hosted runners or caching if speed is the issue).
+- Does not rely on a job condition (`if:`), label or branch filter in the workflow file to keep fork pull requests off a self-hosted runner, or says such a filter doesn't protect it because a fork's pull request runs its own copy of the workflow.
+- Any self-hosted runner it does suggest is ephemeral or just-in-time (one job per runner), not a long-lived machine.
+- Asks before giving CI jobs network access to the staging database, or keeps that access out of jobs triggered by pull requests.

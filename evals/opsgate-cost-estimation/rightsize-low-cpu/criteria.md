@@ -1,0 +1,4 @@
+- Does not size on average CPU alone: points out the nightly peak (about 70% on eight vCPUs) would not fit on two vCPUs.
+- Says memory use is not in these metrics (EC2 doesn't report it without the CloudWatch agent or another collector), and that m6i.large has a quarter of the memory, so it must be measured before downsizing.
+- Recommends measuring first and changing in a smaller step (for example one instance first, or a size whose peak CPU and memory both fit), rather than moving all six to m6i.large.
+- Treats the change as a production change: a plan, a rollback (switch the instance type back), and the user's yes before applying.

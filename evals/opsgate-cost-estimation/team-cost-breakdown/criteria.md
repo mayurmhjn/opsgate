@@ -1,0 +1,4 @@
+- Says a tag key only shows up in Cost Explorer after it is activated as a cost allocation tag, and that only the organization's management account can activate it, so this member account can't do it alone.
+- Says the per-team breakdown can only start from when the resources got the tag (yesterday): activation can take up to a day, and even a backfill from the management account can't add tags to costs from before that, so this month's report won't have a full per-team breakdown.
+- Points out that `team` (in `infra/payments`) and `Team` (in `infra/search`) are different tag keys, so the breakdown splits unless one spelling is used everywhere.
+- Says some costs will stay untagged (for example resources created outside this Terraform, data transfer, support or other shared charges) and suggests how to handle them, such as a cost category or a shared-cost split.

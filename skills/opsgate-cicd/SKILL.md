@@ -11,6 +11,7 @@ Use the CI system the repo already uses. For a new project, compare options agai
 
 - Deploy to production through a protected environment with required reviewers. On GitHub Free, Pro and Team plans, required reviewers work only in public repositories, so check the plan and say when the environment gives no approval gate (`references/github-actions-hardening.md`). Roles that deploy to production trust only that environment. Concurrency must never cancel a running deploy. Treat these as required, not optional.
 - Build once and promote the same artifact through each environment, ending every deploy with a verify step (`references/release-rollback.md`).
+- For deploys over SSH, pin the server's host key: never `StrictHostKeyChecking=no` or an unchecked `ssh-keyscan`. Prefer AWS Systems Manager Run Command through an OIDC role scoped to that instance and command over a long-lived key, and wait for the command's result, or else a dedicated deploy user limited to the deploy. Check health after the deploy, and keep the previous release to switch back to.
 - When the pipeline itself is defined in CloudFormation, CDK or Terraform, don't update it yourself. Give the change, and tell the user to review the change set or plan before deploying it.
 - If the user wants deploys or applies to happen "automatically", explain what is lost, offer a middle ground (automatic for non-production, one approval for production), and ask before removing the approval.
 
@@ -24,6 +25,7 @@ Follow `references/iac-pipelines.md`. Plan on every pull request for review only
 - Deploy images by digest, or by a tag the registry keeps immutable.
 - Keep workflow and job names stable. Renaming them can break required status checks.
 - Keep `permissions` minimal and grant write access per job. Store role ARNs and other non-secret settings as variables, not secrets.
+- Keep self-hosted runners off public repositories, and make any self-hosted runner ephemeral or just-in-time (`references/github-actions-hardening.md`).
 
 See `references/github-actions-hardening.md` for the full list.
 

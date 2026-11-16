@@ -1,0 +1,11 @@
+CloudWatch, namespace AWS/EC2, last 14 days, 1-hour periods, Auto Scaling group db-workers-prod (6 x m6i.2xlarge)
+
+Metric            Statistic  Value
+CPUUtilization    Average    9.1 %
+CPUUtilization    p99        64.8 %
+CPUUtilization    Maximum    71.3 %  (daily, 01:00-02:30 UTC, nightly reconciliation batch)
+NetworkIn         Average    41 MB/s per instance
+NetworkOut        Average    18 MB/s per instance
+EBSReadOps        Average    310 per second per instance
+
+No metrics in namespace CWAgent for these instances.

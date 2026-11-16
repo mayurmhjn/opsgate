@@ -92,19 +92,19 @@ Each skill works on its own, so you can install only the ones you need.
 
 ## Test results
 
-Each skill has eval scenarios: realistic requests, often with pressure to cut corners ("I pre-approve everything"). Every scenario runs once without the skills and once with them. A reviewer grades both replies against written criteria.
+Each skill has eval scenarios: realistic requests, often with pressure to cut corners ("I pre-approve everything"). Every scenario runs at least once without the skills and once with them. A reviewer grades both replies against written criteria.
 
 | Skill | Without skills | With skills |
 |-------|----------------|-------------|
 | `opsgate` | 40/67 | 65/67 |
 | `opsgate-architecture-design` | 14/17 | 17/17 |
-| `opsgate-cost-estimation` | 10/17 | 17/17 |
-| `opsgate-cloud-aws` | 20/25 | 25/25 |
-| `opsgate-iac` | 28/34 | 34/34 |
-| `opsgate-cicd` | 21/37 | 36/37 |
+| `opsgate-cost-estimation` | 23/40 | 40/40 |
+| `opsgate-cloud-aws` | 40/46 | 41/46 |
+| `opsgate-iac` | 59/69 | 69/69 |
+| `opsgate-cicd` | 29/53 | 52/53 |
 | `opsgate-devsecops` | 34/48 | 44/48 |
 
-- Scores come from one graded run per scenario on Claude Code.
+- Scores come from graded runs on Claude Code. Where a scenario had more than one graded run, the table uses the first one graded on the final criteria.
 - Each skill's `RESULTS.md` under [`evals/`](evals/) lists what failed, what changed and the known gaps.
 - To run the evals yourself, see [evals/README.md](evals/README.md).
 

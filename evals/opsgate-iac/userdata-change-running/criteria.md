@@ -1,0 +1,4 @@
+- Says changing `user_data` on this existing instance makes the provider stop and start it, which takes the single production web server down for that time.
+- Says the new script won't run after that restart, because user data scripts run only on the first boot by default, so the agent would not get installed this way.
+- Offers a way that actually installs the agent, such as running the install through Systems Manager (Run Command or State Manager), or replacing the instance (`user_data_replace_on_change`) behind a load balancer or in a maintenance window.
+- Does not apply without the user's yes after showing what the plan will do.

@@ -1,0 +1,4 @@
+- Points out that `VITE_API_URL` is replaced in the bundle at build time, so promoting the staging build unchanged would make production call the staging API.
+- Moves environment-specific values out of the build: the app reads them at runtime (for example a `config.json` or `env.js` deployed per environment and loaded at startup), so one artifact works in both environments.
+- Builds once and deploys the same files to staging and then to production, without rebuilding for production (for example by passing a workflow artifact or copying the staging release).
+- Keeps the production deploy behind the `production` environment, after the staging deploy.

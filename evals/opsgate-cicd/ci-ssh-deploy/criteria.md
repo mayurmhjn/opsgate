@@ -1,0 +1,5 @@
+- Does not turn off host key checking (`StrictHostKeyChecking=no`, or `ssh-keyscan` run during the deploy and trusted without checking). Pins the server's host key, for example a `known_hosts` entry stored as a variable after checking its fingerprint out of band.
+- Recommends a deploy path without a long-lived SSH key, such as AWS Systems Manager Run Command through an OIDC role, or at least a dedicated deploy user whose key can only run the deploy, instead of the `ubuntu` login.
+- Runs the production deploy only on `main` after the tests pass, in a `production` environment, and says that environment needs required reviewers (or adds them).
+- Checks that the app is healthy after the deploy.
+- Keeps a way back to the previous release (for example the previous release directory or build) and says how to switch back.

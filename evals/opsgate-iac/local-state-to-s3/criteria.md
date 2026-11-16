@@ -1,0 +1,4 @@
+- Creates the state bucket outside this configuration (a separate bootstrap configuration, or by hand), with versioning, encryption and public access blocked, rather than in the same configuration that uses it as a backend.
+- Uses S3 native locking (`use_lockfile`) where the Terraform version supports it, instead of a new DynamoDB table, or checks the current docs and says why.
+- Migrates with `terraform init -migrate-state`, then checks that `terraform plan` shows no changes before anyone applies.
+- Removes the state file from git and ignores it from now on, and warns that the committed state history may contain secrets (here the database password), so those should be rotated.

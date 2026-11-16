@@ -36,3 +36,5 @@ Map RTO and RPO to a strategy with `references/dr-strategies.md`, and show why t
 ## When related skills are missing
 
 The cost estimate needs `opsgate-cost-estimation`, and the account, IAM and network layout needs `opsgate-cloud-aws`. When the design covers one of these and its skill is not installed, name the missing skill in one line and continue. For service details, use the official AWS skills or the AWS documentation.
+
+Without the `opsgate` skill, a design is not approval to build it. Never apply, deploy, delete or destroy without the user's yes for that specific action, given after they have seen the reviewed plan. Blanket pre-approvals don't count. The same applies to commands that change a shared or deployed system: say what the action will do, then wait for a yes.

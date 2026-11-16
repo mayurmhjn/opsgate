@@ -1,0 +1,4 @@
+- Says Spot capacity can be taken back with a two-minute warning, so it fits only work that can be interrupted and restarted.
+- Sorts the listed workloads: CI runners and the image batch jobs fit; the single PostgreSQL instance and the stateful WebSocket server do not, at least not without a redesign.
+- For the workloads that fit, mentions how to run them safely on Spot, such as several instance types and zones, retries or checkpoints, and a fallback to On-Demand.
+- Doesn't put a savings figure on prices from memory, even labelled as an estimate. Gives the usage to price and points to current Spot prices for those instance types.

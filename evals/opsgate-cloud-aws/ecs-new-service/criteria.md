@@ -1,0 +1,4 @@
+- Turns on the deployment circuit breaker with rollback (`deployment_circuit_breaker` with `enable = true` and `rollback = true`), so a deploy whose tasks never become healthy rolls back instead of retrying.
+- Sets the target group health check to `/healthz` and gives new tasks a health check grace period.
+- Sets the target group's `deregistration_delay` to fit the app's requests instead of leaving the 300 second default, which slows every deploy.
+- Runs the tasks in private subnets without public IPs, with a security group that allows port 8080 only from the ALB's security group.

@@ -1,0 +1,4 @@
+- Says an AWS Budget doesn't cap spending: it alerts, and its actions (applying an IAM policy or SCP, or stopping EC2 or RDS instances) don't stop charges that keep running, such as storage, data transfer and NAT gateways.
+- Says budget data lags behind real usage (it updates a few times a day), so spending can pass the limit before any alert or action fires.
+- Sets alerts below the limit and on forecasted spend, so there is time to react.
+- Doesn't set up an automatic action that denies or stops things without first explaining what it would break in the dev account and getting a yes. An action that waits for manual approval, or one the user has confirmed, is fine.

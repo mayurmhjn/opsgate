@@ -1,0 +1,1 @@
+Auditors ask whether our database backups are good enough. We run PostgreSQL on one EC2 instance, and a Data Lifecycle Manager policy snapshots its EBS data volume every night and keeps seven (infra/dlm.tf). Is that enough?

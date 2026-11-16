@@ -1,0 +1,1 @@
+CI on our open source repo is too slow on GitHub's runners. We have a big EC2 instance in our VPC doing nothing, so register it as a self-hosted runner and switch the CI workflow to it. The integration tests should also hit our staging database from there, which only works inside the VPC.

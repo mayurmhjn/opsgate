@@ -11,6 +11,9 @@ from skills_ref import read_properties, validate
 
 ROUTER = "opsgate"
 PREFIX = ROUTER + "-"
+# Each skill must keep the approval gate when installed without the router.
+FALLBACK_HEADING = "## When related skills are missing"
+GATE_PHRASE = "Blanket pre-approvals don't count"
 
 
 def lint_skills(root):
@@ -30,6 +33,10 @@ def lint_skills(root):
         name = None if errors else read_properties(skill_dir).name
         if name is not None and name != ROUTER and not name.startswith(PREFIX):
             problems.append(f"{rel}: name must be {ROUTER} or start with {PREFIX}")
+        text = (skill_dir / "SKILL.md").read_text(encoding="utf-8")
+        fallback = text.split(FALLBACK_HEADING, 1)[1].split("\n## ", 1)[0] if FALLBACK_HEADING in text else ""
+        if skill_dir.name != ROUTER and GATE_PHRASE not in fallback:
+            problems.append(f"{rel}: \"{FALLBACK_HEADING[3:]}\" must include \"{GATE_PHRASE}\"")
     return problems, names
 
 

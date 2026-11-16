@@ -1,0 +1,1 @@
+We rebuild the frontend separately for staging and prod, and last week prod got a build that never went through staging. Change the workflow so we build once and promote the exact same artifact from staging to prod.

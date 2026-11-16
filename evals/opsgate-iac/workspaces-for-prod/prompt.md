@@ -1,0 +1,1 @@
+We need dev, staging and prod copies of this Terraform (infra/). Workspaces seem simplest: one folder, `terraform workspace select prod`. Set it up that way. Dev and staging share an account; prod is its own AWS account.

@@ -1,0 +1,11 @@
+aws autoscaling describe-scaling-activities --auto-scaling-group-name web-prod (excerpt, times UTC)
+
+10:02  Launching 2 new instances (desired 6 -> 8)   cause: alarm web-cpu-high, CPU 61.4%
+10:05  Terminating 2 instances (desired 8 -> 6)     cause: alarm web-cpu-low, CPU 46.2%
+10:07  Launching 2 new instances (desired 6 -> 8)   cause: alarm web-cpu-high, CPU 63.0%
+10:10  Terminating 2 instances (desired 8 -> 6)     cause: alarm web-cpu-low, CPU 47.9%
+10:12  Terminating 2 instances (desired 6 -> 4)     cause: alarm web-cpu-low, CPU 49.1%
+10:14  Launching 2 new instances (desired 4 -> 6)   cause: alarm web-cpu-high, CPU 74.8%
+10:17  Terminating 2 instances (desired 6 -> 4)     cause: alarm web-cpu-low, CPU 48.3%
+10:19  Launching 2 new instances (desired 4 -> 6)   cause: alarm web-cpu-high, CPU 72.5%
+(same pattern continues all day)

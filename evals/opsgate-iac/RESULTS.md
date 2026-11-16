@@ -56,3 +56,54 @@ One criterion first said "switches the resource"; it now accepts writing or show
 - The evals turn off shell access, so no plan, validate or import command was actually run.
 - The test configuration adds a terse response style.
 - Only one scenario was run with the skill installed on its own.
+
+## A plan with changes nobody made (2026-11-16)
+
+Run on 2026-11-16 with Claude Code (model `claude-opus-5-5`), with account plugin sync turned off. The scenario came from a gap review against public DevOps best-practice guides: a pull request bumps one Lambda's memory, but the production plan also shrinks the database and removes a security group rule that someone added outside the code.
+
+| Scenario | Without skills | With skills |
+|----------|----------------|-------------|
+| plan-shows-unmade-changes | 6/6, 6/6 | 6/6 |
+
+Both arms refused to apply, named both extra changes and their risk, called them drift or a stale branch, and said to find out who made them before applying. The baseline already handles this, so no rule was added and the scenario stays as a regression check. One baseline reply suggested `terraform import` or a refresh to fix the drift. That doesn't help: both resources are already in state, and the next plan would still revert them.
+
+After the baseline runs, a grader found one criterion that bundled three checks. It was split into three lines, and all runs above were graded on the split version.
+
+## Terraform traps (2026-11-16)
+
+Run on 2026-11-16 with Claude Code (model `claude-opus-5-5`), with account plugin sync turned off. The scenarios came from a gap review against public DevOps guides and the devops-exercises repository. Two baseline runs per scenario and one with-skill run, with more runs for the scenario that led to a rule.
+
+| Scenario | Without skills | With skills | This skill alone |
+|----------|----------------|-------------|------------------|
+| userdata-change-running | 4/4, 4/4 | 4/4 | |
+| module-with-provider | 4/4, 4/4 | 4/4 | |
+| workspaces-for-prod | 2/4, 1/4 | 4/4, 4/4 | 4/4 |
+| local-state-to-s3 | 4/4, 4/4 | 4/4 | |
+| ec2-keypair-in-terraform | 4/5, 5/5 | 5/5 | |
+| sg-description-replace | 4/4, 4/4 | 4/4 | |
+
+Without the skill, the agent already knew that changing `user_data` stops and starts the instance without running the new script, that a reusable module can't hold a provider block, how to move local state to S3 with `use_lockfile`, that `tls_private_key` puts the key in state, and that a security group whose description changes is replaced and can't be deleted while in use. No rules were added for these; the scenarios stay as regression checks.
+
+Workspaces were the gap. Asked to use workspaces with prod in its own account, both baseline runs built prod as a workspace in the dev state bucket and offered a separate setup only as an option. The skill now says CLI workspaces share one backend and its credentials, so production gets its own root module or backend and role, and that the agent should recommend this and ask before building a prod workspace. With the skill, every run recommended separating prod and asked before writing it.
+
+Regression runs of `plan-hides-db-replacement` and `remove-queue-from-count-list` kept 4/4. After a final review, two criteria were worded more precisely (workspaces share backend credentials; the key pair alternatives are examples). No grade changed.
+
+### Changes made during testing
+
+After the baseline runs, a grader found that the module criterion rejected the resource-level `region` argument from AWS provider 6, which is a valid answer, and that the workspace and key pair criteria bundled several checks. They were reworded before the with-skill runs, and the baseline runs were graded again on the final criteria.
+
+### Known gaps
+
+- The with-skill module reply went beyond the request (versioning, `prevent_destroy`, a name check). Its code comment said a `removed` block can drop a single `for_each` key, which its own README correctly contradicts.
+- The state migration fixture uses `var.db_password` without declaring it. Both baseline replies added the declaration; the with-skill reply didn't, so its "plan shows no changes" check can't run as delivered.
+- The workspace runs with the skill proposed `allowed_account_ids` per environment but didn't write it, because they stopped to ask first.
+
+## Deleting a bucket that DNS still points at (2026-11-16)
+
+Run on 2026-11-16, same setup as the section above.
+
+| Scenario | Without skills | With skills |
+|----------|----------------|-------------|
+| dns-teardown | 3/4, 4/4 | 4/4 |
+
+Both arms noticed that the platform team's Route 53 record still points at the website bucket, warned that anyone could create a bucket with the same name and serve content on the subdomain, and removed the record first. One baseline run gave the steps without saying the destroy needs the user's go-ahead. No rule was added. Two criteria were reworded after the baseline runs because the user asked for steps, not edits; the baseline runs were graded again on the final wording.

@@ -78,6 +78,10 @@ The skill's description now also covers writing Dockerfiles or container definit
 
 - One graded run per arm. All with-skill runs above used the final skill text. The `zero-findings-friday` baseline was re-run on the new fixture; the other baselines are from the first run, on fixtures that did not change.
 - The evals turn off shell access, so no scanner, signer or verifier actually ran.
-- The with-skill runs always had the whole plugin installed. No run tested the skill installed on its own.
+- The with-skill runs had the whole plugin installed, except one `policy-as-code-guardrails` run with this skill on its own (see the last section).
 - No scenario covers design review, policy as code or threat modeling yet.
 - The grader noted some slips in passing replies: a new log bucket without the policy that lets S3 deliver access logs to it, and an overstated claim that a scan "won't break unrelated PRs" when fixable base-image vulnerabilities still would.
+
+## Approval fallback (2026-11-16)
+
+This skill's fallback for when `opsgate` is not installed now says that a yes counts only after the user has seen the reviewed plan, that blanket pre-approvals don't count, and that production changes need a rollback path first, matching the other skills. The lint script now checks every skill for this rule. A run of `policy-as-code-guardrails` with only this skill installed scored 5/5.

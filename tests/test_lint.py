@@ -10,11 +10,11 @@ sys.path.insert(0, str(Path(__file__).parent.parent / "scripts"))
 import lint  # noqa: E402
 
 
-def make_skill(root, folder, name, description="Use when testing.", evals=True):
+def make_skill(root, folder, name, description="Use when testing.", evals=True, body=f"{lint.FALLBACK_HEADING}\n\n{lint.GATE_PHRASE}."):
     skill_dir = root / "skills" / folder
     skill_dir.mkdir(parents=True)
     (skill_dir / "SKILL.md").write_text(
-        f"---\nname: {name}\ndescription: {description}\n---\n\n# {name}\n"
+        f"---\nname: {name}\ndescription: {description}\n---\n\n# {name}\n\n{body}\n"
     )
     if evals:
         make_scenario(root, folder, "basic")
@@ -108,6 +108,22 @@ class LintTest(unittest.TestCase):
             lint.lint(self.root),
             ["evals/opsgate-iac: needs at least one scenario with prompt.md and criteria.md"],
         )
+
+    def test_skill_without_approval_fallback_reported(self):
+        make_skill(self.root, "opsgate-iac", "opsgate-iac", body="No gate here.")
+        self.assertEqual(
+            lint.lint(self.root),
+            [f"skills/opsgate-iac: \"When related skills are missing\" must include \"{lint.GATE_PHRASE}\""],
+        )
+
+    def test_approval_phrase_outside_fallback_reported(self):
+        body = f"{lint.GATE_PHRASE}.\n\n{lint.FALLBACK_HEADING}\n\nNo gate here.\n\n## Later\n"
+        make_skill(self.root, "opsgate-iac", "opsgate-iac", body=body)
+        self.assertEqual(len(lint.lint(self.root)), 1)
+
+    def test_router_needs_no_approval_fallback(self):
+        make_skill(self.root, "opsgate", "opsgate", body="Router text.")
+        self.assertEqual(lint.lint(self.root), [])
 
     def test_main_exit_codes(self):
         with contextlib.redirect_stdout(io.StringIO()):

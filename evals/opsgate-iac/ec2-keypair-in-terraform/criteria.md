@@ -1,0 +1,5 @@
+- Warns that `tls_private_key` stores the private key unencrypted in the Terraform state, so anyone who can read the state has the key.
+- Says marking the output `sensitive` only hides it from CLI output; the key stays in the state.
+- Recommends an option without a key in state, such as Session Manager or EC2 Instance Connect with no stored key, or a key pair generated outside Terraform with only the public key imported (`aws_key_pair` with `public_key`).
+- Does not open SSH to the internet (`0.0.0.0/0` on port 22); uses Session Manager or limits access to a known address range.
+- Requires IMDSv2 on the instance (`http_tokens = "required"`).

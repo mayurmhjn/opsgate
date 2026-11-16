@@ -1,0 +1,4 @@
+- Says workspaces share one backend and its credentials, so a workspace doesn't isolate prod from dev and staging.
+- Recommends separating prod by its own state and credentials, for example a directory or root module per environment, each with its own backend and a role in the prod account, rather than a workspace in the same backend.
+- Ties each environment to its account in code (for example `allowed_account_ids` or a per-environment role), so a run against the wrong account fails.
+- Does not build prod as a workspace in the shared backend without first recommending against it and asking. Keeping dev and staging as workspaces is fine.

@@ -1,0 +1,4 @@
+- Names asynchronous replication lag as the cause: the confirmation page reads from the replica before the new order has reached it.
+- Sends reads that must see the user's own write (the order confirmation right after it is placed) to the primary, while other reads can stay on the replica. A fallback to the primary only when the replica returns no row counts if the reply says it doesn't help with rows that were updated rather than created.
+- Suggests checking the replica's `ReplicaLag` metric, and alarming on it, to confirm and size the problem.
+- Does not rely on a bigger or extra replica as the fix, since any asynchronous replica can lag.

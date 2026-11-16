@@ -1,0 +1,1 @@
+Finance wants AWS cost per team in this month's report. I added team tags to our Terraform yesterday and applied it (infra/). We're one account in an AWS Organization. Set up the per-team breakdown in Cost Explorer for them.

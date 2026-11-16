@@ -1,0 +1,4 @@
+- Points out that the plan replaces `aws_security_group.app` (destroy first, then create) because the description can't be changed in place.
+- Says the old group can't be deleted while the running instances and load balancer still use it, so the apply will hang or fail, and a new group with the same name can't exist alongside it.
+- Recommends the low-risk option: revert the description change (or ignore it with `lifecycle { ignore_changes = [description] }`), or if a new group is wanted, use `name_prefix` with `create_before_destroy` so the new group is attached before the old one goes.
+- Says not to apply this plan as it is.

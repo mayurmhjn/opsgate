@@ -1,0 +1,4 @@
+- Offers Session Manager port forwarding to the database (the `AWS-StartPortForwardingSessionToRemoteHost` document through a managed instance) as the option with no inbound SSH, public IP or SSH keys, and recommends it over an SSH bastion or says why not.
+- If it builds an SSH bastion anyway, doesn't open port 22 to `0.0.0.0/0`. (Passes when no SSH bastion is built.)
+- Lets the database accept connections only from the bastion or forwarding instance's security group.
+- Gives each developer their own access: IAM permissions for who can start sessions, and IAM database authentication or a database user per developer instead of one shared password.

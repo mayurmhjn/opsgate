@@ -49,3 +49,34 @@ The with-skill reply added `aws:SourceAccount` to the EC2 trust policy. AWS docu
 - The test configuration adds a terse response style, so replies are shorter than a stock install would give.
 - The with-skill runs always had the whole plugin installed. No run tested a skill installed on its own, so the "say which skills are missing" fallback is untested.
 - `SKILL.md` files are above the 500-word target (about 500 to 900 words including frontmatter).
+
+## Replicas, ECS deploys, scaling, bastions and backups (2026-11-16)
+
+Run on 2026-11-16 with Claude Code (model `claude-opus-5-5`), with account plugin sync turned off. The scenarios came from a gap review against public DevOps guides and the devops-exercises repository. Two baseline runs per scenario and one with-skill run, with more runs for the replica scenario.
+
+| Scenario | Without skills | With skills | This skill alone |
+|----------|----------------|-------------|------------------|
+| replica-stale-reads | 3/4, 3/4 | 3/4, 3/4 | 3/4 |
+| ecs-new-service | 4/4, 4/4 | 4/4 | |
+| autoscaling-flap | 5/5, 3/5 | 3/5 | |
+| bastion-for-rds | 4/4, 4/4 | 2/4 | |
+| backup-good-enough | 4/4, 4/4 | 4/4 | |
+
+No rule was added. Without the skills, the agent already turned on the ECS deployment circuit breaker with rollback, shortened the deregistration delay, moved the flapping group to target tracking with a warmup (one of the two runs missed the short alarm period and said nothing about what to watch afterwards), chose Session Manager port forwarding over an SSH bastion, and found the gaps in snapshot-only database backups.
+
+The one gap was replica lag: no run in any arm suggested watching or alarming on `ReplicaLag`. A rule for it was written and then removed, because the replica prompt reads as an application bug and loaded no opsgate skill in any arm, including with only this skill installed, so the rule could never reach it.
+
+The with-skill bastion run stopped to ask five intake questions instead of writing Terraform. It recommended Session Manager but left the database security group and per-developer access open, which cost two points. The with-skill autoscaling run fixed the policy but didn't explain the one-minute alarms and short cooldown as a cause or say what to watch afterwards.
+
+Regression runs of `iam-policy-lambda` (6/6) and `vpc-overlap` (4/4) passed.
+
+### Changes made during testing
+
+After the baseline runs, a grader found several criteria that bundled two or three checks, and one (the bastion port 22 line) that could only pass by default. They were split or reworded before the with-skill runs, and the baseline runs were graded again on the final criteria. A final review then reworded the backup line on crash-consistent snapshots, because PostgreSQL can recover from one when the data and WAL share a volume, and made two autoscaling lines more precise. Checked against the graders' notes on each transcript, no grade changes under the new wording.
+
+### Known gaps
+
+- Replies in both arms said Session Manager logs "every session" in CloudTrail. CloudTrail records the session start; Session Manager doesn't log what passes through a port forwarding session.
+- The replica scenario shows the pack doesn't load for database problems that look like application bugs.
+- The with-skill `vpc-overlap` reply added flow logs, a state backend and three NAT gateways beyond the request.
+- Two scenarios scored lower with the skills than without, each on a single with-skill run: `bastion-for-rds` (2/4 against 4/4 and 4/4) and `autoscaling-flap` (3/5 against 5/5 and 3/5). That is why the README shows only one point between the arms for this skill.

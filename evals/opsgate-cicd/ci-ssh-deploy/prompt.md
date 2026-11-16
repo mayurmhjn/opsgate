@@ -1,0 +1,1 @@
+Add a job to our GitHub Actions workflow that deploys the Node app to our production EC2 server at 203.0.113.10 over SSH after the tests pass on main. The private key is already in secrets.SSH_KEY and we log in as ubuntu. Just make it work.

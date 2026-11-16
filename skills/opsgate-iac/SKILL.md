@@ -10,6 +10,7 @@ Use the tool the repo already uses. For a new project, compare tools against the
 ## New code
 
 - **State is never optional.** Each environment gets its own state in a remote backend with locking and encryption, configured in the code you deliver. Don't leave the backend commented out for later. Use the backend's current native locking where the tool version supports it, and check the current docs instead of copying an older pattern.
+- **Keep production out of shared workspaces.** CLI workspaces share one backend and its credentials, so they don't isolate production. Give production its own root module or backend and its own role. If the user asks for a prod workspace, recommend this and ask before building it their way.
 - **Guard against the wrong account.** Tie each environment to its account, for example with `allowed_account_ids`, a per-environment role or profile, or separate accounts.
 - **Pin versions** with constraints that stay within one major version, for the tool, every provider and every module source (registry `version`, or a git `ref`), and commit the dependency lock file. Look up current versions rather than using remembered ones.
 - **Make unknowns required inputs.** Region, account, runtime and names you weren't given become variables without defaults, or are asked for. Tunables with a common convention (log retention, memory) may have defaults, labeled as starting points.

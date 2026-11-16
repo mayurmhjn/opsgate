@@ -68,3 +68,32 @@ Three scenarios were added for `references/other-ci.md`, which had been reviewed
 - The evals turn off shell access, so no workflow actually ran.
 - Only one scenario was run with the skill installed on its own.
 - The grader noted two small slips in otherwise passing replies. A rollback reply took a backup cutoff time from a migration file name instead of the deploy time. A preview deploy step ran from the wrong directory.
+
+## Self-hosted runners, SSH deploys, build once and Jenkins approval waits (2026-11-16)
+
+Run on 2026-11-16 with Claude Code (model `claude-opus-5-5`), with account plugin sync turned off. The scenarios came from a gap review against public DevOps best-practice guides. Two graded runs per arm, and one run with only this skill installed for the two scenarios that led to new rules.
+
+| Scenario | Without skills | With skills | This skill alone |
+|----------|----------------|-------------|------------------|
+| self-hosted-runner-public | 3/5, 3/5 | 5/5, 5/5 | 5/5 |
+| ci-ssh-deploy | 0/5, 1/5 | 5/5, 5/5 | 5/5 |
+| frontend-build-once | 3/4, 4/4 | 3/4, 3/4 | |
+| jenkins-prod-approval | 5/7, 5/7 | 7/7, 5/7 | |
+
+- **Self-hosted runner on a public repository.** Without the skill, both runs registered the runner to the public repository as asked, and kept fork pull requests off it with a job `if:`. A fork's pull request runs its own copy of the workflow, so it can remove that condition. With the skill, every run advised against the runner on a public repository, kept pull request CI on GitHub-hosted runners, and made any self-hosted runner ephemeral.
+- **Deploying over SSH.** Without the skill, the runs kept the long-lived `ubuntu` key, left required reviewers as optional, and had no health check or way back. One fell back to trusting `ssh-keyscan` when the host key was missing. With the skill, every run pinned the host key, offered Systems Manager Run Command through an OIDC role or a restricted deploy user, gated production, checked health and kept the previous release.
+- **Build once.** The baseline already moved `VITE_API_URL` to a runtime `config.json` and promoted one artifact, so no rule was added. The with-skill runs scored one point lower on a strict reading of the first criterion: they named the build-time inlining without saying production would call the staging API. They also left action SHAs as marked placeholders, which the skill asks for when it can't look them up. No criterion covers SHAs, so this did not affect the score.
+- **Jenkins approval waits.** Two lines were added to this scenario: avoid holding an executor during the `input` wait or explain why a top-level `agent any` keeps one, and put a timeout on the wait. Both baseline runs already did both, so no rule was added. The earlier table above used the five original lines.
+
+The skill now says to keep self-hosted runners off public repositories and to make them ephemeral or just-in-time (`references/github-actions-hardening.md`). For SSH deploys it says to pin the host key, prefer Systems Manager Run Command through an OIDC role or a restricted deploy user, check health, and keep the previous release. Regression runs of `pr-target-speedup`, `new-pipeline-ecs` and `rollback-bad-release` kept full marks.
+
+### Changes made during testing
+
+After the baseline runs, a grader found criteria that bundled several checks or accepted a job `if:` as protection. The self-hosted, SSH and Jenkins criteria were rewritten and split before the with-skill runs, and the baseline runs were graded again on those criteria. A final review then reworded the Jenkins executor line and dropped "protected" from the frontend production line, without changing what passes. It also corrected the skill text: `--ephemeral` and just-in-time runners only remove the runner after one job, so the machine itself must be fresh or wiped for each job. One more with-skill run each of `self-hosted-runner-public` and `ci-ssh-deploy` on the corrected text scored 5/5. GitHub documents limiting runner groups to selected workflows only for GitHub Enterprise Cloud, so neither the skill nor the criteria rely on it.
+
+### Known gaps
+
+- One run with only this skill said that turning off host key checking would let an attacker "receive your SSH key". Public key authentication never sends the private key; the risk is that an attacker can pose as the server.
+- One with-skill Jenkins run dropped the executor trade-off and the advice to replace the stored key with role credentials, and wrongly said that anyone in Jenkins could approve if `submitter` named no real user.
+- One regression reply for `rollback-bad-release` claimed that addresses without a comma survive its reverse migration unchanged. With the reverse migration it wrote, they gain a trailing comma.
+- Self-hosted runs left the integration tests, which need the VPC, in the hosted pull request job, where they can't reach the database.

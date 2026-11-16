@@ -1,0 +1,1 @@
+Since we pointed the orders API's reads at an RDS PostgreSQL read replica last week, customers sometimes don't see the order they just placed on the confirmation page. A refresh fixes it. Fix it (src/db.js, src/orders.js).

@@ -34,3 +34,7 @@ The first standalone run's draft pointed twice to the wrong section number. The 
 - The test configuration adds a terse response style, so replies are shorter than a stock install would give.
 - Only one scenario was run with the skill installed on its own.
 - `SKILL.md` files are above the 500-word target (about 500 to 900 words including frontmatter).
+
+## Approval fallback (2026-11-16)
+
+This skill had no approval rule for when `opsgate` is not installed. It now says a design is not approval to build it, and that apply, deploy, delete, destroy and changes to a live system need a yes after the user has seen the reviewed plan. The lint script now checks every skill for this rule. A run of `design-from-requirements` with only this skill installed scored 6/6.
