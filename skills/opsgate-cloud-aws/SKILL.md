@@ -1,6 +1,6 @@
 ---
 name: opsgate-cloud-aws
-description: Use when writing or changing anything that touches an AWS account, including setting up a new AWS account or organization, root user and access key cleanup, AWS keys pasted into chat or stored in code or pipelines, writing IAM policies and roles, VPCs and networking, S3 buckets, encryption, logging and audit, tagging, region choice, or fixing an AWS error in Terraform, CloudFormation or CDK.
+description: Use when writing or changing anything that touches an AWS account, including setting up a new AWS account or organization, root user and access key cleanup, AWS keys pasted into chat or stored in code or pipelines, writing IAM policies and roles, VPCs and networking, S3 buckets, encryption, logging and audit, tagging, region choice, checking AWS resource settings in code before a merge (S3, CloudFront, databases, queues), fixing an AWS error in Terraform, CloudFormation or CDK, or an application problem caused by how an AWS service behaves, such as stale reads from a read replica.
 ---
 
 # opsgate cloud-aws

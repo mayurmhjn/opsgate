@@ -1,0 +1,4 @@
+{
+  "checkout_v2": { "enabled": true, "rollout_percent": 100, "managed_in": "AWS AppConfig, application shop-web, environment production" },
+  "new_search": { "enabled": false, "rollout_percent": 0, "managed_in": "AWS AppConfig, application shop-web, environment production" }
+}

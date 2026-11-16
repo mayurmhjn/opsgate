@@ -114,3 +114,30 @@ Regression runs of `ecs-new-service` (4/4) and `replica-stale-reads` (3/4, still
 
 - This skill still loads for only some Terraform tasks on AWS resources. When it doesn't, the ECR trap doesn't apply, and one such run scored below both baseline runs. After the `opsgate-iac` line moved to the top of that skill, it loaded in 10 of 14 AWS Terraform runs but in none of three ECR runs. Those three replies still covered the staging image and the lifecycle policy preview without it, but weren't graded.
 - With-skill ECR replies passed the yes-before-apply half of the last line only when this skill loaded.
+
+## Reviews, replica reads and the ECR prompt (2026-11-16)
+
+The description now also covers checking AWS resource settings in code before a merge (S3, CloudFront, databases, queues) and application problems caused by how an AWS service behaves, such as stale reads from a read replica. The `opsgate-iac` line that loads this skill now also covers reviews and a single setting on an existing resource.
+
+| Prompt | Loaded this skill before | After |
+|--------|--------------------------|-------|
+| replica-stale-reads | 0 of 2 | 5 of 5 |
+| s3-cloudfront-review | 0 of 2 | 2 of 2 |
+| ecr-image-cleanup | 0 of 3 | 1 of 3 |
+
+Nothing else changed which skills loaded. The three out-of-scope requests (the React bug twice) loaded no opsgate skill, the Azure request loaded only `opsgate-iac`, and the Helm request only `opsgate`. `ci-role-review` and `design-review-webhook` still loaded `opsgate-devsecops`, `brownfield-review` still loaded `opsgate-architecture-design`, and `iam-policy-lambda` still loaded this skill.
+
+| Scenario | Without skills | With skills |
+|----------|----------------|-------------|
+| replica-stale-reads | 3/4, 3/4 | 4/4, 4/4 |
+| s3-cloudfront-review | 5/5, 5/5 | 5/5, 5/5 |
+| ecr-image-cleanup | | 3/4, 3/4, 3/4 |
+
+- **replica-stale-reads.** Now that this skill loads for the prompt, the replica lag trap that was written and removed earlier is back: replicas copy asynchronously, reads that must see the user's own write go to the primary, a bigger replica doesn't remove the lag, and the lag metric (`ReplicaLag` for RDS, `AuroraReplicaLag` for Aurora) gets an alarm. Both runs on the final text scored 4/4. Before, every run in every arm scored 3/4 because none suggested the alarm. The earlier known gap about this prompt loading no skill is closed.
+- **s3-cloudfront-review.** A review of S3 buckets behind CloudFront, added because no scenario covered reviewing AWS resources other than IAM. Both runs without the skills already caught the public bucket policy, the missing versioning on customer uploads and the HTTP viewer policy, and none called S3 unencrypted. No rule was added; it stays as a regression check for loading. The two with-skill runs before the description change loaded only `opsgate-iac` or no opsgate skill and also scored 5/5.
+- **ecr-image-cleanup.** Three more runs scored 3/4 each. All three protected the staging image and gave the lifecycle policy preview, including the two that loaded only `opsgate-iac`. None asked for a yes before the first apply, although each said the deletions can't be undone.
+
+Known gaps:
+
+- The ECR prompt still loads this skill in only some runs.
+- `bastion-for-rds` loads only `opsgate`, which compares options, recommends Session Manager and asks for confirmation before writing Terraform. That is the selection procedure working as designed, so the scenario's code criteria fail in those runs.

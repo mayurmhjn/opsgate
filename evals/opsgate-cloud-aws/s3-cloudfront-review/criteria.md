@@ -1,0 +1,5 @@
+- Flags the public bucket policy (`s3:GetObject` for `*`) with Block Public Access turned off, and recommends keeping the bucket private behind CloudFront origin access control (OAC).
+- Doesn't report either bucket as unencrypted, because S3 encrypts new objects by default. Discussing who owns the key (SSE-KMS) as a choice is fine.
+- Flags that the customer uploads bucket has no versioning (or other protection against deletes and overwrites), given that it holds customer documents.
+- Flags `viewer_protocol_policy = "allow-all"` and recommends redirecting HTTP to HTTPS.
+- Orders the findings by risk, with the file and line and the smallest fix for each, and changes no files before the user picks what to fix.

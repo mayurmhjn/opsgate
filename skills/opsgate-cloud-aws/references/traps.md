@@ -29,6 +29,7 @@ Check the ones for the services you touch. For details and current limits, use t
 ## Data stores
 
 - RDS `max_connections` depends on instance memory. Connection storms need pooling (RDS Proxy or app-side pooling), not just a bigger instance.
+- Read replicas copy asynchronously, so a read right after a write can miss it, and a bigger or extra replica doesn't remove the lag. Send reads that must see the user's own write to the primary, and watch and alarm on the replica lag metric (`ReplicaLag` for RDS, `AuroraReplicaLag` for Aurora).
 - Enabling encryption on an existing RDS instance or EBS volume needs a new instance or volume from an encrypted snapshot, which means a replacement.
 - `skip_final_snapshot = true` and S3 `force_destroy = true` make a destroy delete data permanently.
 - AWS limits how often one EBS volume can be modified in a given period. Check the current limit before counting on a quick rollback of a volume change.

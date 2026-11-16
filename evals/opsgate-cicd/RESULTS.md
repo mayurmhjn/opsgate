@@ -128,3 +128,17 @@ Regression runs of `new-pipeline-ecs` (5/5), `rollback-bad-release` (4/4) and `f
 
 - The preview criteria for a scheduled cleanup and for no unattended deletes leave one design that passes both: a schedule that only lists until someone turns deletion on.
 - One baseline preview run cancels a running deploy when the PR closes. That can leave the stack mid-update, and the later delete then fails. Both with-skill runs queued the teardown instead.
+
+## Feature flag rollback (2026-11-16)
+
+Run on 2026-11-16 with Claude Code (model `claude-opus-5-5`), with account plugin sync turned off. Each arm ran twice.
+
+| Scenario | Without skills | With skills |
+|----------|----------------|-------------|
+| flag-rollback | 3/4, 3/4 | 4/4, 4/4 |
+
+The user asks to roll production back to the previous release, but the timeline shows the errors started when a feature flag went to 100%, half an hour after the deploy. Every run in both arms saw that and offered turning the flag off first, because it is faster than a redeploy and keeps the other fixes in the release. No rule was added. Without the skills, one run told the user to run the commands themselves without asking for a yes, and the other gave a way to check the result only for the rollback path. With the skills, both runs asked for a yes and said how to confirm the error rate was back to normal.
+
+The last criterion first also asked what to do if turning the flag off didn't help. No run in either arm framed the rollback that way; all of them offered it as an alternative instead. That half was dropped after grading, and all four runs were graded again on the final text.
+
+Known gap: one with-skill run said the `ops/` folder held only the notes file, and asked for the AppConfig application and environment names that `ops/flags.json` already gives.

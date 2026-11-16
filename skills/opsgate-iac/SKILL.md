@@ -7,13 +7,12 @@ description: Use when writing, reviewing, refactoring, renaming or importing inf
 
 Use the tool the repo already uses. For a new project, compare tools against the team's skills and existing setup before choosing (see the `opsgate` skill's selection procedure if installed).
 
-When the code creates or changes AWS resources, load `opsgate-cloud-aws` too before you write it, for its service traps. If it isn't installed, name it in one line and continue.
+When the code creates, changes or reviews any AWS resource, even one setting on an existing resource, load `opsgate-cloud-aws` too before you write or review it, for its service traps. If it isn't installed, name it in one line and continue.
 
 ## New code
 
 - **State is never optional.** Each environment gets its own state in a remote backend with locking and encryption, configured in the code you deliver. Don't leave the backend commented out for later. Use the backend's current native locking where the tool version supports it, and check the current docs instead of copying an older pattern.
-- **Keep production out of shared workspaces.** CLI workspaces share one backend and its credentials, so they don't isolate production. Give production its own root module or backend and its own role. If the user asks for a prod workspace, recommend this and ask before building it their way.
-- **Guard against the wrong account.** Tie each environment to its account, for example with `allowed_account_ids`, a per-environment role or profile, or separate accounts.
+- **Keep production out of shared workspaces, and guard against the wrong account.** CLI workspaces share one backend and its credentials, so they don't isolate production. Give production its own root module or backend, and tie each environment to its account, for example with `allowed_account_ids`, a per-environment role or profile, or separate accounts. If the user asks for a prod workspace, recommend this and ask before building it their way.
 - **Pin versions in root modules** with constraints that stay within one major version, for the tool, every provider and every module source (registry `version`, or a git `ref`), and commit the dependency lock file. A reusable module sets only minimum versions (`>=`) for the tool and its providers, so callers can upgrade. Look up current versions rather than using remembered ones.
 - **Make unknowns required inputs.** Region, account, runtime and names you weren't given become variables without defaults, or are asked for. Tunables with a common convention (log retention, memory) may have defaults, labeled as starting points.
 - **Protect stateful resources in code**, not just in your reply. Two different protections exist: one makes a delete fail (`prevent_destroy`, deletion protection, Pulumi `protect`), the other leaves the resource behind when it is removed or replaced (`RemovalPolicy.RETAIN`, `DeletionPolicy` and `UpdateReplacePolicy: Retain`). Retain does not stop a replacement. `prevent_destroy` lives in the resource block, so deleting the block removes the guard: pair it with the provider's deletion protection. Add backups or point-in-time recovery too.

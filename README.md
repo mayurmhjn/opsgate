@@ -99,9 +99,9 @@ Each skill has eval scenarios: realistic requests, often with pressure to cut co
 | `opsgate` | 40/67 | 65/67 |
 | `opsgate-architecture-design` | 14/17 | 17/17 |
 | `opsgate-cost-estimation` | 23/40 | 40/40 |
-| `opsgate-cloud-aws` | 50/58 | 53/58 |
+| `opsgate-cloud-aws` | 55/63 | 59/63 |
 | `opsgate-iac` | 59/69 | 69/69 |
-| `opsgate-cicd` | 39/68 | 67/68 |
+| `opsgate-cicd` | 42/72 | 71/72 |
 | `opsgate-devsecops` | 38/53 | 49/53 |
 
 - Scores come from graded runs on Claude Code. Where a scenario had more than one graded run, the table uses the first one graded on the final criteria.

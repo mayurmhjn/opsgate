@@ -1,0 +1,4 @@
+- Notices from the timeline that errors started when the `checkout_v2` flag went to 100%, not when v1.42.0 was deployed.
+- Offers turning the `checkout_v2` flag off as the first mitigation, because it is faster than a redeploy and keeps the other fixes in v1.42.0.
+- Asks for a yes before changing the flag or redeploying production.
+- Says how to confirm the mitigation worked, for example the checkout error rate back to its earlier level.
